@@ -1,3 +1,1 @@
-# .vercelignore
-#/vendor
-#.vercel
+public/index.php
