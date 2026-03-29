@@ -1,3 +1,2 @@
 
-<?php require_once __DIR__ . '/../resources/views/articles.blade.php'; ?>
-
+<?php require __DIR__ . '/../resources/views/articles.blade.php'; ?>

@@ -1,3 +1,3 @@
 
-<?php require_once __DIR__ . '/../resources/views/home.blade.php'; ?>
+<?php require __DIR__ . '/../resources/views/home.blade.php'; ?>
 

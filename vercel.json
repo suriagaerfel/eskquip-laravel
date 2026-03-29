@@ -7,12 +7,27 @@
     "routes": [
         {
             "src": "/articles",
-            "dest": "/resources/views/articles.blade.php"
+            "dest": "/api/articles.php"
+        },
+
+        {
+            "src": "/teacher-files",
+            "dest": "/api/teacher-files.php"
+        },
+
+        {
+            "src": "/tools",
+            "dest": "/api/tools.php"
+        },
+
+        {
+            "src": "/researches",
+            "dest": "/api/researches.php"
         },
 
         {
             "src": "/(.*)",
-            "dest": "/resources/views/home.blade.php"
+            "dest": "/api/index.php"
         }
     ]
 }
