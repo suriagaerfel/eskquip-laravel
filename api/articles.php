@@ -1,4 +1,4 @@
 
 <?php 
- return view('articles');
+require __DIR__ . '/../public/index.php';
 ?>
