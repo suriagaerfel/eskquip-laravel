@@ -1,3 +1,7 @@
+
+<?php require_once app_path('Includes/url.php'); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +16,8 @@
 <body>
     <nav>
       <x-nav-links>
-        <a href="/">Home</a>
-        <a href="/articles">Articles</a>
+        <a href="<?php echo $publicFolder; ?>">Home</a>
+        <a href="<?php echo $publicFolder.'/articles'; ?>">Articles</a>
 
     </x-nav-links>
     </nav>

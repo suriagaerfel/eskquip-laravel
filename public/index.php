@@ -18,3 +18,10 @@ require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->handleRequest(Request::capture());
+
+
+
+define("PUBLIC_PATH", dirname(__FILE__)); 
+define("PROJECT_PATH", dirname(PUBLIC_PATH)); 
+define ("RESOURCES_PATH", PROJECT_PATH.'/resources'); 
+define ("VARIABLES_PATH", RESOURCES_PATH.'/variables'); 
