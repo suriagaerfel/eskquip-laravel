@@ -1,3 +1,5 @@
 
-<?php require __DIR__ . '/../resources/views/home.blade.php'; ?>
+<?php 
+ return view('home');
+?>
 
