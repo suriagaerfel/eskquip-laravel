@@ -9,7 +9,7 @@ $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
 $domain = $scheme . '://' . $host;
 
 
-$publicFolder= $domain.'/'; 
+$publicFolder= $domain; 
 
 if(str_contains($domain,'localhost')){
     $projectName = '/eskquip-laravel';
