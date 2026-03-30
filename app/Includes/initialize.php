@@ -34,7 +34,6 @@ if ($domain) {
         $domain = $domain.$projectName;
 
         $publicFolder= $domain.'/public'; 
-        $privateFolder=$domain.'/private';
     }
 
 }
