@@ -46,7 +46,7 @@ if ($domain) {
 
 date_default_timezone_set('Asia/Manila');
 
-
+$currentTimeZone = date_default_timezone_get();
 $currentTime = time(); 
 
 $currentTimeConverted = date("m/d/Y g:i A",  $currentTime); 

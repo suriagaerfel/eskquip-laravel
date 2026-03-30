@@ -585,30 +585,30 @@
             <?php if ($type=='Personal') {?>
         
                 <?php if($teacherRegistration) { ?>
-                        <a href="<?php echo $website.'/workspace/teacher.php'?>" class="link-tag-button" target='_blank'>Teacher</a>
+                        <a href="<?php echo $publicFolder.'/workspace/teacher'?>" class="link-tag-button" target='_blank'>Teacher</a>
                 <?php }?>
 
                 <?php if($writerRegistration) { ?>
-                        <a href="<?php echo $website.'/workspace/writer.php'?>" class="link-tag-button" target='_blank'>Writer</a>
+                        <a href="<?php echo $publicFolder.'/workspace/writer'?>" class="link-tag-button" target='_blank'>Writer</a>
                 <?php }?>
 
                 <?php if($editorRegistration) { ?>
-                        <a href="<?php echo $website.'/workspace/editor.php'?>" class="link-tag-button" target='_blank'>Editor</a>
+                        <a href="<?php echo $publicFolder.'/workspace/editor'?>" class="link-tag-button" target='_blank'>Editor</a>
                 <?php }?>
 
                 <?php if($developerRegistration) { ?>
-                        <a href="<?php echo $website.'/workspace/developer.php'?>" class="link-tag-button" target='_blank'>Developer</a>
+                        <a href="<?php echo $publicFolder.'/workspace/developer'?>" class="link-tag-button" target='_blank'>Developer</a>
                 <?php }?>
 
                 <?php if($websiteManagerRegistration) { ?>
-                        <a href="<?php echo $website.'/workspace/website-manager.php'?>" class="link-tag-button" target='_blank'>Website Manager</a>
+                        <a href="<?php echo $publicFolder.'/workspace/website-manager'?>" class="link-tag-button" target='_blank'>Website Manager</a>
                 <?php }?>
 
                 <?php } ?>
 
                 
                 <?php if ($type=='School') {?>
-                <a href="<?php echo $website.'/workspace/researches.php'?>" class="link-tag-button" target='_blank'>Researches</a>
+                <a href="<?php echo $publicFolder.'/workspace/researches'?>" class="link-tag-button" target='_blank'>Researches</a>
                 <?php } ?>
             </div>
         </div>

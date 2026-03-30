@@ -4,8 +4,9 @@
 
 <div class="workspace-sidebar">
         <h5 id="workspace-title"></h5>
-        <?php  require app_path('Includes/sections/workspace-search.php');?>
 
+        @include('components/workspace-search')
+       
         <?php if ($pageName == 'Workspace - Teacher') {?>
         <?php if ($sellerSubscribed) {?>
                 <span class="link-tag-button" id="show-content-purchases-button">Purchases</span>

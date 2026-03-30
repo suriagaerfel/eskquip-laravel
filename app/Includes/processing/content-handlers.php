@@ -1,5 +1,4 @@
 
-<?php require app_path('Includes/processing/registrant-records.php'); ?>
 
 <?php 
 
@@ -25,12 +24,12 @@ if(str_contains($currentURL,'/teacher-files/')) {
     $versionColumn ='teacher_fileContentVersion';
 
     $imageColumn = 'teacher_fileImage';
-    $defaultImage = $website.'/assets/images/default-file-image.jpg';
+    $defaultImage = asset('images/default-file-image.jpg');
 
     $formatColumn = 'teacher_fileFormat';
 
 
-    $pageLink = $website.'/teacher-files/';
+    $pageLink = $publicFolder.'/teacher-files/';
     $ownerLabel = 'Teacher';
 
     $access = 'view';
@@ -60,9 +59,9 @@ if(str_contains($currentURL,'/articles/')) {
         $versionColumn ='writer_articleContentVersion';
 
         $imageColumn = 'writer_articleImage';
-        $defaultImage = $website.'/assets/images/default-article-image.jpg';
+        $defaultImage = asset('images/default-article-image.jpg');
 
-        $pageLink = $website.'/articles/';
+        $pageLink = $publicFolder.'/articles/';
 
         $ownerLabel = 'Writer';
 
@@ -95,9 +94,9 @@ if(str_contains($currentURL,'/researches/')) {
     $formatColumn = 'school_researchFormat';
 
     $imageColumn = 'school_researchImage';
-    $defaultImage = $website.'/assets/images/default-research-image.jpg';
+    $defaultImage = asset('/images/default-research-image.jpg');
 
-    $pageLink = $website.'/researches/';
+    $pageLink = $publicFolder.'/researches/';
 
     $ownerLabel = 'School';
 
@@ -107,7 +106,7 @@ if(str_contains($currentURL,'/researches/')) {
 
 }
 
-$slug = isset($_GET['slug']) ? $_GET['slug'] : '';
+// $slug = isset($_GET['slug']) ? $_GET['slug'] : '';
 
  if ($slug) {
          
@@ -145,7 +144,7 @@ $slug = isset($_GET['slug']) ? $_GET['slug'] : '';
             $pageName = $contentTitle;
 
             if ($contentCategory == 'Administrative'){
-                header('Location:'.$website.'/'.$slug);
+                header('Location:'.$publicFolder.'/'.$slug);
             }
 
             $hasAccess = false;

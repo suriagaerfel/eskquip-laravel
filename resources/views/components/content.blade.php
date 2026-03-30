@@ -1,6 +1,3 @@
-<?php require app_path('Includes/sections/head.php'); ?>
-<?php require app_path('Includes/sections/header.php'); ?>
-
 <div id="content-page"class="page with-sidebars-page with-single-sidebar-page" style="padding-top:20px;">
 
     <div class="page-details page-details-single-sidebar">
@@ -196,14 +193,8 @@
 
 
 
-
-        <?php require app_path('Includes/sections/native-ad.php'); ?>
-
-
-
-
-
-
+        @include('components/native-ad')
+      
             <?php if ($contentInfo) { ?>
 
             <?php  $sqlCategoryContents = "SELECT * FROM $table WHERE $categoryColumn = '$contentCategory' AND $idColumn !=$id AND $statusColumn = 'Published' ORDER BY $pubDateColumn DESC LIMIT 5";
@@ -269,11 +260,10 @@
 
 
     
+    @include('components/website-sidebar')
   
-    <?php require app_path('Includes/sections/website-sidebar.php'); ?>
 
 
 </div>
 
 
-<?php require app_path('Includes/sections/footer.php'); ?>

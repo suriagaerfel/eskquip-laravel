@@ -16,10 +16,10 @@ $toolOwner = $tool ['developer_toolDeveloper'] ? $tool ['developer_toolDeveloper
 $toolStatus = $tool ['developer_toolStatus'] ? $tool ['developer_toolStatus'] : "";
 
 if(!$registrantId) {
-    header('Location:'.$website.'/login/');
+    header('Location:'.$publicFolder.'/login/');
 } else {
     if(!$toolSubscribed && $registrantId!=$toolOwner) {
-    header('Location:'.$website.'/tools/');
+    header('Location:'.$publicFolder.'/tools/');
     }
 }
 
@@ -104,9 +104,9 @@ if ($toolStatus=='Published') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?php echo $website.'/assets/images/eskquip-icon.png'?>">
+    <link rel="icon" href="<?php echo asset('/images/eskquip-icon.png');?>">
     <title><?php echo $pageName?></title> 
-    <link rel="stylesheet" href="<?php echo $website.'/assets/css/styles.css'; ?>">
+    <link rel="stylesheet" href="<?php echo asset('/css/styles.css'); ?>">
 
 </head>
 

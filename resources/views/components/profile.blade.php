@@ -6,7 +6,7 @@
                 </div>
                  <?php if ($registrantId){?>
                 <div id="cover-photo-camera-container">
-                    <img src="<?php echo $website.'/assets/images/camera.svg'?>" id="cover-photo-camera-icon" class="icon profile-details-icon">
+                    <img src="<?php echo asset('/images/camera.svg');?>" id="cover-photo-camera-icon" class="icon profile-details-icon">
                 </div>
                 <?php } ?>
               
@@ -15,7 +15,7 @@
                         <img id="profile-picture">   
                         <?php if ($registrantId){?>
                             <div id="profile-picture-camera-container">
-                                <img src="<?php echo $website.'/assets/images/camera.svg'?>" 
+                                <img src="<?php echo asset('images/camera.svg');?>" 
                                 id="profile-camera-icon" class="icon profile-details-icon">
                             </div>
                         <?php } ?>
@@ -38,7 +38,7 @@
                 <h5 id="details">My Details</h5>
                 <?php if ($registrantId){?>
                 <div id="edit-profile-details-button">
-                    <img src="<?php echo $website.'/assets/images/edit.svg'?>">
+                    <img src="<?php echo asset('/assets/images/edit.svg');?>">
                 </div> 
                 <?php } ?>
             </div>

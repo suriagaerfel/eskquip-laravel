@@ -6,3 +6,10 @@
 @endphp
 
 @include('components/main')
+
+@extends ('components/main')
+
+
+@section('content')
+    @include('components/workspace-page')
+@endsection

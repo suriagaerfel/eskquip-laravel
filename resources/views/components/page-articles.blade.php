@@ -13,10 +13,6 @@ if ($pageArticle) {
 } ?>
 
 
- <?php require app_path('Includes/sections/head.php'); ?>
- <?php require app_path('Includes/sections/header.php'); ?>
-
-
 <div id="page" class="page with-sidebars-page with-single-sidebar-page"  style="padding-top:20px;">
 
     <div class="page-details page-details-single-sidebar"> 
@@ -50,28 +46,23 @@ if ($pageArticle) {
             <span>Read : </span>
 
             <?php if ($pageName != 'Terms of Use') {?>
-            <a href="<?php echo $website.'/terms-of-use/'?>"><strong>Terms of Use</strong></a>
+            <a href="<?php echo $publicFolder.'/terms-of-use/'?>"><strong>Terms of Use</strong></a>
             <?php } ?>
 
             <?php if ($pageName != 'Data Privacy') {?>
-            <a href="<?php echo $website.'/data-privacy/'?>"><strong>Data Privacy</strong></a>
+            <a href="<?php echo $publicFolder.'/data-privacy/'?>"><strong>Data Privacy</strong></a>
             <?php } ?>
 
             <?php if ($pageName != 'About Us') {?>
-            <a href="<?php echo $website.'/about-us/'?>"><strong>About Us</strong></a>
+            <a href="<?php echo $publicFolder.'/about-us/'?>"><strong>About Us</strong></a>
             <?php } ?>
         </div>
 
 
     </div>
 
-   
-    <?php require app_path('Includes/sections/website-sidebar.php'); ?>
+   @include('components/website-sidebar')
+  
 
 </div>
-      <?php require app_path('Includes/sections/footer.php'); ?>
 
-
-
-</body>
-</html>

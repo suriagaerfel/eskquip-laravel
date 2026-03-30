@@ -2,7 +2,7 @@
 
 <div id="articles-writer" class="workspace-sidebar workspace-sidebar-content-list-container">
     <h5>Writer Workspace</h5>
-     <?php  require app_path('Includes/sections/workspace-search.php');?>
+    @include('components/workspace-search')
     <hr>
     <div id="sidebar-writer-articles-list">
 

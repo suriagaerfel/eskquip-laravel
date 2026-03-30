@@ -13,8 +13,8 @@
         <?php } ?>
 
         <?php if (!$registrantId) {?>
-            <a class="link-tag-button login" href="<?php echo $publicFolder.'/login/';?>">Login</a>
-            <a class="link-tag-button login" href="<?php echo $publicFolder.'/create-account/';?>">Create Account</a>
+            <a class="link-tag-button login" href="<?php echo $publicFolder.'/login';?>">Login</a>
+            <a class="link-tag-button login" href="<?php echo $publicFolder.'/create-account';?>">Create Account</a>
         <?php } ?>
 
        

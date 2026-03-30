@@ -84,7 +84,9 @@
         <?php if ($pageName !='Search'){ ?> 
         
         <div id="header-search-container" class="search-container">
-                <img src="{{ asset('images/header-search.svg')}}"  title="Search" id="header-search-button" style="width: 25px; cursor:pointer;">
+            <a href="<?php echo $publicFolder.'/search'?>">
+                <img src="{{ asset('images/header-search.svg')}}"  title="Search" style="width: 25px; cursor:pointer;">
+            </a>
         </div>
         <?php }?>
 

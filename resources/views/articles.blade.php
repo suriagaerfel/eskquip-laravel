@@ -1,8 +1,15 @@
 
 <?php require app_path('Includes/initialize.php'); ?>
-
-@php
-    $pageName = 'Articles';
-@endphp
+<?php require app_path('Includes/processing/content-handlers.php'); ?>
+<?php $pageName = $contentTitle ? $contentTitle : 'Articles'?>
 
 @include('components/main')
+
+
+@extends ('components/main')
+
+
+@section('content')
+    @include('components/content')
+@endsection
+
