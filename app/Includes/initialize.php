@@ -28,12 +28,14 @@ $domain = $scheme . '://' . $host;
 
 if ($domain) {
     $publicFolder= $domain; 
+    $privateFolder=$domain.'/private';
 
     if(str_contains($domain,'localhost')){
         $projectName = '/eskquip-laravel';
         $domain = $domain.$projectName;
 
         $publicFolder= $domain.'/public'; 
+        $privateFolder=$domain.'/private';
     }
 
 }
