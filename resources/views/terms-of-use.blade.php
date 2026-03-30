@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Terms of Use</title>
-<h1>This is terms of use page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Terms of Use';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

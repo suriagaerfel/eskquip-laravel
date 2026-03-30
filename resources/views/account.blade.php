@@ -2,7 +2,9 @@
 <?php require app_path('Includes/initialize.php'); ?>
 
 @php
-    $pageName = 'Data Privacy';
+    $pageName = 'My Account';
 @endphp
 
 @include('components/main')
+
+

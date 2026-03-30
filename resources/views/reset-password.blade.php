@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Reset Password</title>
-<h1>This is reset password page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Reset Password';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

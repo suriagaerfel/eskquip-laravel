@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Login</title>
-<h1>This is login page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Login';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

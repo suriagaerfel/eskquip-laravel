@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    
     return view('home');
 });
 
@@ -30,6 +31,11 @@ Route::get('/login', function () {
 Route::get('/create-account', function () {
     return view('create-account');
 });
+
+Route::get('/account', function () {
+    return view('account');
+});
+
 
 Route::get('/get-password-reset-link', function () {
     return view('get-password-reset-link');

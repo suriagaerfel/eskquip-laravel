@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Search</title>
-<h1>This is search page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Search';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

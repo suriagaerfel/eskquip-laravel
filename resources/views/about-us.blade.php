@@ -1,9 +1,8 @@
 
-<x-header>
-<title>About Us</title>
-<h1>This is about us page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'About Us';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

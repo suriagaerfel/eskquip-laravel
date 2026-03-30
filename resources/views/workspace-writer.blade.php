@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Personal Workspace - Writer</title>
-<h1>This is writer workspace page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Workspace - Writer';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

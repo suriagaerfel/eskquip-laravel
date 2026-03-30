@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Messages</title>
-<h1>This is messages page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Messages';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

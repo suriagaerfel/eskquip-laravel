@@ -1,18 +1,15 @@
 <?php 
 
 
-
-
-
 if ($pageName=="My Account") { 
     if(!$loggedIn){
-    header('Location:'.$website.'/login/');
+    header('Location:'.$publicFolder.'/login');
     }
 }
 
 if ($pageName=="File Purchase") { 
     if($loggedIn){
-    header('Location:'.$website.'/login/');
+    header('Location:'.$publicFolder.'/login');
     }
 }
 
@@ -20,16 +17,16 @@ if ($pageName=="File Purchase") {
 
 if ($pageName=="Messages") { 
     if(!$loggedIn){
-    header('Location:'.$website.'/login/');
+    header('Location:'.$publicFolder.'/login');
     } 
 }
 
 if ($pageName=="Notifications") { 
     if(!$loggedIn){
-    header('Location:'.$website.'/login/');
+    header('Location:'.$publicFolder.'/login');
     } else {
         if(!$developerRegistration){
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }
     } 
 }
@@ -38,58 +35,58 @@ if ($pageName=="Notifications") {
 
 if ($pageName=="Login") { 
     if ($loggedIn) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }
 }
 
 if ($pageName=="Create Account") { 
      if ($loggedIn) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }
 }
 
 if ($pageName=="Get Password Reset Link") { 
      if ($loggedIn) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }
 }
 
 if ($pageName=="Workspace - Teacher") {
     if (!$teacherRegistration) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }   
 }
 
 if ($pageName=="Workspace - Writer") {
     if (!$writerRegistration) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }  
 
 }
 
 if ($pageName=="Workspace - Editor") {
     if (!$editorRegistration) { 
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }  
 
 }
 
 if ($pageName=="Workspace - Website Manager") {
     if (!$websiteManagerRegistration) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }   
 }
 
 if ($pageName=="Workspace - Data Analyst") {
     if (!$dataAnalystRegistration) { 
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }
 }
 
 
 if ($pageName=="Workspace - Developer") {
     if (!$developerRegistration) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }   
 
 }
@@ -97,14 +94,14 @@ if ($pageName=="Workspace - Developer") {
 
 if ($pageName=="Dashboard - Funder") {
     if (!$funderRegistration) {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }
     
 }
 
 if ($pageName=="School Workspace - Researches") {
     if ($type!='School') {
-    header('Location:'.$website.'/account/');
+    header('Location:'.$publicFolder.'/account');
     }  
 }
 
@@ -130,24 +127,24 @@ if ($pageName =="Reset Password") {
 
             } else {
                 $_SESSION ['link-expired'] = "yes";
-                header('Location:'.$website.'/get-password-reset-link/');
+                header('Location:'.$publicFolder.'/get-password-reset-link');
 
             }
             
         } else {
             $_SESSION['its-not-you'] = "yes";
-            header('Location:'.$website.'/get-password-reset-link/');     
+            header('Location:'.$publicFolder.'/get-password-reset-link');     
         }
 
     } else {
         $_SESSION['account-not-found'] = "yes";
-        header('Location:'.$website.'/create-account/');
+        header('Location:'.$publicFolder.'/create-account');
         
     }
 
 }
 
-$slug = isset($_GET['slug']) ? $_GET['slug'] : '';
+
 
 
 

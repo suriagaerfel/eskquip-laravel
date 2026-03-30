@@ -1,10 +1,8 @@
 
-<x-header>
-<title>Articles</title>
-<h1>This is articles page.</h1>
-<h1>List of articles</h1>
-<?php if (isset($slug)){echo $slug;} else {echo '';}?>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Articles';
+@endphp
 
-</x-header>
-
+@include('components/main')

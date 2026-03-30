@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Get Password Reset Link</title>
-<h1>This is get password reset link page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Get Password Reset Link';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

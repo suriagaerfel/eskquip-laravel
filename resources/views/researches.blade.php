@@ -1,10 +1,8 @@
 
-<x-header>
-<title>Researches</title>
-<h1>This is researches page.</h1>
-<h1>List of researches</h1>
-<?php if (isset($slug)){echo $slug;} else {echo '';}?>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Researches';
+@endphp
 
-</x-header>
-
+@include('components/main')

@@ -1,66 +1,30 @@
 <?php 
 
 
-// Get the scheme (http or https)
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-
-// Get the host (domain name, with optional port number)
-$host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
-
-// Combine them to form the base URL
-$domain = $scheme . '://' . $host;
-
-
-$publicFolder= $domain; 
-
-if(str_contains($domain,'localhost')){
-    $projectName = '/eskquip-laravel';
-    $domain = $domain.$projectName;
-
-    $publicFolder= $domain.'/public'; 
-    $privateFolder=$domain.'/private';
-}
 
 
 
-
-
-date_default_timezone_set('Asia/Manila');
-
-$currentTime = time(); 
-
-$currentTimeConverted = date("m/d/Y g:i A",  $currentTime); 
-
-$currentURL = $_SERVER['REQUEST_URI']; 
-  
-  
- 
-
-
-
- 
-$registrantId= isset($_SESSION['id']) ? $_SESSION['id'] : ''; 
-$loggedIn =  $registrantId ? true : false; 
-
-
-$pageName = '';
-
-
-
-
-function dcomplete_format($string="") {
-    if ($string){
-      return date("M j, Y g:i a",strtotime($string));
+if (!function_exists('dcomplete_format')) {
+    function dcomplete_format($string="") {
+        if ($string){
+        return date("M j, Y g:i a",strtotime($string));
+        }
     }
 }
 
+
+
+if (!function_exists('dMDY_format')) {
 function dMDY_format($string="") {
    if ($string){
       return date("M j, Y",strtotime($string));
     }
   
 }
+}
 
+
+if (!function_exists('image_crop')) {
 function image_crop ($file,$maxResolution) {
   if (file_exists($file)) {
 
@@ -116,8 +80,11 @@ function image_crop ($file,$maxResolution) {
   }
 }
 
+}
 
 
+
+if (!function_exists('generateSlug')) {
 function generateSlug($string) {
     // Convert to lowercase
     $slug = mb_strtolower($string, 'UTF-8');
@@ -138,10 +105,12 @@ function generateSlug($string) {
 
 }
 
-
+}
 
 $word_limit = 50;
 
+
+if (!function_exists('limit_words')) {
 function limit_words($string, $word_limit) {
     // Split the string into an array of words using a space delimiter
     $words = explode(' ', $string);
@@ -165,10 +134,12 @@ function limit_words($string, $word_limit) {
 }
 
 
-
+}
 
 $word_limit_title = 15;
 
+
+if (!function_exists('limit_words_title')) {
 function limit_words_title ($string, $word_limit_title) {
     // Split the string into an array of words using a space delimiter
     $words = explode(' ', $string);
@@ -190,14 +161,9 @@ function limit_words_title ($string, $word_limit_title) {
 
     return $limited_string;
 }
-
-
-function access_tables ($queryIn,$website,$fromPage) {
-  
-   
-
-
 }
+
+
 
 
 ?>

@@ -1,9 +1,9 @@
 
-<x-header>
-<title>Personal Workspace - Developer</title>
-<h1>This is developer workspace page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Workspace - Developer';
+@endphp
 
-
-</x-header>
+@include('components/main')
 

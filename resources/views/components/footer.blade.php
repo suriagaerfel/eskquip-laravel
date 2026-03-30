@@ -16,9 +16,9 @@
   </div>
 <?php } ?>
 
- <script src="<?php echo $publicFolder.'/assets/js/variables.js'?>"></script>
- <script src="<?php echo $publicFolder.'/assets/js/functions.js'?>"></script>
-  <script src="<?php echo $publicFolder.'/assets/js/triggers.js'?>"></script>
+ <script src="<?php echo asset('/js/variables.js');?>"></script>
+ <script src="<?php echo asset('/js/functions.js');?>"></script>
+  <script src="<?php echo asset('/js/triggers.js'); ?>"></script>
   
 
   <?php if ($pageName == 'Workspace - Writer') {?>

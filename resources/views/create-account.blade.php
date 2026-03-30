@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Create Account</title>
-<h1>This is create account page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Create Account';
+@endphp
 
-
-</x-header>
-
+@include('components/main')

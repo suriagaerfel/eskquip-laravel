@@ -1,9 +1,8 @@
 
-<x-header>
-<title>Personal Workspace - Teacher</title>
-<h1>This is teacher workspace page.</h1>
+<?php require app_path('Includes/initialize.php'); ?>
 
+@php
+    $pageName = 'Workspace - Teacher';
+@endphp
 
-
-</x-header>
-
+@include('components/main')
