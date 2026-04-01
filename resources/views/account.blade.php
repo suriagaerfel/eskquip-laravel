@@ -1,17 +1,18 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
+
 
 @php
     $pageName = 'My Account';
 @endphp
 
-@include('components/main')
-
-@extends ('components/main')
 
 
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@section('content')
+
+<body>
     <div id="account-page" class="page with-sidebars-page">
     
   
@@ -37,4 +38,7 @@
     </div>
 
 
-@endsection
+@include('components/footer')
+
+</body>
+</x-main>

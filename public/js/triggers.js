@@ -32,9 +32,9 @@ $(document).ready(function () {
     pageRefresh();
 
     //initialize the page very 5 seconds
-    setInterval(function () {
-        pageRefresh();
-    }, 1000);
+    // setInterval(function () {
+    //     pageRefresh();
+    // }, 1000);
 
     $("#searched-promotion").on("input", function () {
         getPromotions();

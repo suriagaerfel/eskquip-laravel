@@ -1,27 +1,19 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
 
 
-<?php 
+@php
 
 $pageName = 'Create Account';
-$accountType = isset($_GET['type']) ? $_GET['type'] :""; 
 
-$allowedAccounTypes = ['school','personal'];
-
-if ($accountType && !in_array($accountType,$allowedAccounTypes)) {
-    header('Location:'.$publicFolder.'/create-account');
-}
-
-?>
+@endphp
 
 
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@include('components/main')
 
-@extends ('components/main')
-
-@section('content')
+<body>
 
 <div id="create-account-page" class="page form-page">
 
@@ -133,4 +125,7 @@ if ($accountType && !in_array($accountType,$allowedAccounTypes)) {
 
 </div>
 
-@endsection
+@include('components/footer')
+
+</body>
+</x-main>

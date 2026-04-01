@@ -1,17 +1,14 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
-
 @php
     $pageName = 'Search';
 @endphp
 
-@include('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
 
-@extends ('components/main')
-
-
-@section('content')
+<body>
     <div id="search-page" class="page with-sidebars-page with-single-sidebar-page">
         
 
@@ -82,4 +79,6 @@
     </div>
 
 
-@endsection
+@include('components/footer')
+</body>
+</x-main>

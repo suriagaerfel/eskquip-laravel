@@ -1,17 +1,16 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
-<?php require app_path('Includes/processing/content-handlers.php');?>
+<?php require resource_path('processing/content-handlers.php'); ?>
+
 <?php $pageName = $contentTitle ? $contentTitle : 'Researches'?>
 
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
 
-
-@include('components/main')
-
-
-@extends ('components/main')
-
-
-@section('content')
+<body>
     @include('components/content')
-@endsection
+    @include('components/footer')
+</body>
+</x-main>
+

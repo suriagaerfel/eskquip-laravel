@@ -1,16 +1,14 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
-
 @php
     $pageName = 'Login';
 @endphp
 
-@include('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@extends ('components/main')
 
-@section ('content')
-
+<body>
     
 <div id="login-page" class="page form-page">
         <div class="form-page-content-container">
@@ -57,4 +55,7 @@
 
 
 
-@endsection 
+@include('components/footer') 
+
+</body>
+</x-main>

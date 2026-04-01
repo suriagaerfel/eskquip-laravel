@@ -1,14 +1,15 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
-
 @php
     $pageName = 'About Us';
 @endphp
 
-@include('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@extends('components/main')
 
-@section ('content')
+<body>
     @include('components/page-articles')
-@endsection
+    @include('components/footer')
+</body>
+</x-main>

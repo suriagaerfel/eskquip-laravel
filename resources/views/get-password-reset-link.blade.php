@@ -1,19 +1,15 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
-
-
-
 <?php 
 $pageName = 'Get Password Reset Link';
 $credential = isset($_SESSION['email_username']) ? $_SESSION['email_username'] :"";
 
 ?>
 
-@include('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@extends ('components/main')
-
-@section('content')
+<body>
 
 <div id="get-reset-link-page" class="page form-page">
 
@@ -40,4 +36,7 @@ $credential = isset($_SESSION['email_username']) ? $_SESSION['email_username'] :
 
 </div>
 
-@endsection
+@include('components/footer')
+
+</body>
+</x-main>

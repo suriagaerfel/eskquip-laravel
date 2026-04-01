@@ -1,13 +1,14 @@
-
-<?php require app_path('Includes/initialize.php'); ?>
-
 @php
     $pageName = 'Terms of Use';
 @endphp
 
-@include('components/main')
-@extends('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@section ('content')
+
+<body>
     @include('components/page-articles')
-@endsection
+    @include('components/footer')
+</body>
+</x-main>

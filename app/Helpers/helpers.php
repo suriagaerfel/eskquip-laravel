@@ -164,6 +164,142 @@ function limit_words_title ($string, $word_limit_title) {
 }
 
 
+ function registrantRecords(){
+
+        $registrantId = config('app.registrantId');
+        $loggedIn = config('app.loggedIn');
+        $conn = config('app.conn');
+        $publicFolder = config('app.publicFolder');
+        $privateFolder = config('app.privateFolder');
+        $currentTime = config('app.$currentTime');
+        
+
+        // return view ('components.main',compact(
+
+        //  'registrantId',
+        //  'loggedIn',
+        //  'conn',
+        //  'publicFolder',
+        //  'privateFolder',
+        //  'currentTime',
+        //  'firstName',
+        //  'middleName',
+        //  'lastName',
+        //  'accountName',
+        //  'registrantDescription',
+        //  'type',
+        //  'username',
+        //  'emailAddress',
+        //  'mobileNumber',
+        //  'birthdate',
+        //  'gender',
+        //  'civilStatus',
+        //  'education',
+        //  'school',
+        //  'occupation',
+        //  'street_subd_village',
+        //  'barangay',
+        //  'city_municipality',
+        //  'province_state',
+        //  'region',
+        //  'country',
+        //  'zipcode',
+        //  'basicRegistration',
+        //  'teacherRegistration',
+        //  'writerRegistration',
+        //  'editorRegistration',
+        //  'websiteManagerRegistration',
+        //  'developerRegistration',
+        //  'researchesRegistration',
+        //  'websiteManagerSuperManagerRegistration',
+        //  'websiteManagerSubscriptionManagerRegistration','websiteManagerRegistrationManagerRegistration',
+        //  'websiteManagerPromotionManagerRegistration',
+        //  'websiteManagerMessageManagerRegistration',
+        //  'inSubscriptionSellerList',
+        //  'inSubscriptionToolList',
+        //  'inSubscriptionFileList',
+        //  'inSubscriptionShelfList',
+        //  'toolSubscribed',
+        //  'fileSubscribed',
+        //  'sellerSubscribed',
+        //  'shelfSubscribed',
+        //  'pendingToolSubscription',
+        //  'pendingFileSubscription',
+        //  'pendingSellerSubscription',
+        //  'pendingShelfSubscription',
+        //  'haveOtherRegistration',
+        //  'haveAllRegistrations',
+        //  'subscriptionStatus',
+        //  'subscriptionExpiry',
+        //  'subscription',
+        //  'filledOutSellingDetails',
+        //  'credential'
+      
+       
+        // ));
+
+        //  return view ('components.main',[
+
+        //  'registrantId' => $registrantId,
+        //  'loggedIn'=> $loggedIn,
+        //  'publicFolder'=>$publicFolder,
+        //  'privateFolder'=>$privateFolder,
+        //  'currentTime'=>$currentTime,
+        //  'firstName'=>$firstName,
+        //  'middleName'=>$middleName,
+        //  'lastName'=>$lastName,
+        //  'accountName'=>$accountName,
+        //  'registrantDescription'=>$registrantDescription,
+        //  'type'=>$type,
+        //  'username'=>$username,
+        //  'emailAddress'=>$emailAddress,
+        //  'mobileNumber'=>$mobileNumber,
+        //  'birthdate'=>$birthdate,
+        //  'gender'=>$gender,
+        //  'civilStatus'=>$civilStatus,
+        //  'education'=>$education,
+        //  'school'=>$school,
+        //  'occupation'=>$occupation,
+        //  'street_subd_village'=>$street_subd_village,
+        //  'barangay'=>$barangay,
+        //  'city_municipality'=>$city_municipality,
+        //  'province_state'=>$province_state,
+        //  'region'=>$region,
+        //  'country'=>$country,
+        //  'zipcode'=>$zipcode,
+        //  'basicRegistration'=>$basicRegistration,
+        //  'teacherRegistration'=>$teacherRegistration,
+        //  'writerRegistration'=>$writerRegistration,
+        //  'editorRegistration'=>$editorRegistration,
+        //  'websiteManagerRegistration'=>$websiteManagerRegistration,
+        //  'developerRegistration'=>$developerRegistration,
+        //  'researchesRegistration'=>$researchesRegistration,
+        //  'websiteManagerSuperManagerRegistration'=>$websiteManagerSuperManagerRegistration,
+        //  'websiteManagerSubscriptionManagerRegistration'=>$websiteManagerSubscriptionManagerRegistration,
+        //  'websiteManagerRegistrationManagerRegistration'=>$websiteManagerRegistrationManagerRegistration,
+        //  'websiteManagerPromotionManagerRegistration'=>$websiteManagerPromotionManagerRegistration,
+        //  'websiteManagerMessageManagerRegistration'=>$websiteManagerMessageManagerRegistration,
+        //  'inSubscriptionSellerList'=>$inSubscriptionSellerList,
+        //  'inSubscriptionToolList'=>$inSubscriptionToolList,
+        //  'inSubscriptionFileList'=>$inSubscriptionFileList,
+        //  'inSubscriptionShelfList'=>$inSubscriptionShelfList,
+        //  'toolSubscribed'=>$toolSubscribed,
+        //  'fileSubscribed'=>$fileSubscribed,
+        //  'sellerSubscribed'=>$sellerSubscribed,
+        //  'shelfSubscribed'=>$shelfSubscribed,
+        //  'pendingToolSubscription'=>$pendingToolSubscription,
+        //  'pendingFileSubscription'=>$pendingFileSubscription,
+        //  'pendingSellerSubscription'=>$pendingSellerSubscription,
+        //  'pendingShelfSubscription'=>$pendingShelfSubscription,
+        //  'haveOtherRegistration'=>$haveOtherRegistration,
+        //  'haveAllRegistrations'=>$haveAllRegistrations,
+        //  'filledOutSellingDetails'=>$filledOutSellingDetails
+      
+        // ]);
+    
+    }
+
+
 
 
 ?>

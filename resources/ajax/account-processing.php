@@ -1,10 +1,10 @@
-<?php 
-require '../../initialize.php';
-require '../../database.php';
-require "mailer.php";
-require 'registrant-records.php';
-// require 'u_registrant-records.php';
+<?php require resource_path('processing/initialize.php'); ?>
+<?php require resource_path('processing/registrant-records.php'); ?>
+<?php require resource_path('processing/u_registrant-records.php'); ?>
 
+
+
+<?php 
 //Create account
 if (isset($_POST["create_account_submit"])) {
 

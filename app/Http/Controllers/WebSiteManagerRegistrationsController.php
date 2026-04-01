@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CustomService;
 use Illuminate\Http\Request;
 
-abstract class Controller
+class WebSiteManagerRegistrationsController extends Controller
 {
-    
+    //
 }

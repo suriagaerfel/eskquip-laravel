@@ -1,8 +1,9 @@
+<?php require resource_path('processing/initialize.php'); ?>
+<?php require resource_path('processing/registrant-records.php'); ?>
+<?php require resource_path('processing/u_registrant-records.php'); ?>
+
 <?php
 
-require '../../initialize.php';
-require '../../database.php';
-require 'registrant-records.php';
 
 
 if (isset($_POST['get_general_records_submit'])) {
@@ -14,7 +15,7 @@ $isWorkspace = htmlspecialchars($_POST['is_workspace']);
 $fromPage = htmlspecialchars($_POST['page_name']);
 
 $homeSearchedUser = htmlspecialchars($_POST['home_searched_user']);
-$showShared = htmlspecialchars($_POST['show_shared']);
+$showShared = $_POST['show_shared'] ? htmlspecialchars($_POST['show_shared']) : '';
 
 $category = htmlspecialchars($_POST['category']);
 $tag = htmlspecialchars($_POST['tag']);
@@ -143,7 +144,7 @@ if ($queryIn=='tools') {
 
 
 
-if ($queryIn=='general-contents') {
+if ($queryIn=='general-contents' || $homeSearchedUser) {
     $table='contents';
     $foreignIdColumn = 'contentForeignId';
     $tableColumn = 'contentTable';
@@ -182,10 +183,6 @@ if ($queryIn=='accounts') {
 
 
         $sqlCreteria = $table. " WHERE ".$statusColumn."='".$statusValue."'"." ORDER BY ".$sortColumn." DESC";
-        $sqlCount = 
-        $sqlRecords = "SELECT * FROM ".$sqlCreteria;
-        $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-   
        
         if ($homeSearchedUser) {
             $sqlHomeSearchedUserInfo = "SELECT * FROM registrations WHERE registrantUsername='$homeSearchedUser' LIMIT 1";
@@ -194,40 +191,41 @@ if ($queryIn=='accounts') {
 
             if ($homeSearchedUserInfo) {
                 $homeSearchedUserId = $homeSearchedUserInfo ['registrantId'];
+                $homeSearchedUserCode = $homeSearchedUserInfo ['registrantCode'];
             }
 
 
-            $sqlRecords = "SELECT * FROM $table WHERE $registrantIdColumn= $homeSearchedUserId AND $statusColumn='$statusValue' ORDER BY $sortColumn DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
+            $sqlCreteria = $table." WHERE ".$registrantIdColumn."=".$homeSearchedUserId." AND ". $statusColumn."='".$statusValue."'"." ORDER BY ".$sortColumn." DESC";
+           
 
             if ($showShared){
-                 $sqlRecords = "SELECT * FROM $table WHERE contentSharedWith LIKE '%$homeSearchedUser%' AND $statusColumn='$statusValue' ORDER BY $sortColumn DESC";
-                $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
+                 $sqlCreteria= $table." WHERE contentSharedWith LIKE '%$homeSearchedUserCode%'"." AND ".$statusColumn."='".$statusValue."'"." ORDER BY ".$sortColumn." DESC";
             }
+        } else {
+            if ($category) {
+
+             $sqlCreteria=  $table." WHERE ".$statusColumn."='".$statusValue."'"." AND ".$categoryColumn."='".$category."'"." ORDER BY ".$sortColumn." DESC";
+            }
+
+
+            if ($tag) {
+                $sqlCreteria= $table." WHERE ".$statusColumn."='".$statusValue."'"." AND ".$tagsColumn." LIKE  '%$tag%'"."  ORDER BY ".$sortColumn." DESC";
+            }
+
+
+            if ($date) {
+                $sqlCreteria = $table." WHERE ".$statusColumn."='".$statusValue."'"." AND ".$sortColumn." LIKE '%$date%'"." ORDER BY ".$sortColumn." DESC";
+            
+            }
+
+
+            if ($owner) {
+                $sqlCreteria = $table." WHERE ".$statusColumn."='".$statusValue."'"." AND ".$registrantIdColumn."='".$owner."'"." ORDER BY ".$sortColumn." DESC";
+            }
+
         }
 
-        if ($category) {
-            $sqlRecords = "SELECT * FROM $table WHERE $statusColumn='$statusValue' AND $categoryColumn = '$category' ORDER BY $sortColumn DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-        }
-
-
-        if ($tag) {
-            $sqlRecords = "SELECT * FROM $table WHERE $statusColumn='$statusValue' AND $tagsColumn LIKE  '%$tag%'  ORDER BY $sortColumn DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-        }
-
-
-        if ($date) {
-            $sqlRecords = "SELECT * FROM $table WHERE $statusColumn='$statusValue' AND $sortColumn LIKE '%$date%' ORDER BY $sortColumn DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-        }
-
-
-         if ($owner) {
-            $sqlRecords = "SELECT * FROM $table WHERE $statusColumn='$statusValue' AND $registrantIdColumn = '$owner' ORDER BY $sortColumn DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-        }
+        
 
 
 
@@ -237,11 +235,10 @@ if ($queryIn=='accounts') {
     if ($query) {
 
         if ($fromPage != 'Home') {
-            $sqlRecords = "SELECT * FROM $table WHERE $titleColumn LIKE '%$query%' AND $statusColumn='$statusValue' OR $descriptionColumn LIKE '%$query%' AND $statusColumn='$statusValue' ORDER BY $sortColumn DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-        }
 
-       
+         $sqlCreteria = $table." WHERE ".$titleColumn." LIKE '%$query%'"." AND ".$statusColumn."='".$statusValue."'"." OR ".$descriptionColumn." LIKE '%$query%'"." AND ".$statusColumn."='".$statusValue."'"." ORDER BY ". $sortColumn." DESC";
+           
+        }
         
     }
 
@@ -252,26 +249,25 @@ if ($queryIn=='accounts') {
    }
 
     if ($isWorkspace) {
-        $sqlRecords = "SELECT * FROM $table WHERE $registrantIdColumn='$registrantId' ORDER BY $sortColumnWorkspace DESC";
-        $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-
+        $sqlCreteria = $table." WHERE ".$registrantIdColumn."='".$registrantId."'"." ORDER BY ".$sortColumnWorkspace." DESC";
+      
 
         if ($query) {
-        $sqlRecords = "SELECT * FROM $table WHERE $registrantIdColumn='$registrantId' AND $titleColumn LIKE '%$query%' ORDER BY $sortColumnWorkspace DESC";
-        $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
+
+         $sqlCreteria = $table." WHERE ".$registrantIdColumn."='".$registrantId."'"." AND ".$titleColumn." LIKE '%$query%'"." ORDER BY ".$sortColumnWorkspace." DESC";
+       
         }
 
         if ($fromPage == 'Workspace - Editor') {
+        
+        $sqlCreteria = $table." WHERE ".$statusColumn."='".$statusValue."'"." AND "."writer_articleEditors ='' ORDER BY ".$sortColumnWorkspace." DESC";
 
-         $sqlRecords = "SELECT * FROM $table WHERE $statusColumn='$statusValue' AND writer_articleEditors ='' ORDER BY $sortColumnWorkspace DESC";
-            $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
+      
 
 
             if ($contentsAvailability) {
                 if ($contentsAvailability == 'taken') {
-                     $sqlRecords = "SELECT * FROM $table WHERE writer_articleEditors =$registrantId ORDER BY $sortColumnWorkspace DESC";
-                    $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
-
+                    $sqlCreteria = $table." WHERE writer_articleEditors=".$registrantId." ORDER BY ".$sortColumnWorkspace." DESC";
                 }
             }
            
@@ -280,6 +276,9 @@ if ($queryIn=='accounts') {
     
  
 
+    $sqlCount = 
+    $sqlRecords = "SELECT * FROM ".$sqlCreteria;
+    $sqlRecordsResult = mysqli_query($conn,$sqlRecords);
 
    if ($sqlRecordsResult->num_rows>0) { 
 
@@ -476,7 +475,6 @@ if ($queryIn=='accounts') {
          $resultCategory = $result [$categoryColumn];
 
       }
-
 
      
 }
@@ -912,7 +910,7 @@ if (isset($_POST['get_site_manager_records_submit'])){
     if ($sqlRecordsResult->num_rows>0){
        
         echo "
-        <div id='sm-records-list' style='display:flex;flex-wrap: wrap; gap:5px; justify-content:left;padding:0px;!important;'>
+        <div id='sm-records-list' style='display:flex;flex-wrap: wrap;  gap:5px;justify-content:left;padding:0px;!important;'>
         ";
         while($listRecords = $sqlRecordsResult->fetch_assoc()){
             $listRecordId = $listRecords  [$idColumn];
@@ -1117,7 +1115,18 @@ if (isset($_POST['get_site_manager_records_submit'])){
             }
 
             if ($recordCategory == 'Subscription') {
+                $listRecordType = $listRecords['registrant_subscriptionType'];
                 $listRecordDuration = $listRecords['registrant_subscriptionDuration'];
+
+                if ($listRecordType !='Shelf') {
+                    $listRecordDuration= $listRecordDuration.' Month(s)';
+                }
+
+                if ($listRecordType =='Shelf') {
+                    $listRecordDuration= $listRecordDuration.' Year(s)';
+                }
+
+                
                 $listRecordTotal = $listRecords['registrant_subscriptionTotal'];
                 $listRecordPaymentOption = $listRecords['registrant_subscriptionPaymentOption'];
                 $listRecordAccountNumber = $listRecords['registrant_subscriptionSenderAccountNumber'];
@@ -1131,7 +1140,7 @@ if (isset($_POST['get_site_manager_records_submit'])){
 
 
             echo "
-                <div id='".'details-for-record-'.$listRecordId."' class='sm-list-record-details' style='height:fit-content;width:48% !important;'>
+                <div id='".'details-for-record-'.$listRecordId."' class='sm-list-record-details'>
                     
                     <h5>$listRecordRegistrant</h5>";      
             echo "
@@ -1251,7 +1260,7 @@ if (isset($_POST['get_site_manager_records_submit'])){
 
                     <div>
                         <strong>Total:</strong>
-                        <span >$listRecordTotal</span>
+                        <span >₱$listRecordTotal</span>
                     </div>
 
                     <div>
@@ -1259,19 +1268,15 @@ if (isset($_POST['get_site_manager_records_submit'])){
                         <span >$listRecordPaymentOption</span>
                     </div>
 
-                    <div>
-                        <strong>Account Number:</strong>
-                        <span >$listRecordAccountNumber</span>
-                    </div>
-
+                  
                     <div>
                         <strong>Reference Number:</strong>
                         <span >$listRecordReferenceNumber</span>
                     </div>
 
-                    <div>
+                    <div class='proof-of-payment'>
                         <strong>Proof of Payment:</strong>
-                        <a href='".$listRecordProofOfPayment."' target='_blank'>View</a>
+                        <span id='$listRecordProofOfPayment'>🔗</span>
                     </div>
 
                     <div>
@@ -1301,29 +1306,29 @@ if (isset($_POST['get_site_manager_records_submit'])){
                     $listRecordAgreement = $privateFolder.$listRecords['otherAgreement'];
                
 
-                    if ($listRecordSubCategory == 'Teacher') {
+                    if ($listRecordSubCategory != 'Teacher') {
                         echo "
                         <div>
                             <strong>Sample(s):</strong>
-                             <a href='".$listRecordSample."' target='_blank'>View</a>
+                             <a href='".$listRecordSample."' target='_blank'>🔗</a>
                         </div>
                         ";
                     }
 
-                    if ($listRecordSubCategory== 'Writer' || $listRecordSubCategory == 'Editor' || $listRecordSubCategory == 'Developer') {
+                    if ($listRecordSubCategory== 'Teacher') {
                         echo "
-                        <div>
+                        <div class='other-registration-license-certification'>
                             <strong>License or Certification : </strong>
-                             <a href='".$listRecordLicenseCertification."' target='_blank'>View</a>
+                             <span id='".$listRecordLicenseCertification."'>🔗</span>
                         </div>
                         ";
                     }
     
                     
                         echo "
-                        <div>
+                        <div class='other-registration-agreement'>
                             <strong>Agreement : </strong>
-                            <a  href='".$listRecordAgreement."' target='_blank'>View</a>
+                            <span  id='".$listRecordAgreement."'>🔗</span>
                         </div>
                           
                         ";
@@ -1407,7 +1412,7 @@ if (isset($_POST['get_site_manager_records_submit'])){
 
                         if ($recordCategory == 'General Registration'){
                              echo "
-                            <span class='link-tag-button' href='".$publicFolder.'/'.$listRecordUsername."' target='_blank'>Visit Profile</span>
+                            <a class='link-tag-button' href='".$publicFolder.'/'.$listRecordUsername."' target='_blank'>Visit Profile</a>
                             ";
                         }
 
@@ -1775,6 +1780,11 @@ if (!$responses['error']) {
   } 
     
 
+
+  if ($promotionId){
+    $promotion_Id = $promotionId;
+  }
+  
   if (!$promotionId) {
 
      $promotionStatus = "Draft";
@@ -1789,13 +1799,13 @@ if (!$responses['error']) {
 
     echo 'Promotion Sent';
 
-    $promotionId =  mysqli_insert_id($conn);
+    $promotion_Id =  mysqli_insert_id($conn);
 
-  }
+  } 
 
 
 
-  if ($promotionId) {
+  if ($promotion_Id) {
 
      $sqlUpdatePromotion = "UPDATE promotions 
                         SET
@@ -1809,7 +1819,7 @@ if (!$responses['error']) {
                         promotionDuration=?,
                         promotionAmount=?,
                         promotionAgreement=?
-                       WHERE promotionId=$promotionId";
+                       WHERE promotionId=$promotion_Id";
 
     $stmt =$conn->prepare($sqlUpdatePromotion);
 
@@ -1817,13 +1827,13 @@ if (!$responses['error']) {
 
     $stmt-> execute();
 
-    $promotionId= (int) $promotionId;
+    $promotion_Id= (int) $promotion_Id;
 
     $promotionCode = "ESKQUIPPROMOTE" . sprintf("%09d",  4271997/$promotionId);
 
     $sqlUpdatePromotionCode = "UPDATE promotions 
                                 SET promotionCode = ?
-                                WHERE promotionId = '$promotionId'";
+                                WHERE promotionId = '$promotion_Id'";
     $stmt =$conn->prepare($sqlUpdatePromotionCode);
     $stmt ->bind_param("s", $promotionCode);
     $stmt-> execute();
@@ -1937,14 +1947,22 @@ if(isset($_POST['subscription_submit'])) {
                 }
 
                 if ($subscriptionType =='Seller'){
-                    if ($pendingSellerSubscription){
+                    if (!$teacherRegistration) {
+                         $error = "Please register as Teacher to avail this subscription.";
+                        array_push($responses ['error'],$error);
+
+                    } else {
+                        if ($pendingSellerSubscription){
                         $error = "Please wait for the approval.";
-                        array_push($responses ['error'],$error);
+                            array_push($responses ['error'],$error);
+                        }
+                        if ($sellerSubscribed){
+                            $error = "You are currently subscribed.";
+                            array_push($responses ['error'],$error);
+                        }  
+
                     }
-                     if ($sellerSubscribed){
-                        $error = "You are currently subscribed.";
-                        array_push($responses ['error'],$error);
-                    }  
+                   
                 }
 
                   if ($subscriptionType =='Shelf'){
@@ -2263,6 +2281,8 @@ $subscription = $sqlSubscriptionResult->fetch_assoc();
 
 if ($subscription){
     $subscriptionDuration = (int) $subscription ['registrant_subscriptionDuration'];
+    $subscriptionDate = $subscription ['registrant_subscriptionDate'];
+    $subscriptionExpiry = $subscription ['registrant_subscriptionExpiry'];
 }
 
 
@@ -2283,13 +2303,17 @@ $status="Kept";
 }
 
 
-$activation= date("Y-m-d H:i:s", $currentTime);
+
+$activation = $subscriptionDate !='0000-00-00 00:00:00' ? $subscriptionDate : date("Y-m-d H:i:s", $currentTime);
+
 
 if ($subscriptionType=='Shelf') {
-$expiry = date("Y-m-d H:i:s", $currentTime + 365.25 * 86400 * $subscriptionDuration);
+    $expiry = date("Y-m-d H:i:s", strtotime($activation) + 365.25 * 86400 * $subscriptionDuration);
 } else {
-   $expiry = date("Y-m-d H:i:s", $currentTime + 60 * 60 *24 *30*$subscriptionDuration); 
+    $expiry = date("Y-m-d H:i:s", strtotime($activation) + 60 * 60 *24 *30*$subscriptionDuration); 
 }
+
+
 
 
 $sqlUpdateStatus =  "UPDATE registrant_subscriptions
@@ -2314,7 +2338,7 @@ if ($responses) {
         header('Content-Type: application/json');
         $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
         echo  $jsonResponses;
-    } 
+} 
 
 
 }
@@ -2437,24 +2461,24 @@ if ($responses) {
 //submit note
 if (isset($_POST['note_submit'])) {
 
-$notes= htmlspecialchars($_POST['note_notes']);
-$userIdHidden = htmlspecialchars($_POST['note_userid']);
-$regTypeCap = htmlspecialchars($_POST['note_regtype']);
-$regType = htmlspecialchars($_POST['note_regtype_cap']);
+    $notes= htmlspecialchars($_POST['note_notes']);
+    $userIdHidden = htmlspecialchars($_POST['note_userid']);
+    $regTypeCap = htmlspecialchars($_POST['note_regtype']);
+    $regType = htmlspecialchars($_POST['note_regtype_cap']);
 
- $sqlUpdateNotes = "UPDATE other_registrations 
-                        SET otherNotes =?
-                        WHERE otherUserId = $userIdHidden AND otherType='$regTypeCap'";
+    $sqlUpdateNotes = "UPDATE other_registrations 
+                            SET otherNotes =?
+                            WHERE otherUserId = $userIdHidden AND otherType='$regTypeCap'";
 
-                         $stmt = mysqli_stmt_init($conn);
+                            $stmt = mysqli_stmt_init($conn);
     $prepareStmt = mysqli_stmt_prepare($stmt, $sqlUpdateNotes);
-    
+        
     if ($prepareStmt) {
-    mysqli_stmt_bind_param($stmt,"s", $notes);
-    mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_param($stmt,"s", $notes);
+        mysqli_stmt_execute($stmt);
 
-   echo 'Notes updated successfully!';
-  }
+    echo 'Notes updated successfully!';
+    }
 
 
 }
@@ -2468,59 +2492,51 @@ if (isset($_POST['delete_record_submit'])){
 
 
     $responses = [];
-
     $responses ['error']  = [];
-    if ($recordCategory == 'General Registration'){
-        //registrations
-        //other registrations
-        //site manager accounts
-        //teacher_files
-        //writer_articles
-        //school_researches
-        //developer_tools
-        //contents
-        //content_categories
-        //content_tags
-        //content_comments
-        //admin_messages
-        //content_purchase
+   
+
+    if ($recordCategory == 'Promotion'){
+
+        $sqlPromotionInfo = "SELECT * FROM promotions WHERE promotionId = $recordId";
+        $sqlPromotionInfoResult = mysqli_query($conn,$sqlPromotionInfo);
+        $promotionInfo = $sqlPromotionInfoResult->fetch_assoc();
+
+        if ($promotionInfo){
+            $promotionImage = $promotionInfo['promotionImage'];
+            $promotionAgreement = $promotionInfo['promotionAgreement'];
+
+             if ($promotionImage) {
+                  $promotionImageUnlinked= unlink($privateFolder.$promotionImage);  
+            } else {
+                $error = 'The image is not found.';
+                array_push($responses ['error'],$error);
+            }
+
+            if ($promotionAgreement) {
+                  $promotionAgreementUnlinked= unlink($privateFolder.$promotionAgreement);  
+            } else {
+                 $error = 'The agreement is not found.';
+                array_push($responses ['error'],$error);
+            }
+
+
+        } else {
+            $error = 'The promotion is not found.';
+            array_push($responses ['error'],$error);
+        }    
+    } 
+
+    if (!$responses['error']){
+        if ($recordCategory == 'Promotion'){
+            $sqlDeleteFromPromotions = mysqli_query($conn,"delete from promotions where promotionId = '$recordId' LIMIT 1");
+            
+        }
+
+        $responses ['success-message']= 'Promotion has been deleted successfully.';
+        $responses ['status'] = 'Successful';
+    } else {
+         $responses ['status'] = 'Unsuccessful';
     }
-
-
-
-      if ($recordCategory == 'Other Registration'){
-        //registrations
-        //site manager accounts
-        //teacher_files
-        //writer_articles
-        //
-
-    }
-
-
-      if ($recordCategory == 'Subscription'){
-        //registrations
-        //site manager accounts
-        //teacher_files
-        //writer_articles
-        //
-
-    }
-
-
-      if ($recordCategory == 'Promotion'){
-        //registrations
-        //site manager accounts
-        //teacher_files
-        //writer_articles
-        //
-
-    }
-
-
-    $responses ['status'] = 'Successful';
-
-
 
 
    if ($responses) {
@@ -2571,21 +2587,14 @@ if (isset($_POST['get_promotions_submit'])) {
                         <small>Clicks: 4</small>
                     </div>
                 ";
-             }
-           
-           
+             }     
            
         }
     } else {
         echo "
-            <p>Not found!</p>
+            <small>Not found!</small>
         ";
     }
-
-
-
-
-
 }
 
 
@@ -2677,7 +2686,7 @@ if (isset($_POST['get_message_users_final_submit'])){
 
                 if ($thread) {
                     $connected =true;
-                    $messageThreadCode = $thread ['message_threadCode'];
+                        $messageThreadCode = $thread ['message_threadCode'];
                 }
                 
 
@@ -2711,13 +2720,7 @@ if (isset($_POST['get_message_users_final_submit'])){
                         }
                     
 
-                    // if ($messageThreadCodeOther==''){
-                    //         $userAccountname = $accountName;
-                    //         $userId = $registrantId;
-                    //         $userCode = $registrantCode;
-                    //         $userProfilePictureLink = $profilePictureLink;
-                    // }
-
+              
                     $sqlGetLatestThreadMessage = "SELECT * FROM thread_messages WHERE thread_messageThreadCode = '$messageThreadCode' ORDER BY thread_messageTimestamp DESC LIMIT 1";
                     $sqlGetLatestThreadMessageResult = mysqli_query($conn,$sqlGetLatestThreadMessage);
                     $latestThreadMessage = $sqlGetLatestThreadMessageResult->fetch_assoc();
@@ -2732,7 +2735,17 @@ if (isset($_POST['get_message_users_final_submit'])){
                         $latestThreadMessageRegistrantId = $latestThreadMessage ['thread_messageRegistrantId'];
                         $latestThreadMessageStatusRecipient = $latestThreadMessage ['thread_messageStatusRecipient'];
                        
+                    } else {
+                         $latestThreadMessageRegistrantId = '';
+                        $latestThreadMessageStatusRecipient = '';
+                        $latestThreadMessageTimestamp ='';
+                        $latestThreadMessageContent='';
                     }
+
+                    $sqlUnreadMessages = "SELECT * FROM thread_messages WHERE thread_messageThreadCode = '$messageThreadCode' AND thread_messageStatusRecipient = 'Unread' AND thread_messageRegistrantId != $registrantId";
+                    $sqlUnreadMessagesResult = mysqli_query($conn,$sqlUnreadMessages);
+                    $unreadMessages = $sqlUnreadMessagesResult->num_rows;
+
 
                     
                 }
@@ -2747,7 +2760,19 @@ if (isset($_POST['get_message_users_final_submit'])){
                             <img src='$userProfilePictureLink' style='width:100px;'>
                         </div>
                         <div style='display:flex;flex-direction:column;'>
-                            <strong >$userAccountname</strong>
+                            <strong >$userAccountname
+                            ";
+
+                            if ($connected){
+                                if ($unreadMessages){
+                                    echo "
+                                        ($unreadMessages)
+                                    ";
+                                }
+                            }
+
+                        echo " 
+                        </strong>
                             <input id='".'code-for-message-user-'.$userId."' value='$userCode'hidden>
                             
                         ";
@@ -2797,6 +2822,8 @@ if (isset($_POST['get_message_users_final_submit'])){
                             <div id='message-user-action' style='margin-top:3px;margin-left:-3px;'>
                             <span class='link-tag-button' id='".'to-message-'.$userId."' style='font-size:9pt;'>Message</span>
                         ";
+
+                        
                             
                     echo"
                             </div>
@@ -2822,7 +2849,6 @@ if (isset($_POST['get_message_users_final_submit'])){
 
 if (isset($_POST['get_updates_submit'])){
     $searchedUpdate = htmlspecialchars($_POST['searched_update']);
-
 
     $sqlUpdates = "SELECT * FROM updates WHERE updateStatus='Published' ORDER BY updatePubDate DESC";
 
@@ -2851,6 +2877,7 @@ if (isset($_POST['get_updates_submit'])){
     if ($sqlUpdatesResult->num_rows>0) {
         while($updates = $sqlUpdatesResult->fetch_assoc()) {
             $updateId = $updates ['updateId'];
+            $updateRegistrantId = $updates ['updateRegistrantId'];
             $updateTitle = $updates ['updateTitle'];
             $updatePubDate = dcomplete_format($updates ['updatePubDate']);
             $updateContent =$updates ['updateContent'];
@@ -2860,15 +2887,30 @@ if (isset($_POST['get_updates_submit'])){
             }
             $updateSlug = $updates ['updateSlug'];
             $updateStatus = $updates ['updateStatus'];
+            $updateViewers = $updates ['updateViewers'];
 
             echo "
             <div style='display:flex;flex-direction:column;'>
                 <strong>$updateTitle</strong>
-                <small>$updateContent
-                    <a href='$publicFolder/updates/$updateSlug' target='_blank'>
-                        <small>Read>>></small>
-                    </a>
-                </small>
+               
+                ";
+            if (str_contains($updateViewers,$registrantCode) || $updateRegistrantId==$registrantId){
+                echo "
+                 <small>$updateContent 
+                        <small id='".'reread-update-'.$updateId."' class='read-update'>Read>>></small>
+                </small>";
+            }
+
+             if (!str_contains($updateViewers,$registrantCode) && $updateRegistrantId !=$registrantId){
+                echo "
+                 <strong style='font-size:10pt;'>$updateContent
+                        <strong style='font-size:10pt;' id='".'read-update-'.$updateId."' class='read-update'>Read>>></strong>
+                </strong>";
+            }
+               
+
+
+            echo"
                 <div style='display:flex; gap:5px;'>
                 ";
 
@@ -2913,8 +2955,6 @@ if (isset($_POST['get_updates_submit'])){
             </div>
         ";
     }
-
-
 
 }
 
@@ -3028,7 +3068,6 @@ if (isset($_POST ['submit_update_submit'])){
     } 
 
 
-
 }
 
 
@@ -3095,12 +3134,13 @@ if (isset($_POST['update_update_status_submit'])) {
     
 }
 
+
+
 if (isset($_POST['delete_update_submit'])) {
     $updateId = htmlspecialchars($_POST['update_id']);
 
     //delete the category
     $sqlDeleteFromUpdates = mysqli_query($conn,"delete from updates where updateId = '$updateId' LIMIT 1");
-
     echo "Deleted Successfully";
 }
 

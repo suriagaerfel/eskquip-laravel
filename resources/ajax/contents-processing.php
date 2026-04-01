@@ -1,10 +1,9 @@
+<?php require resource_path('processing/initialize.php'); ?>
+<?php require resource_path('processing/registrant-records.php'); ?>
+<?php require resource_path('processing/u_registrant-records.php'); ?>
+
+
 <?php
-
-
-require '../../initialize.php';
-require '../../database.php';
-require 'registrant-records.php';
-
 
 if (isset($_POST['get_content_info_submit'])) {
 $contentId = htmlspecialchars($_POST['content_id']);

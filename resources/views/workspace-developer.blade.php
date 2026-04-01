@@ -1,15 +1,14 @@
-
-<?php require app_path('Includes/initialize.php'); ?>
-
 @php
     $pageName = 'Workspace - Developer';
 @endphp
 
-@include('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@extends ('components/main')
 
-
-@section('content')
+<body>
     @include('components/workspace-page')
-@endsection
+    @include('components/footer')
+</body>
+</x-main>

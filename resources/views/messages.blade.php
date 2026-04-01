@@ -1,16 +1,15 @@
 
-<?php require app_path('Includes/initialize.php'); ?>
-
 @php
     $pageName = 'Messages';
 @endphp
 
-@include('components/main')
+<x-main>
+    @include('components/head')
+    @include('components/header')
 
-@extends ('components/main')
 
-
-@section('content')
+<body>
+    @if ($loggedIn)
     <div id="message-page" class="page with-sidebars-page">
     <div style="width: 30%;overflow:scroll;scrollbar-width: none; scrollbar-height: none; display:flex;flex-direction:column; justify-content:space-between; padding-bottom:50px;" class="message-page-column" id="message-page-first-column">
      
@@ -102,4 +101,13 @@
  
 </div>
 
-@endsection
+@endif
+
+@if  (!$loggedIn)
+    <h1>Please login</h1>
+
+@endif
+
+@include('components/footer')
+</body>
+</x-main>
