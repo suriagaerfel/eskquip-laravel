@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
 
 //------------------------------------------DATABASE CONNECTION-----------------------------------//
-        $conn = DB::connection('sqlite')->getPdo();
+        $conn = DB::connection('mysql')->getPdo();
         config(['app.conn' => $conn]);
 
 
@@ -196,7 +196,7 @@ if ($registrantId) {
                 //     return $myRecords;
                     if ($myRecords){
                         $loggedIn = true;
-                        $registrantCode = $myRecords->registrantCodes;
+                        $registrantCode = $myRecords->registrantCode;
                         $firstName = $myRecords->registrantFirstName;
                         $middleName = $myRecords->registrantMiddleName;
                         $lastName = $myRecords->registrantLastName;
@@ -236,9 +236,9 @@ if ($registrantId) {
                         } 
                     
 
-                        $profilePictureLink = $myRecords->registrantProfilePictureLink ? $publicFolder.$myRecords->registrantProfilePictureLink : asset("/images/user.svg");
+                        $profilePictureLink = $myRecords->registrantProfilePictureLink ? asset('storage/'.$myRecords->registrantProfilePictureLink) : asset("/images/user.svg");
 
-                        $coverPhotoLink = $myRecords->registrantCoverPhotoLink ? $privateFolder.$myRecords['registrantCoverPhotoLink'] : asset("/images/cover-photo.jpeg");
+                        $coverPhotoLink = $myRecords->registrantCoverPhotoLink ? asset('storage/'.$myRecords->registrantCoverPhotoLink) : asset("/images/cover-photo.jpeg");
 
                         $basicRegistration = $myRecords->registrantBasicAccount;
                         $teacherRegistration = $myRecords->registrantTeacherAccount;

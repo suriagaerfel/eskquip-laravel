@@ -170,39 +170,38 @@ class AjaxController extends Controller
 
 
             if (!$responses ['error']) {
-                    return 'No error';
-                // $newRegistrant = new Registration();
+                    
+                $newRegistrant = new Registration();
+                $newRegistrant->registrantFirstName=$firstName;
+                $newRegistrant->registrantLastName=$lastName;
+                $newRegistrant->registrantAccountName=$accountName;
+                $newRegistrant->registrantAccountType=$type;
+                $newRegistrant->registrantBirthdate=$birthdate;
+                $newRegistrant->registrantGender=$gender;
+                $newRegistrant->registrantEmailAddress=$emailAddress;
+                $newRegistrant->registrantUsername=$username;
+                $newRegistrant->registrantPassword=$pwdHash;
+                $newRegistrant->registrantBasicAccount=$basicAccount;
+                $newRegistrant->registrantCreatedAt=$userCreatedAt;
+                $newRegistrant->save();
 
-                // $newRegistrant->registrantFirstName=$firstName;
-                // $newRegistrant->registrantLastName=$lastName;
-                // $newRegistrant->registrantAccountName=$accountName;
-                // $newRegistrant->registrantAccountType=$type;
-                // $newRegistrant->registrantBirthdate=$birthdate;
-                // $newRegistrant->registrantGender=$gender;
-                // $newRegistrant->registrantEmailAddress=$emailAddress;
-                // $newRegistrant->registrantUsername=$username;
-                // $newRegistrant->registrantPassword=$pwdHash;
-                // $newRegistrant->registrantBasicAccount=$basicAccount;
-                // $newRegistrant->registrantCreatedAt=$userCreatedAt;
-                // $newRegistrant->save();
-
-                // $userId = $newRegistrant->id();
+                $userId = $newRegistrant->id();
 
               
-                // //Add registration code
-                // $registrantCode = "2026".sprintf("%012d",  4271997+$userId);
-                // $registrant = Registration::find($userId);
-                // $registrant->registrantCode = $registrantCode;
-                // $registrant->save();
+                //Add registration code
+                $registrantCode = "2026".sprintf("%012d",  4271997+$userId);
+                $registrant = Registration::find($userId);
+                $registrant->registrantCode = $registrantCode;
+                $registrant->save();
 
 
-                // $responses['status'] = 'Successful';
-                // $responses ['user-id'] = $userId;
-                // $responses ['email-address'] = $emailAddress;       
+                $responses['status'] = 'Successful';
+                $responses ['user-id'] = $userId;
+                $responses ['email-address'] = $emailAddress;       
 
             
-                // $responses['status'] = 'Successful';
-                // $responses['success-message'] = 'Your account has been created. Verify it now by the link sent to your email address.';
+                $responses['status'] = 'Successful';
+                $responses['success-message'] = 'Your account has been created. Verify it now by the link sent to your email address.';
                 
             } else  {
                 $responses['status'] = 'Unsuccessful';
@@ -212,7 +211,9 @@ class AjaxController extends Controller
                 header('Content-Type: application/json');
                 $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
                 echo $jsonResponses;
-            } 
+            }
+            
+            
         }
         
     }

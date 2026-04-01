@@ -850,16 +850,16 @@ function createAccount() {
                 const success_message = responses["success-message"];
                 showInputsSuccessMessage(success_message);
 
-                var user_id = responses["user-id"];
-                var email_address = responses["email-address"];
-                var account_age = "new";
+                // var user_id = responses["user-id"];
+                // var email_address = responses["email-address"];
+                // var account_age = "new";
 
-                sendVerificationLink(
-                    user_id,
-                    email_address,
-                    account_processing_file,
-                    account_age,
-                );
+                // sendVerificationLink(
+                //     user_id,
+                //     email_address,
+                //     account_processing_file,
+                //     account_age,
+                // );
             }
 
             if (responses["status"] == "Unsuccessful") {
