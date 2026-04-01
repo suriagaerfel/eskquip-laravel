@@ -90,10 +90,11 @@ config(['app.currentTimeConverted'=>$currentTimeConverted]);
 //---------------------------------------- SESSION ID ---------------------------------//
 
  
-//     $registrantId= isset($_SESSION['id']) ? $_SESSION['id'] : ''; 
-// $loggedIn =  $registrantId ? true : false;
-        $registrantId= 1; 
-        $loggedIn = false; 
+$registrantId= isset($_SESSION['id']) ? $_SESSION['id'] : ''; 
+$loggedIn =  false;
+
+// $registrantId= 1; 
+      
 
         config(['app.registrantId' => $registrantId]);
         config(['app.loggedIn' => $loggedIn]);
