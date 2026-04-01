@@ -17,7 +17,7 @@ class RegistrationController extends Controller
         if ($registrantId) {
 
                         $myRecords = Registration::where('registrantId',1)->first();
-                        dd($myRecords);
+                     
                         return view('components.main',compact($myRecords));
                             
 

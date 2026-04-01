@@ -236,9 +236,9 @@ if ($registrantId) {
                         } 
                     
 
-                        $profilePictureLink = $myRecords->registrantProfilePictureLink ? asset('storage/'.$myRecords->registrantProfilePictureLink) : asset("/images/user.svg");
+                        $profilePictureLink = $myRecords->registrantProfilePictureLink ? asset($myRecords->registrantProfilePictureLink) : asset("/images/user.svg");
 
-                        $coverPhotoLink = $myRecords->registrantCoverPhotoLink ? asset('storage/'.$myRecords->registrantCoverPhotoLink) : asset("/images/cover-photo.jpeg");
+                        $coverPhotoLink = $myRecords->registrantCoverPhotoLink ? asset($myRecords->registrantCoverPhotoLink) : asset("/images/cover-photo.jpeg");
 
                         $basicRegistration = $myRecords->registrantBasicAccount;
                         $teacherRegistration = $myRecords->registrantTeacherAccount;

@@ -202,6 +202,6 @@ Route::get('/{user}', function ($user) {
 });
 
 
-Route::get('/', [RegistrationController::class,'index']);
+// Route::get('/', [RegistrationController::class,'index']);
 
 Route::post('/ajax', [AjaxController::class, 'ajax']);
