@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\RegistrationController;
 
@@ -202,6 +204,6 @@ Route::get('/{user}', function ($user) {
 });
 
 
-// Route::get('/', [RegistrationController::class,'index']);
+
 
 Route::post('/ajax', [AjaxController::class, 'ajax']);

@@ -1,28 +1,31 @@
 <?php 
 
+namespace App\Services;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-if (!function_exists('dcomplete_format')) {
-    function dcomplete_format($string="") {
+class FunctionsService
+{
+   
+    public function dcomplete_format($string="") {
         if ($string){
         return date("M j, Y g:i a",strtotime($string));
         }
     }
-}
 
 
 
-if (!function_exists('dMDY_format')) {
-function dMDY_format($string="") {
+
+public function dMDY_format($string="") {
    if ($string){
       return date("M j, Y",strtotime($string));
     }
   
 }
-}
 
 
-if (!function_exists('image_crop')) {
+
 function image_crop ($file,$maxResolution) {
   if (file_exists($file)) {
 
@@ -78,11 +81,11 @@ function image_crop ($file,$maxResolution) {
   }
 }
 
-}
 
 
 
-if (!function_exists('generateSlug')) {
+
+
 function generateSlug($string) {
     // Convert to lowercase
     $slug = mb_strtolower($string, 'UTF-8');
@@ -103,13 +106,13 @@ function generateSlug($string) {
 
 }
 
-}
-
-$word_limit = 50;
 
 
-if (!function_exists('limit_words')) {
-function limit_words($string, $word_limit) {
+
+
+
+
+function limit_words($string, int $word_limit) {
     // Split the string into an array of words using a space delimiter
     $words = explode(' ', $string);
     
@@ -132,13 +135,12 @@ function limit_words($string, $word_limit) {
 }
 
 
-}
-
-$word_limit_title = 15;
 
 
-if (!function_exists('limit_words_title')) {
-function limit_words_title ($string, $word_limit_title) {
+
+
+
+function limit_words_title ($string, int $word_limit_title) {
     // Split the string into an array of words using a space delimiter
     $words = explode(' ', $string);
     
@@ -160,11 +162,6 @@ function limit_words_title ($string, $word_limit_title) {
     return $limited_string;
 }
 }
-
-
-
-
-
 
 
 

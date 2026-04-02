@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
+
+
 use Illuminate\Http\Request;
 use App\Models\Registration;
+
+use App\Services\MailService;
+use App\Services\FunctionsService;
+
+
+
+
+
+
 
 class AjaxController extends Controller
 {
      public function ajax(Request $request)
     {
-       
+        
+        $publicFolder= config('app.publicFolder');
         $currentTime = config('app.currentTime');
+        $conn = config('app.conn');
+
+       
 
         //for creating account
         if ($request->input('create_account_submit')) {
@@ -32,7 +47,7 @@ class AjaxController extends Controller
                 $firstName = "na";
                 $lastName = "na";
                 $accountName = htmlspecialchars($_POST ['create_school_name']);
-                $birthdate = $currentTime;
+                $birthdate ='0000-00-00';
                 $gender = "na";
                 $basicAccount = htmlspecialchars($_POST["create_school_basic_account"]);
             }
@@ -170,36 +185,54 @@ class AjaxController extends Controller
 
 
             if (!$responses ['error']) {
-                    
-                $newRegistrant = new Registration();
-                $newRegistrant->registrantFirstName=$firstName;
-                $newRegistrant->registrantLastName=$lastName;
-                $newRegistrant->registrantAccountName=$accountName;
-                $newRegistrant->registrantAccountType=$type;
-                $newRegistrant->registrantBirthdate=$birthdate;
-                $newRegistrant->registrantGender=$gender;
-                $newRegistrant->registrantEmailAddress=$emailAddress;
-                $newRegistrant->registrantUsername=$username;
-                $newRegistrant->registrantPassword=$pwdHash;
-                $newRegistrant->registrantBasicAccount=$basicAccount;
-                $newRegistrant->registrantCreatedAt=$userCreatedAt;
-                $newRegistrant->save();
+                
+            $sql = "INSERT INTO registrations (registrantFirstName, registrantLastName, registrantAccountName,registrantAccountType,registrantBirthdate,registrantGender,registrantEmailAddress,registrantUsername,registrantPassword,registrantBasicAccount,registrantCreatedAt) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $conn->prepare($sql);
 
-                $userId = $newRegistrant->id();
+            $stmt->execute([
+                    $firstName,
+                    $lastName,
+                    $accountName,
+                    $type,
+                    $birthdate,
+                    $gender,
+                    $emailAddress,
+                    $username,
+                    $pwdHash,
+                    $basicAccount,
+                    $userCreatedAt
+            ]);
 
-              
+            $userId = $conn->lastInsertId();
+            
+           
                 //Add registration code
                 $registrantCode = "2026".sprintf("%012d",  4271997+$userId);
-                $registrant = Registration::find($userId);
-                $registrant->registrantCode = $registrantCode;
-                $registrant->save();
+             
 
+                $sql = "UPDATE registrations SET registrantCode = ? WHERE registrantId = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([$registrantCode, $userId]);
+                     
 
-                $responses['status'] = 'Successful';
-                $responses ['user-id'] = $userId;
-                $responses ['email-address'] = $emailAddress;       
+               
 
-            
+                $responses ['registrantFirstName']=$firstName;
+                $responses ['registrantLastName']=$lastName;
+                $responses ['registrantAccountName']=$accountName;
+                $responses ['registrantAccountType']=$type;
+                $responses ['registrantBirthdate']=$birthdate;
+                $responses ['registrantGender']=$gender;
+                $responses ['registrantEmailAddress']=$emailAddress;
+                $responses ['registrantUsername']=$username;
+                $responses ['registrantPassword']=$pwdHash;
+                $responses ['registrantBasicAccount']=$basicAccount;
+                $responses ['registrantCreatedAt']=$userCreatedAt;
+               
+
+                $responses ['user-id']=$userId;
+                $responses ['email-address']=$emailAddress;
+
                 $responses['status'] = 'Successful';
                 $responses['success-message'] = 'Your account has been created. Verify it now by the link sent to your email address.';
                 
@@ -215,6 +248,47 @@ class AjaxController extends Controller
             
             
         }
+
+        
+            //Send verification link
+        
+
+            if ($request->input('send_verification_link_submit')) {
+
+            $verifyingId = $request->input('user_id');
+            $verifyingEmail = $request->input('email_address');
+
+            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantId = ?");
+            $stmt->execute([$verifyingId]);
+            $registration = $stmt->fetch();
+
+            $registrantAccountName = $registration['registrantAccountName'] ?? 'User';
+
+            $mailerBody = <<<END
+            <p>Welcome to EskQuip, $registrantAccountName!</p>
+
+            <p>This independent web application developed by Erfel Suriaga, a licensed teacher with a depth passion in learning and innovation, serves as a venue for individuals who aspire to help learners,fellow colleagues and even schools in their educational journey by providing sharing their articles, ready-made files, researches and online tools. <strong> So, if you are a teacher, writer, editor, school or developer, you are very much welcome!</strong> </p>
+                        
+
+            <p>Click <a href="$publicFolder/verify/$verifyingId">here</a> to verify your account.</p>
+
+            <br>
+            <p>Best Regards,</p>
+            <p>EskQuip Team</p>
+            END;
+
+            // 🔥 ACTUALLY SEND EMAIL
+            $mailService = new MailService();
+            $mailService->send($verifyingEmail, $mailerBody);
+        }
+
+
+
+
+
+
+    
+
         
     }
 

@@ -6,9 +6,13 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Helpers\Helpers;
 use PSpell\Config;
 
 use PDO;
+use Illuminate\Foundation\AliasLoader;
+
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,9 +22,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         
+ 
 
     
-}
+    }
 
     /**
      * Bootstrap any application services.
@@ -28,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
    public function boot(Request $request)
     {
 
+ require_once app_path('Helpers/helpers.php');
 
 //------------------------------------------DATABASE CONNECTION-----------------------------------//
         $conn = DB::connection('mysql')->getPdo();
@@ -42,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
         $domain = $request->schemeAndHttpHost();
 
         if ($domain) {
+
+            if ($domain)
             $publicFolder= $domain; 
             $privateFolder=$domain.'/private';
 

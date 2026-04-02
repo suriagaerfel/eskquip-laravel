@@ -13,7 +13,7 @@ class CreateRegistrationsTable extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->increments('registrantId'); // INTEGER PRIMARY KEY AUTOINCREMENT in SQLite[web:13][web:16]
-            $table->string('registrantCode', 64);
+            $table->string('registrantCode', 64)->nullable();
             $table->string('registrantFirstName', 256);
             $table->string('registrantMiddleName', 256);
             $table->string('registrantLastName', 256);
