@@ -22,7 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         
- 
+        $this->app->bind('appConfig', function () {
+        return [
+            'site_name' => 'My App',
+            'admin_email' => 'admin@example.com'
+        ];
+    });
 
     
     }

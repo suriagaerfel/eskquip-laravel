@@ -71,7 +71,7 @@
 
                         <?php if ($pageName !='Create Account') {?>
 
-                    <a href="<?php echo $publicFolder.'/create-account/';?>" class="header-link">Create Account</a>
+                    <a href="<?php echo $publicFolder.'/create-account';?>" class="header-link">Create Account</a>
 
                     <?php } ?>
 

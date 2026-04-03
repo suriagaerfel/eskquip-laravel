@@ -1,10 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\BaseController;
-use App\Http\Controllers\AjaxController;
-use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\AccountController;
+
 
 Route::get('/', function () {
     
@@ -206,4 +204,7 @@ Route::get('/{user}', function ($user) {
 
 
 
-Route::post('/ajax', [AjaxController::class, 'ajax']);
+Route::post('/create-account', [AccountController::class, 'create_account']);
+Route::post('/send-verification-link', [AccountController::class, 'send_verification_link']);
+Route::post('/verify/{verification-code}', [AccountController::class, 'send_verification_link']);
+Route::get('/verify/{registrantCode}/{verificationCode}', [AccountController::class, 'verify']);

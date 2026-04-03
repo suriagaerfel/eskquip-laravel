@@ -815,7 +815,7 @@ function createAccount() {
     var create_password_retype = $("#create-password-retype").val();
 
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/create-account",
         dataType: "json",
         type: "POST",
         async: true,
@@ -877,7 +877,7 @@ function login() {
     var login_password = $("#login-password").val();
 
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/login",
         type: "POST",
         async: true,
         data: {
@@ -915,7 +915,7 @@ function login() {
 //send logout link
 function sendLogoutLink(user_id, email_address) {
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/logout",
         type: "POST",
         async: true,
         data: {
@@ -929,7 +929,7 @@ function sendLogoutLink(user_id, email_address) {
 //send verification link
 function sendVerificationLink(user_id, email_address, account_age) {
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/send-verification-link",
         type: "POST",
         async: true,
         data: {
@@ -945,9 +945,8 @@ function sendVerificationLink(user_id, email_address, account_age) {
 function getPasswordResetLink() {
     resetAlerts();
     var credential = $("#get-reset-password-link-credential").val();
-
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/get-password-reset-link/" + credential,
         type: "POST",
         async: true,
         data: {
@@ -977,7 +976,7 @@ function resetPassword() {
     var new_password_retype = $("#reset-new-password-retype").val();
 
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/reset-password",
         type: "POST",
         async: true,
         data: {
@@ -1086,7 +1085,7 @@ function updateProfileDetails() {
 function logout() {
     resetAlerts();
     $.ajax({
-        url: account_processing_file,
+        url: public_folder + "/logout/" + registrant_id,
         type: "POST",
         async: true,
         data: {
