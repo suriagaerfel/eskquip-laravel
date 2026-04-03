@@ -544,6 +544,10 @@ class AccountController extends Controller
             $logoutEmailAddress = htmlspecialchars($_POST['email_address']);
             $publicFolder = config('app.publicFolder');
 
+            if (!str_contains($publicFolder,'localhost')){
+                 $publicFolder = str_replace('http://','https://',$publicFolder);
+            }
+
             $token = bin2hex(random_bytes(32));
 
             $sql = "UPDATE registrations SET registrantLogoutLinkToken = ? WHERE registrantId = ?";

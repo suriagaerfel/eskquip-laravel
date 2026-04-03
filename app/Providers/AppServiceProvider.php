@@ -59,21 +59,22 @@ class AppServiceProvider extends ServiceProvider
 
         $domain = $request->schemeAndHttpHost();
 
-         
+        if ($domain) {
 
-        if ($domain)
-        $publicFolder= str_replace('http://',$domain,'https://'); 
-        $privateFolder=str_replace('http://',$domain,'https://').'/private';
-
-        if(str_contains($domain,'localhost')){
-            $projectName = '/eskquip-laravel';
-            $domain = str_replace('https://',$domain,'http://').$projectName;
-
-            $publicFolder= $domain.'/public'; 
+            if ($domain)
+            $publicFolder= $domain; 
             $privateFolder=$domain.'/private';
 
-        }
+            if(str_contains($domain,'localhost')){
+                $projectName = '/eskquip-laravel';
+                $domain = $domain.$projectName;
 
+                $publicFolder= $domain.'/public'; 
+                $privateFolder=$domain.'/private';
+
+            }
+
+        }
 
         
         config(['app.publicFolder'=>$publicFolder]);
