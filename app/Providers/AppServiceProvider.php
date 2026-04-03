@@ -72,16 +72,16 @@ class AppServiceProvider extends ServiceProvider
                 $publicFolder= $domain.'/public'; 
                 $privateFolder=$domain.'/private';
 
-                config(['app.publicFolder'=>$publicFolder]);
-                config(['app.privateFolder'=>$privateFolder]);
-
-                View::share('publicFolder',$publicFolder);
-                View::share('privateFolder',$privateFolder);
             }
 
         }
 
+        
+        config(['app.publicFolder'=>$publicFolder]);
+        config(['app.privateFolder'=>$privateFolder]);
 
+        View::share('publicFolder',$publicFolder);
+        View::share('privateFolder',$privateFolder);
 
         
 
