@@ -277,6 +277,7 @@ class AccountController extends Controller
             $registrantCode= $registration['registrantCode'] ?? '';
             $verificationCode= $registration['registrantVerificationCode'] ?? '';
 
+            $mailerSubject = 'Verify Your Account';
             $mailerBody = <<<END
             <p>Welcome to EskQuip, $registrantAccountName!</p>
 
@@ -292,7 +293,7 @@ class AccountController extends Controller
 
             // 🔥 ACTUALLY SEND EMAIL
             $mailService = new MailService();
-            $mailService->send($verifyingEmail, $mailerBody);
+            $mailService->send($verifyingEmail, $mailerSubject, $mailerBody);
         }
 
 
@@ -472,49 +473,115 @@ class AccountController extends Controller
 
 
 
-
-    public function logout ($registrantId, $method){
-            $toLogout = true;
-
-           $conn = config('app.conn');
-           $publicFolder = config('app.publicFolder');
-
-        if ($toLogout) {
+     public function logout_ajax (){
+            $conn = config('app.conn');
+            $registrantId= config('app.registrantId');
             $activityContent='Logged out';
 
-           
-
-
-             $sql = "INSERT INTO registrant_activities (registrant_activityUserId,registrant_activityContent) VALUES (?,?)";
+            $sql = "INSERT INTO registrant_activities (registrant_activityUserId,registrant_activityContent) VALUES (?,?)";
             $stmt = $conn->prepare($sql);
 
             $stmt->execute([
                     $registrantId,$activityContent
             ]);
 
-
             session()->flush();
           
+            $responses = [];
+            $responses ['status'] = 'Successful';
+            $responses ['success-message'] = 'You have been logged out successfully!';
+
+            if ($responses) {
+                header('Content-Type: application/json');
+                $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
+                echo  $jsonResponses;
+            }    
+     
+    }
+
+    public function logout_email ($user_id,$token){
+           
+           $conn = config('app.conn');
+           $publicFolder = config('app.publicFolder');
+
+    
+            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantId = ?");
+            $stmt->execute([$user_id]);
+            $user_records = $stmt->fetch();
+
+            $realToken = $user_records ['registrantLogoutLinkToken'];
+
+            if ($realToken === $token){
+                $activityContent='Logged out';
+
+                $sql = "INSERT INTO registrant_activities (registrant_activityUserId,registrant_activityContent) VALUES (?,?)";
+                $stmt = $conn->prepare($sql);
+
+                $stmt->execute([
+                        $user_id,$activityContent
+                ]);
 
 
+                session()->flush();
+                return redirect($publicFolder.'/login');
 
-            //Logout from button
-            if ($method=='ajax') {
-                $responses = [];
-                $responses ['status'] = 'Successful';
-                $responses ['success-message'] = 'You have been logged out successfully!';
+            } else {
+                return redirect($publicFolder.'/create-account');
+            }
 
-                if ($responses) {
-                    header('Content-Type: application/json');
-                    $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
-                    echo  $jsonResponses;
-                }
             
-            }
+          
 
-            if ($method=='email') {
-                Route::redirect($publicFolder.'/login');
-            }
+       
+    }
+
+    public function send_logout_link (Request $request){
+        //Send logout link
+        if ($request->input('send_logout_link_submit')) {
+            $conn = config('app.conn');
+
+            $logoutId = htmlspecialchars($_POST ['user_id']);
+            $logoutEmailAddress = htmlspecialchars($_POST['email_address']);
+            $publicFolder = config('app.publicFolder');
+
+            $token = bin2hex(random_bytes(32));
+
+            $sql = "UPDATE registrations SET registrantLogoutLinkToken = ? WHERE registrantId = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$token, $logoutId]);
+
+
+            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantId = ?");
+            $stmt->execute([$logoutId]);
+            $user_info = $stmt->fetch();
+
+            $user_accountName = $user_info ['registrantAccountName'];
+
+
+            $mailerSubject = 'Logout Account';
+
+            $mailerBody = <<<END
+                
+                <p>Hi, $user_accountName!</p 
+                <p>Someone is attempting to login to your account.</p>
+            
+                <p>If it's you, kindly click <a href='$publicFolder/logout/$logoutId/$token'> here</a> to logout so you can login.</p>
+
+                <p>You can also copy this link below and paste on your browser if the previous method does not work:</p>
+
+                <p>$publicFolder/logout/$logoutId/$token</p>
+
+                <br><br>
+                <p>Best Wishes,</p>
+                <p>EskQuip Team</p>
+
+
+                
+                        
+            END;
+
+            $mailService = new MailService();
+            $mailService->send($logoutEmailAddress, $mailerSubject,$mailerBody);
 
         }
     }
@@ -526,6 +593,8 @@ class AccountController extends Controller
         if ($request->input('get_profile_submit')){
       
         $conn = config('app.conn');
+        $registrantCode = config('app.registrantCode');
+         $registrantId = config('app.registrantId');
 
 
         $homeSearchedUser = htmlspecialchars($_POST['home_searched_user']);
@@ -534,8 +603,6 @@ class AccountController extends Controller
 
 
         if ($homeSearchedUser){
-
-            $registrantId = $service->initialize_my_records()['registrantId'];
 
             $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantUsername = ?");
             $stmt->execute([$homeSearchedUser]);

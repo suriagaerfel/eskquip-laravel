@@ -679,7 +679,9 @@ View::share('currentURL',$currentURL);
 
 // //---------------------------------------- REGISTRANT RECORDS ---------------------------------//
 
-$myRecords = $service->initialize_my_records();
+$registrantCode = session ('registrant-code');
+
+$myRecords = $service->initialize_my_records($registrantCode);
 
 View::share('loggedIn', $myRecords ['loggedIn']);
 View::share('registrantId', $myRecords ['registrantId']);

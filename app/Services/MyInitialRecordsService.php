@@ -11,11 +11,11 @@ use Carbon\Carbon;
 class MyInitialRecordsService
 {
   
-       public function initialize_my_records ()
+       public function initialize_my_records ($registrantCode)
     {
 
         $currentTime = now();;
-        $registrantCode= '2026000004272055'; 
+        // $registrantCode= '2026000004272055'; 
         $loggedIn =  false;
 
 

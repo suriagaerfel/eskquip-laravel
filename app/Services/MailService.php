@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class MailService
 {
-    public function send($email, $body)
+    public function send($email, $subject, $body)
     {
         $mailer = new PHPMailer(true);
 
@@ -24,7 +24,7 @@ class MailService
             $mailer->addAddress($email);
 
             $mailer->isHTML(true);
-            $mailer->Subject = "Account Verification";
+            $mailer->Subject = $subject;
             $mailer->Body = $body;
 
             $mailer->send();

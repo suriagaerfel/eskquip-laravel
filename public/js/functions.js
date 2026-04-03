@@ -897,18 +897,18 @@ function login() {
                 const errors = response["error"];
                 showInputsErrorMessage(errors);
 
-                // if (response["logged-in"]) {
-                //     var user_id = response["user-id"];
-                //     var email_address = response["email-address"];
-                //     sendLogoutLink(user_id, email_address);
-                // }
+                if (response["logged-in"]) {
+                    var user_id = response["user-id"];
+                    var email_address = response["email-address"];
+                    sendLogoutLink(user_id, email_address);
+                }
 
-                // if (response["unverified"]) {
-                //     var user_id = response["user-id"];
-                //     var email_address = response["email-address"];
-                //     var account_age = "old";
-                //     sendVerificationLink(user_id, email_address, account_age);
-                // }
+                if (response["unverified"]) {
+                    var user_id = response["user-id"];
+                    var email_address = response["email-address"];
+                    var account_age = "old";
+                    sendVerificationLink(user_id, email_address, account_age);
+                }
             }
         },
     });
@@ -917,7 +917,8 @@ function login() {
 //send logout link
 function sendLogoutLink(user_id, email_address) {
     $.ajax({
-        url: public_folder + "/logout/",
+        url: public_folder + "/send-logout-link",
+        dataType: "json",
         type: "POST",
         async: true,
         data: {
@@ -1087,7 +1088,7 @@ function updateProfileDetails() {
 function logout() {
     resetAlerts();
     $.ajax({
-        url: public_folder + "/logout/" + registrant_id + "/ajax",
+        url: public_folder + "/logout",
         dataType: "json",
         type: "POST",
         async: true,

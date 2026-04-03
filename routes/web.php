@@ -208,4 +208,6 @@ Route::post('/create-account', [AccountController::class, 'create_account']);
 Route::post('/send-verification-link', [AccountController::class, 'send_verification_link']);
 Route::post('/verify/{verification-code}', [AccountController::class, 'send_verification_link']);
 Route::get('/verify/{registrantCode}/{verificationCode}', [AccountController::class, 'verify']);
-Route::post('/logout/{registrantId}/{method}', [AccountController::class, 'logout']);
+Route::post('/logout', [AccountController::class, 'logout_ajax']);
+Route::get('/logout/{user_id}/{token}', [AccountController::class, 'logout_email']);
+Route::post('/send-logout-link', [AccountController::class, 'send_logout_link']);
