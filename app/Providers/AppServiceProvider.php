@@ -62,12 +62,12 @@ class AppServiceProvider extends ServiceProvider
         if ($domain) {
 
             if ($domain)
-            $publicFolder= $domain; 
-            $privateFolder=$domain.'/private';
+            $publicFolder= str_replace('http://',$domain,'https://'); 
+            $privateFolder=str_replace('http://',$domain,'https://').'/private';
 
             if(str_contains($domain,'localhost')){
                 $projectName = '/eskquip-laravel';
-                $domain = $domain.$projectName;
+                $domain = str_replace('https://',$domain,'http://').$projectName;
 
                 $publicFolder= $domain.'/public'; 
                 $privateFolder=$domain.'/private';
@@ -112,21 +112,12 @@ class AppServiceProvider extends ServiceProvider
         config(['app.currentTime'=> $currentTime]);
         config(['app.currentTimeConverted'=>$currentTimeConverted]);
 
-        // //---------------------------------------- SESSION ID ---------------------------------//
-
         
-        // $registrantId= isset($_SESSION['id']) ? $_SESSION['id'] : ''; 
-        // $loggedIn =  false;
-
-        // // $registrantId= 1; 
-        
-
-        //         config(['app.registrantId' => $registrantId]);
-        //         config(['app.loggedIn' => $loggedIn]);
+        config(['app.loggedIn' => $loggedIn]);
 
 
 
-        // ------------------------------------------- CURRENT URL ------------------------------------------//
+        // ---------------------------------- CURRENT URL ------------------------------------------//
         $currentURL = request()->url();
         config(['app.currentURL' => $currentURL]);
 
@@ -136,7 +127,7 @@ class AppServiceProvider extends ServiceProvider
        
 
   
-// // ------------------------------------ REGISTRANT RECORDS ------------------------------------------//
+// // --------------------------------- REGISTRANT RECORDS ------------------------------------------//
 
 //         $registrantCode = '';
          
@@ -640,12 +631,6 @@ class AppServiceProvider extends ServiceProvider
 
          View::share('conn', $conn);
 
-
-//------------------------------------------DYNAMIC HOST-----------------------------------//
-
-
-        // View::share('publicFolder',$publicFolder);
-        // View::share('privateFolder',$privateFolder);
 
 
 //------------------------------------------ACCESSED USER-----------------------------------//
