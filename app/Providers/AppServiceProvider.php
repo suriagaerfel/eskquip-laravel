@@ -59,22 +59,21 @@ class AppServiceProvider extends ServiceProvider
 
         $domain = $request->schemeAndHttpHost();
 
-        if ($domain) {
+         
 
-            if ($domain)
-            $publicFolder= str_replace('http://',$domain,'https://'); 
-            $privateFolder=str_replace('http://',$domain,'https://').'/private';
+        if ($domain)
+        $publicFolder= str_replace('http://',$domain,'https://'); 
+        $privateFolder=str_replace('http://',$domain,'https://').'/private';
 
-            if(str_contains($domain,'localhost')){
-                $projectName = '/eskquip-laravel';
-                $domain = str_replace('https://',$domain,'http://').$projectName;
+        if(str_contains($domain,'localhost')){
+            $projectName = '/eskquip-laravel';
+            $domain = str_replace('https://',$domain,'http://').$projectName;
 
-                $publicFolder= $domain.'/public'; 
-                $privateFolder=$domain.'/private';
-
-            }
+            $publicFolder= $domain.'/public'; 
+            $privateFolder=$domain.'/private';
 
         }
+
 
         
         config(['app.publicFolder'=>$publicFolder]);
@@ -112,12 +111,21 @@ class AppServiceProvider extends ServiceProvider
         config(['app.currentTime'=> $currentTime]);
         config(['app.currentTimeConverted'=>$currentTimeConverted]);
 
+        // //---------------------------------------- SESSION ID ---------------------------------//
+
         
-        config(['app.loggedIn' => $loggedIn]);
+        // $registrantId= isset($_SESSION['id']) ? $_SESSION['id'] : ''; 
+        // $loggedIn =  false;
+
+        // // $registrantId= 1; 
+        
+
+        //         config(['app.registrantId' => $registrantId]);
+        //         config(['app.loggedIn' => $loggedIn]);
 
 
 
-        // ---------------------------------- CURRENT URL ------------------------------------------//
+        // ------------------------------------------- CURRENT URL ------------------------------------------//
         $currentURL = request()->url();
         config(['app.currentURL' => $currentURL]);
 
@@ -127,7 +135,7 @@ class AppServiceProvider extends ServiceProvider
        
 
   
-// // --------------------------------- REGISTRANT RECORDS ------------------------------------------//
+// // ------------------------------------ REGISTRANT RECORDS ------------------------------------------//
 
 //         $registrantCode = '';
          
@@ -631,6 +639,12 @@ class AppServiceProvider extends ServiceProvider
 
          View::share('conn', $conn);
 
+
+//------------------------------------------DYNAMIC HOST-----------------------------------//
+
+
+        // View::share('publicFolder',$publicFolder);
+        // View::share('privateFolder',$privateFolder);
 
 
 //------------------------------------------ACCESSED USER-----------------------------------//
