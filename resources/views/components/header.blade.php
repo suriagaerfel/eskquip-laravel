@@ -2,7 +2,7 @@
     <input type="text" id="website-name-hidden" value="<?php echo $publicFolder;?>" hidden >
     <input type="text" id="page-name" value="<?php echo $pageName;?>" hidden >
     <input type="text" id="registrant-id" value="<?php echo $registrantId;?>" hidden >
-    <?php if ($registrantId) {?>
+    <?php if ($registrantCode) {?>
     <input type="text" id="registrant-code" value="<?php echo $registrantCode; ?>" hidden>
     <?php  } ?>
     <input type="text" id="account-name" value="<?php echo $accountName;?>"  hidden>

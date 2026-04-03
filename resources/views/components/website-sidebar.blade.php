@@ -7,12 +7,12 @@
    </div>
    
     <div style="display: inline-block; justify-content:left;">
-        <?php if ($registrantId) {?>
+        <?php if ($registrantCode) {?>
             <span id="show-my-subscription-button" class="link-tag-button">Subscriptions</span>
             <span id="show-other-registration-button" class="link-tag-button">Other Registrations</span>
         <?php } ?>
 
-        <?php if (!$registrantId) {?>
+        <?php if (!$registrantCode) {?>
             <a class="link-tag-button login" href="<?php echo $publicFolder.'/login';?>">Login</a>
             <a class="link-tag-button login" href="<?php echo $publicFolder.'/create-account';?>">Create Account</a>
         <?php } ?>
@@ -21,7 +21,7 @@
           
     </div>
 
-    <?php if ($registrantId) {?>
+    <?php if ($registrantCode) {?>
         <?php if ($websiteManagerSuperManagerRegistration) {?>
             <?php if (!$slug) {?>
                 <?php if ($pageName != 'Home') {?>

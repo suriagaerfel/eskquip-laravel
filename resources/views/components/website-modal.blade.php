@@ -13,7 +13,7 @@
 </div>
 
 
-<?php if ($registrantId){?>
+<?php if ($registrantCode){?>
     <?php //---------------------------FOR CONFIRM LOGOUT-------------------------------------?>
 
     <div class="modal website-modal website-modal-wrapper" id="modal-confirm-logout" style="z-index:1000000;">

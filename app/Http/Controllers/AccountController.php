@@ -6,9 +6,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Registration;
+use Illuminate\Support\Facades\Route;
 
 use App\Services\MailService;
 use App\Services\FunctionsService;
+use App\Services\MyInitialRecordsService;
 
 
 
@@ -17,11 +19,7 @@ use App\Services\FunctionsService;
 
 
 class AccountController extends Controller
-
-
-{
-
-        
+{   
      public function create_account(Request $request)
     {
         $currentTime = config('app.currentTime');
@@ -332,6 +330,319 @@ class AccountController extends Controller
 
          
         
+    }
+
+
+    public function login (Request $request){
+       
+        //Login
+         $conn = config('app.conn');
+
+        if ($request->input('login_submit')) {
+            $credential = htmlspecialchars($_POST["login_email_username"]);
+            $pwd = htmlspecialchars($_POST["login_password"]);
+
+           
+            $responses = [];
+            $responses ['error'] = [];
+
+
+            if ($credential) {
+
+            if ($pwd) {
+
+                        $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantEmailAddress = ? or registrantUsername=?");
+                        $stmt->execute([$credential,$credential]);
+                        $registrant = $stmt->fetch();
+
+
+                        if ($registrant) {
+                            $registrantId = $registrant ['registrantId'];
+                            $registrantCode = $registrant ['registrantCode'];
+                            $registrantEmailAddress =  $registrant ['registrantEmailAddress'];
+                            $registrantVerificationStatus =  $registrant ['registrantVerificationStatus'];
+                            $registrantPassword = $registrant["registrantPassword"];
+
+                            $responses ['user-code'] = $registrantCode;
+                            $responses ['user-id'] = $registrantId;
+                            $responses ['email-address'] = $registrantEmailAddress;
+
+                            if (password_verify($pwd,$registrantPassword)) {
+
+                                    if ($registrantVerificationStatus=="Verified") {
+                                    
+                                        //Check login status
+                                        $stmt = $conn->prepare("SELECT * FROM registrant_activities WHERE registrant_activityUserId=? ORDER BY registrant_activityId DESC LIMIT 1");
+                                        $stmt->execute([$registrantId]);
+                                        $login = $stmt->fetch();
+
+                                     
+
+
+                                        if ($login) {
+                                            $loginContent = $login['registrant_activityContent'];
+
+                                            if ($loginContent=='Logged in') {
+
+                                            $error = 'You are logged in in the other device. Log it out now with the link sent to your email address.';
+                                            array_push($responses['error'],$error);
+                                            $responses ['login-status'] = 'Unsuccessful';
+                                            $responses ['logged-in'] = true;
+                                        
+                                            
+                                            } else {
+                                                $responses ['logged-in'] = false;
+                                                
+                                            }
+
+
+                                        } else {
+                                            $responses ['logged-in'] = false;
+                                        }
+
+                                            if (!$responses ['logged-in']) {
+                                                $activityContent='Logged in';
+            
+                                                $sql = "INSERT INTO registrant_activities (registrant_activityUserId,registrant_activityContent) VALUES (?,?)";
+                                                $stmt = $conn->prepare($sql);
+
+                                                $stmt->execute([
+                                                        $registrantId,$activityContent
+                                                ]);
+
+                                                
+                                                     $request->session()->put('registrant-code', $registrantCode);
+                                                    $responses ['login-status'] = 'Successful';
+                                                    $responses ['error'] = 'No error';
+                                
+                                            }
+
+
+
+                                    } else {
+                                            $error = 'Your account is not yet verified. Verify it now with the link sent to your email address.';
+                                            array_push($responses['error'],$error);
+                                            $responses ['login-status'] = 'Unsuccessful';
+                                            $responses ['unverified'] = true;
+                                                
+                                    }
+
+                
+                            } else {
+                                $error = 'Your password is not correct.';
+                                array_push($responses['error'],$error);
+                                $responses ['login-status'] = 'Unsuccessful';
+                                
+                            }
+                        
+
+                    } else{
+                        $error = 'We could not find a record.';
+                        array_push($responses['error'],$error);
+                        $responses ['login-status'] = 'Unsuccessful';
+                        
+                    }
+
+                } elseif (!$pwd) {
+                    $error = 'Please provide your password.';
+                    array_push($responses['error'],$error);
+
+                    $responses ['login-status'] = 'Unsuccessful';
+                
+                }
+
+            } else {
+            $error = 'Please provide your email address or username.';
+            array_push($responses['error'],$error);
+
+            $responses ['login-status'] = 'Unsuccessful';
+
+            }
+
+            
+
+            if ($responses) {
+                header('Content-Type: application/json');
+                $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
+                echo  $jsonResponses;
+            } 
+        }   
+    }
+
+
+
+
+
+    public function logout ($registrantId, $method){
+            $toLogout = true;
+
+           $conn = config('app.conn');
+           $publicFolder = config('app.publicFolder');
+
+        if ($toLogout) {
+            $activityContent='Logged out';
+
+           
+
+
+             $sql = "INSERT INTO registrant_activities (registrant_activityUserId,registrant_activityContent) VALUES (?,?)";
+            $stmt = $conn->prepare($sql);
+
+            $stmt->execute([
+                    $registrantId,$activityContent
+            ]);
+
+
+            session()->flush();
+          
+
+
+
+            //Logout from button
+            if ($method=='ajax') {
+                $responses = [];
+                $responses ['status'] = 'Successful';
+                $responses ['success-message'] = 'You have been logged out successfully!';
+
+                if ($responses) {
+                    header('Content-Type: application/json');
+                    $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
+                    echo  $jsonResponses;
+                }
+            
+            }
+
+            if ($method=='email') {
+                Route::redirect($publicFolder.'/login');
+            }
+
+        }
+    }
+
+
+
+    public function get_profile (MyInitialRecordsService $service, Request $request){
+
+        if ($request->input('get_profile_submit')){
+      
+        $conn = config('app.conn');
+
+
+        $homeSearchedUser = htmlspecialchars($_POST['home_searched_user']);
+
+        $responses = [];
+
+
+        if ($homeSearchedUser){
+
+            $registrantId = $service->initialize_my_records()['registrantId'];
+
+            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantUsername = ?");
+            $stmt->execute([$homeSearchedUser]);
+            $homeSearchedUserInfo = $stmt->fetch();
+
+            if($homeSearchedUserInfo) {
+                $homeSearchedUserId=$homeSearchedUserInfo ['registrantId'];
+                $homeSearchedUserAccountName = $homeSearchedUserInfo ['registrantAccountName'];
+                $homeSearchedUserDescription = $homeSearchedUserInfo ['registrantDescription'];
+
+
+                $homeSearchedUserType = $homeSearchedUserInfo['registrantAccountType'];
+                
+                $homeSearchedUserProfilePictureLink = $homeSearchedUserInfo['registrantProfilePictureLink'] ? asset($homeSearchedUserInfo['registrantProfilePictureLink']) : asset("/images/user.svg");
+                $homeSearchedUserCoverPhotoLink = $homeSearchedUserInfo['registrantCoverPhotoLink'] ? asset($homeSearchedUserInfo['registrantCoverPhotoLink']) : asset("/images/cover-photo.jpeg");
+
+                $homeSearchedUserBasicRegistration = $homeSearchedUserInfo['registrantBasicAccount'];
+                $homeSearchedUserTeacherRegistration = $homeSearchedUserInfo['registrantTeacherAccount'];
+                $homeSearchedUserWriterRegistration = $homeSearchedUserInfo['registrantWriterAccount'];
+                $homeSearchedUserEditorRegistration = $homeSearchedUserInfo['registrantEditorAccount'];
+                $homeSearchedUserWebsiteManagerRegistration = '';
+                $homeSearchedUserDeveloperRegistration = $homeSearchedUserInfo['registrantDeveloperAccount'];
+
+
+
+                $stmt = $conn->prepare("SELECT * FROM website_manager_accounts WHERE website_manager_accountRegistrant = ?");
+                $stmt->execute([$homeSearchedUserId]);
+                $homeSearchedUserWebsiteManagerRegistrations = $stmt->fetch();
+
+                    if ($homeSearchedUserWebsiteManagerRegistrations){
+                            $homeSearchedUserWebsiteManagerSuperManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountSuperManager'];
+
+                            $homeSearchedUserWebsiteManagerSubscriptionManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountSubscriptionManager'];
+
+                            $homeSearchedUserWebsiteManagerRegistrationManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountRegistrationManager'];
+
+                            $homeSearchedUserWebsiteManagerPromotionManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountPromotionManager'];
+
+                            $homeSearchedUserWebsiteManagerMessageManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountMessageManager'];
+                    
+                            if ($homeSearchedUserWebsiteManagerSuperManagerRegistration ||            $homeSearchedUserWebsiteManagerSubscriptionManagerRegistration || $homeSearchedUserWebsiteManagerRegistrationManagerRegistration || $homeSearchedUserWebsiteManagerPromotionManagerRegistration || $homeSearchedUserWebsiteManagerMessageManagerRegistration){
+                            $homeSearchedUserWebsiteManagerRegistration = 'Website Manager';
+                        }
+                    }
+
+
+
+                $homeSearchedUserRegistrations = [];
+                
+                if ($homeSearchedUserBasicRegistration) {
+                    array_push($homeSearchedUserRegistrations,$homeSearchedUserBasicRegistration);
+                }
+
+                if ($homeSearchedUserTeacherRegistration) {
+                    array_push($homeSearchedUserRegistrations,$homeSearchedUserTeacherRegistration);
+                }
+
+                if ($homeSearchedUserWriterRegistration) {
+                    array_push($homeSearchedUserRegistrations,$homeSearchedUserWriterRegistration);
+                }
+                if ($homeSearchedUserEditorRegistration) {
+                    array_push($homeSearchedUserRegistrations,$homeSearchedUserEditorRegistration);
+                }
+
+                if ($homeSearchedUserDeveloperRegistration) {
+                    array_push($homeSearchedUserRegistrations,$homeSearchedUserDeveloperRegistration);
+                }
+
+                if ($homeSearchedUserWebsiteManagerRegistration) {
+                    array_push($homeSearchedUserRegistrations,$homeSearchedUserWebsiteManagerRegistration);
+                }
+
+                if ($homeSearchedUserRegistrations){
+                    $homeSearchedUserRegistrations =implode(' | ',$homeSearchedUserRegistrations);
+                }
+
+                if ($homeSearchedUserId==$registrantId) {
+                    $responses ['current-account'] = true;
+                } 
+
+                $_SESSION ['home-searched-user-id'] = $homeSearchedUserId;
+                $responses ['id'] = $homeSearchedUserId;
+                $responses ['type'] = $homeSearchedUserType;
+                $responses ['account-name'] = $homeSearchedUserAccountName;
+                $responses ['registrations'] = $homeSearchedUserRegistrations;
+                $responses ['profile-picture-link'] = $homeSearchedUserProfilePictureLink;
+                $responses ['cover-photo-link'] = $homeSearchedUserCoverPhotoLink;
+                $responses ['description'] = $homeSearchedUserDescription;
+
+            
+            } else {
+                $responses ['no-account'] = true;
+            }
+
+        
+        }
+
+
+
+        
+
+        if ($responses) {
+            header('Content-Type: application/json');
+            $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
+            echo  $jsonResponses;
+        } 
+    }
     }
     
 

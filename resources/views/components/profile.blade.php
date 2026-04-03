@@ -2,9 +2,9 @@
         <div id="profile-top">
                 
                 <div id="cover-photo-container">
-                    <img id="cover-photo">
+                    <img id="cover-photo" src="{{asset($coverPhotoLink)}}">
                 </div>
-                 <?php if ($registrantId){?>
+                 <?php if ($registrantCode){?>
                 <div id="cover-photo-camera-container">
                     <img src="<?php echo asset('/images/camera.svg');?>" id="cover-photo-camera-icon" class="icon profile-details-icon">
                 </div>
@@ -12,8 +12,8 @@
               
                 <div id="profile-picture-summary">
                     <div id="profile-picture-container">
-                        <img id="profile-picture">   
-                        <?php if ($registrantId){?>
+                        <img id="profile-picture" src="{{asset($profilePictureLink)}}">   
+                        <?php if ($registrantCode){?>
                             <div id="profile-picture-camera-container">
                                 <img src="<?php echo asset('images/camera.svg');?>" 
                                 id="profile-camera-icon" class="icon profile-details-icon">
@@ -32,11 +32,11 @@
         </div>
        
            
-        <?php if ($registrantId){?>
+        <?php if ($registrantCode){?>
         <div id="profile-details">    
             <div id="profile-details-top">
                 <h5 id="details">My Details</h5>
-                <?php if ($registrantId){?>
+                <?php if ($registrantCode){?>
                 <div id="edit-profile-details-button">
                     <img src="<?php echo asset('/assets/images/edit.svg');?>">
                 </div> 

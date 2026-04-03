@@ -1,6 +1,7 @@
 <?php
 
-$registrantId= isset($_SESSION['id']) ? $_SESSION['id'] : "";
+$registrantCode= isset($_SESSION['registrant-code']) ? $_SESSION['registrsnt-code'] : "";
+$registrantId= isset($_SESSION['registrant-id']) ? $_SESSION['registrant-id'] : "";
 $toolSubscribed= isset($_SESSION ['tool-subscribed']) ? $_SESSION ['tool-subscribed'] : "";
 
 $contentViewTimeNew = isset ($_POST['time_spent']) ? $_POST['time_spent'] : 0;
@@ -15,7 +16,7 @@ $toolId = $tool ['developer_toolId'] ? $tool ['developer_toolId'] : "";
 $toolOwner = $tool ['developer_toolDeveloper'] ? $tool ['developer_toolDeveloper'] : "";
 $toolStatus = $tool ['developer_toolStatus'] ? $tool ['developer_toolStatus'] : "";
 
-if(!$registrantId) {
+if(!$registrantCode) {
     header('Location:'.$publicFolder.'/login/');
 } else {
     if(!$toolSubscribed && $registrantId!=$toolOwner) {
