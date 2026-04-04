@@ -52,15 +52,21 @@ class PageController extends Controller
 
      public function user ($user, AccountRecordsService $service){
 
+        $publicFolder= config('app.publicFolder');
+
         if ($user){
             $user_records = DB::table('registrations')->where('registrantUsername', $user)->first();
 
-            $user_code = $user_records->registrantCode;
-            $accountName = $user_records->registrantAccountName;
+            if ($user_records) {
+                 $user_code = $user_records->registrantCode;
+                $accountName = $user_records->registrantAccountName;
 
-            $pageName = $accountName;
+                $pageName = $accountName;
 
-            $user_records =  $service->get_profile_records($user_code);
+                $user_records =  $service->get_profile_records($user_code);
+            } else {
+                return redirect($publicFolder.'/search');
+            }
 
         }
         
