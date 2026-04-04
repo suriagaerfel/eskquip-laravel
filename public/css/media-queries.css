@@ -80,6 +80,9 @@
         padding-top: 0px;
     }
 
+    #header-account-name {
+        display: none;
+    }
     #profile-picture-summary,
     #cover-photo {
         display: flex;
