@@ -18,7 +18,9 @@ class PageController extends Controller
     {
       
 
-        $registrantCode = session('registrant-code');
+        // $registrantCode = session('registrant-code');
+
+        $registrantCode = '2026000004271998';
 
         $this->account_records = $service->get_profile_records($registrantCode);
         $records= $this->account_records;
@@ -47,6 +49,8 @@ class PageController extends Controller
         return view ('home', compact('pageName','user'));
         
     }
+
+
 
 
 
@@ -214,6 +218,53 @@ class PageController extends Controller
         
         return view ('account', compact('pageName','user'));
     }
+
+
+
+     public function about_us (AccountRecordsService $service){
+
+        $user=null;
+        
+        $pageName = 'About Us';
+
+
+        // return view ('about-us', compact('pageName','user'));
+
+        $publicFolder=config('app.publicFoldr');
+        return redirect($publicFolder.'/articles');
+        
+    }
+
+     
+
+    public function data_privacy (AccountRecordsService $service){
+
+        $user=null;
+        
+        $pageName = 'Data Privacy';
+
+
+        // return view ('data-privacy', compact('pageName','user'));
+
+        $publicFolder=config('app.publicFoldr');
+        return redirect($publicFolder.'/articles');
+        
+    }
+
+     public function terms_of_use (AccountRecordsService $service){
+
+        $user=null;
+        
+        $pageName = 'Terms of Use';
+
+
+        // return view ('terms-of-use', compact('pageName','user'));
+
+        $publicFolder=config('app.publicFoldr');
+        return redirect($publicFolder.'/articles');
+        
+    }
+
 
     public function workspace_writer (){
         $pageName = 'Workspace - Writer';
