@@ -9,10 +9,12 @@
 
   <?php if ($pageName=='Create Account' || $pageName=='Login' || $pageName=='Get Password Reset Link' || $pageName=='Reset Password') {?>
   <div class="footer-page-links-container">
-    <a href=""><small><?php echo date('Y',$currentTime).' &copy; All Rights Reserved'?></small></a>
-    <a href="<?php echo $publicFolder.'/terms-of-use/'?>"><small>Terms of Use</small></a>
-    <a href="<?php echo $publicFolder.'/data-privacy/'?>"><small>Data Privacy</small></a>
-    <a href="<?php echo $publicFolder.'/about-us/'?>"><small>About Us</small></a>
+    <small><?php echo date('Y',$currentTime).' &copy; All Rights Reserved'?></small>
+    <div>
+      <small></small><a href="<?php echo $publicFolder.'/terms-of-use/'?>"><small>Terms of Use</small></a>
+      <a href="<?php echo $publicFolder.'/data-privacy/'?>"><small>Data Privacy</small></a>
+      <a href="<?php echo $publicFolder.'/about-us/'?>"><small>About Us</small></a>
+    </div>
   </div>
 <?php } ?>
 

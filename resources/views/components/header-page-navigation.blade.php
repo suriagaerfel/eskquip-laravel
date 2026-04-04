@@ -4,5 +4,5 @@
         <a href="<?php echo $publicFolder.'/teacher-files';?>" class="header-link">Teacher Files</a>
         <a href="<?php echo $publicFolder.'/articles';?>" class="header-link">Articles</a>
         <a href="<?php echo $publicFolder.'/researches';?>" class="header-link">Researches</a>  
-        <a href="<?php echo $publicFolder.'/toolss';?>" class="header-link">Tools</a> 
+        <a href="<?php echo $publicFolder.'/tools';?>" class="header-link">Tools</a> 
 </div>

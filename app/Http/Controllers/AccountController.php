@@ -268,6 +268,7 @@ class AccountController extends Controller
 
             $verifyingId = $request->input('user_id');
             $verifyingEmail = $request->input('email_address');
+            $accountAge = $request->input('account_age');
            
 
             $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantId = ?");
@@ -278,14 +279,20 @@ class AccountController extends Controller
             $registrantCode= $registration['registrantCode'] ?? '';
             $verificationCode= $registration['registrantVerificationCode'] ?? '';
 
-            $mailerSubject = 'Verify Your Account';
+            $mailerSubject = 'Account Verification';
             $mailerBody = <<<END
-            <p>Welcome to EskQuip, $registrantAccountName!</p>
+            <p>Thank you for registering and welcome to EskQuip, $registrantAccountName!</p>
 
-            <p>This independent web application developed by Erfel Suriaga, a licensed teacher with a depth passion in learning and innovation, serves as a venue for individuals who aspire to help learners,fellow colleagues and even schools in their educational journey by sharing their articles, ready-made files, researches and online tools. <strong> So, if you are a teacher, writer, editor, school or developer, you are very much welcome!</strong> </p>
+            <p>An independent web application developed by Erfel Suriaga, a licensed teacher with a depth passion in learning and innovation, EskQuip serves as a venue for individuals who aspire to help learners, fellow colleagues and even schools in their educational journey by sharing articles, ready-made files, researches and online tools. </p>
+            
+            <p><strong> So, if you are a teacher, writer, editor, school or developer, you are very much welcome here!</strong> </p>
                         
 
             <p>Are you excited to use your account? Verify it now <a href="$publicFolder/verify/$registrantCode/$verificationCode">here</a>.</p>
+
+             <p>You can also copy the link below and paste it on your browser's url bar if the previous method does not work:</p>
+
+            <p>$publicFolder/verify/$registrantCode/$verificationCode</p>
 
             <br>
             <p>Best Regards,</p>
@@ -500,17 +507,18 @@ class AccountController extends Controller
      
     }
 
-    public function logout_email ($user_id,$token){
+    public function logout_email ($user_code,$token){
            
            $conn = config('app.conn');
            $publicFolder = config('app.publicFolder');
 
     
-            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantId = ?");
-            $stmt->execute([$user_id]);
+            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantCode = ?");
+            $stmt->execute([$user_code]);
             $user_records = $stmt->fetch();
 
             $realToken = $user_records ['registrantLogoutLinkToken'];
+            $user_id = $user_records ['registrantId'];
 
             if ($realToken === $token){
                 $activityContent='Logged out';
@@ -545,10 +553,6 @@ class AccountController extends Controller
             $logoutEmailAddress = htmlspecialchars($_POST['email_address']);
             $publicFolder = config('app.publicFolder');
 
-            if (!str_contains($publicFolder,'localhost')){
-                 $publicFolder = str_replace('http://','https://',$publicFolder);
-            }
-
             $token = bin2hex(random_bytes(32));
 
             $sql = "UPDATE registrations SET registrantLogoutLinkToken = ? WHERE registrantId = ?";
@@ -561,6 +565,7 @@ class AccountController extends Controller
             $user_info = $stmt->fetch();
 
             $user_accountName = $user_info ['registrantAccountName'];
+            $user_code = $user_info ['registrantCode'];
 
 
             $mailerSubject = 'Logout Account';
@@ -570,11 +575,11 @@ class AccountController extends Controller
                 <p>Hi, $user_accountName!</p 
                 <p>Someone is attempting to login to your account.</p>
             
-                <p>If it's you, kindly click <a href='$publicFolder/logout/$logoutId/$token'> here</a> to logout so you can login.</p>
+                <p>If it's you, kindly click <a href='$publicFolder/logout/$user_code/$token'> here</a> to logout so you can login.</p>
 
-                <p>You can also copy this link below and paste on your browser if the previous method does not work:</p>
+                <p>You can also copy the link below and paste it on your browser's url bar if the previous method does not work:</p>
 
-                <p>$publicFolder/logout/$logoutId/$token</p>
+                <p>$publicFolder/logout/$user_code/$token</p>
 
                 <br><br>
                 <p>Best Wishes,</p>
@@ -592,6 +597,85 @@ class AccountController extends Controller
     }
 
 
+
+    public function get_password_reset_link (Request $request){
+        //Get reset password link
+        if ($request->input('get_password_reset_link_submit')) {
+
+             $conn= config('app.conn');
+              $publicFolder = config('app.publicFolder');
+            $credential = htmlspecialchars($_POST["credential"]);
+
+            $responses = [];
+            $responses ['error'] = [];
+
+            if (empty($credential)) {
+                $error = "Please provide your email address or username.";
+                array_push($responses ['error'], $error);
+
+            } else {
+                $sql = "SELECT * FROM registrations WHERE registrantEmailAddress = '$credential' or registrantUsername = '$credential'";
+                $result = mysqli_query($conn, $sql);
+                $registrant = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+                if (!$registrant) {
+                    $error = "We could not find the record.";
+                    array_push($responses ['error'], $error);
+                }
+            }
+
+            if (!$responses ['error']){
+
+                $receivingEmail = $registrant ['registrantEmailAddress'];
+                $userID = $registrant ['registrantId'];
+
+                $token = bin2hex(random_bytes(16));
+
+                $tokenHash = hash("sha256",$token);
+
+                $tokenHashExpiration = date("Y-m-d H:i:s",time()+ 60 * 30);
+
+                $sql = "UPDATE registrations 
+                        SET resetTokenHash = ?,
+                            resetTokenHashExpiration = ?
+                            WHERE registrantUsername=? or registrantEmailAddress = ?";
+
+
+                $stmt =$conn->prepare($sql);
+
+                $stmt ->bind_param("ssss",$tokenHash,$tokenHashExpiration,$credential,$credential);
+
+                $stmt-> execute();
+
+
+
+                 $mailerSubject = 'Password Reset Link';
+
+                $mailerBody = <<<END
+                
+                <p>Click <a href='$publicFolder/reset-password/$userID/$tokenHash'> here </a> to reset your password.\nThe link will expire after 30 minutes.</p>
+           
+            END;
+
+                $mailService = new MailService();
+                $mailService->send($receivingEmail, $mailerSubject,$mailerBody);
+
+
+                $responses ['status'] = 'Successful';
+                $responses ['success-message'] = 'Password reset link is sent successfully.';
+
+            }  else {
+                $responses ['status'] = 'Unsuccessful';
+            }
+
+            if ($responses) {
+                header('Content-Type: application/json');
+                $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
+                echo  $jsonResponses;
+            } 
+
+        }
+    }
 
     public function get_profile (AccountRecordsService $service, Request $request){
 

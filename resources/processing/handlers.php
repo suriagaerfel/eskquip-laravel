@@ -45,65 +45,65 @@ if ($pageName=="File Purchase") {
 //     }
 // }
 
-if ($pageName=="Get Password Reset Link") { 
-     if ($loggedIn) {
-    header('Location:'.$publicFolder.'/account');
-    }
-}
+// if ($pageName=="Get Password Reset Link") { 
+//      if ($loggedIn) {
+//     header('Location:'.$publicFolder.'/account');
+//     }
+// }
 
-if ($pageName=="Workspace - Teacher") {
-    if (!$teacherRegistration) {
-    header('Location:'.$publicFolder.'/account');
-    }   
-}
+// if ($pageName=="Workspace - Teacher") {
+//     if (!$teacherRegistration) {
+//     header('Location:'.$publicFolder.'/account');
+//     }   
+// }
 
-if ($pageName=="Workspace - Writer") {
-    if (!$writerRegistration) {
-    header('Location:'.$publicFolder.'/account');
-    }  
+// if ($pageName=="Workspace - Writer") {
+//     if (!$writerRegistration) {
+//     header('Location:'.$publicFolder.'/account');
+//     }  
 
-}
+// }
 
-if ($pageName=="Workspace - Editor") {
-    if (!$editorRegistration) { 
-    header('Location:'.$publicFolder.'/account');
-    }  
+// if ($pageName=="Workspace - Editor") {
+//     if (!$editorRegistration) { 
+//     header('Location:'.$publicFolder.'/account');
+//     }  
 
-}
+// }
 
-if ($pageName=="Workspace - Website Manager") {
-    if (!$websiteManagerRegistration) {
-    header('Location:'.$publicFolder.'/account');
-    }   
-}
+// if ($pageName=="Workspace - Website Manager") {
+//     if (!$websiteManagerRegistration) {
+//     header('Location:'.$publicFolder.'/account');
+//     }   
+// }
 
-if ($pageName=="Workspace - Data Analyst") {
-    if (!$dataAnalystRegistration) { 
-    header('Location:'.$publicFolder.'/account');
-    }
-}
-
-
-if ($pageName=="Workspace - Developer") {
-    if (!$developerRegistration) {
-    header('Location:'.$publicFolder.'/account');
-    }   
-
-}
+// if ($pageName=="Workspace - Data Analyst") {
+//     if (!$dataAnalystRegistration) { 
+//     header('Location:'.$publicFolder.'/account');
+//     }
+// }
 
 
-if ($pageName=="Dashboard - Funder") {
-    if (!$funderRegistration) {
-    header('Location:'.$publicFolder.'/account');
-    }
+// if ($pageName=="Workspace - Developer") {
+//     if (!$developerRegistration) {
+//     header('Location:'.$publicFolder.'/account');
+//     }   
+
+// }
+
+
+// if ($pageName=="Dashboard - Funder") {
+//     if (!$funderRegistration) {
+//     header('Location:'.$publicFolder.'/account');
+//     }
     
-}
+// }
 
-if ($pageName=="School Workspace - Researches") {
-    if ($type!='School') {
-    header('Location:'.$publicFolder.'/account');
-    }  
-}
+// if ($pageName=="School Workspace - Researches") {
+//     if ($type!='School') {
+//     header('Location:'.$publicFolder.'/account');
+//     }  
+// }
 
 
 

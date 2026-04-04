@@ -15,7 +15,7 @@
        
         <div class="form-section" style="display: flex; flex-direction:column; gap: 20px; width:fit-content;">
            
-                <div id="create-account-form">
+                <div id="create-account-form" style="width: 350px;">
                     
                     <h5 class="form-title">Create Account </h5>
                 
@@ -28,7 +28,7 @@
                     </nav>
                   
 
-                  
+                  <div >
 
                     <div class="inputs-group inputs-group-school">  
 
@@ -97,6 +97,7 @@
                         Login
                         </a>
                     </span>
+                    </div>
                 </div>
 
         

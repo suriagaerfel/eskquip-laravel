@@ -499,7 +499,7 @@ if (isset($_GET['verify'])) {
         }
 }
 
-//Get change password link
+//Get reset password link
 if (isset($_POST["get_password_reset_link_submit"])) {
 
     $credential = htmlspecialchars($_POST["credential"]);

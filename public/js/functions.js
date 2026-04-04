@@ -933,6 +933,7 @@ function sendLogoutLink(user_id, email_address) {
 function sendVerificationLink(user_id, email_address, account_age) {
     $.ajax({
         url: public_folder + "/send-verification-link",
+        dataType: "json",
         type: "POST",
         async: true,
         data: {
@@ -950,6 +951,7 @@ function getPasswordResetLink() {
     var credential = $("#get-reset-password-link-credential").val();
     $.ajax({
         url: public_folder + "/get-password-reset-link/" + credential,
+        dataType: "json",
         type: "POST",
         async: true,
         data: {

@@ -33,9 +33,9 @@
                 <button id="login-submit-button">Submit</button>
                 </div>
                 <br>
-                <span class="form-links"><a href="<?php echo $publicFolder.'/get-password-reset-link/';?>">Forgot Password?</a></span>
+                <span class="form-links">Forgot your password? <a href="{{route('get-password-reset-link')}}">Reset</a></span>
                 <br>
-                <span class="form-links">No account yet? <a href="<?php echo $publicFolder.'/create-account/';?>">Create Account</a></span>
+                <span class="form-links">No account yet? <a href="{{route('create-account')}}">Create Account</a></span>
                 <br>
 
             </div>

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 class PageController extends Controller
 {
 
-    protected $acount_records;
+    protected $account_records;
 
     protected $publicFolder;
 
@@ -20,8 +20,8 @@ class PageController extends Controller
 
         $registrantCode = session('registrant-code');
 
-        $this->acount_records = $service->get_profile_records($registrantCode);
-        $records= $this->acount_records;
+        $this->account_records = $service->get_profile_records($registrantCode);
+        $records= $this->account_records;
 
         View::share($records);
 
@@ -74,22 +74,41 @@ class PageController extends Controller
 
     public function articles ($slug=null,$category=null,$date=null,$tag=null){
         $pageName = 'Articles';
-        return view ('articles', compact('pageName','slug','category','date','tag'));
+
+         $user=null;
+
+        $publicFolder= $this->publicFolder;
+       
+
+        return view ('articles', compact('pageName','user','slug','date'));
+   
     }
 
-    public function teacher_files (){
+
+    public function teacher_files ($slug=null,$category=null,$date=null,$tag=null){
         $pageName = 'Teacher Files';
-        return view ('teacher-files', compact('pageName'));
+        $user=null;
+
+        return view ('teacher-files', compact('pageName','user','slug','date'));
     }
 
-    public function researches (){
+    public function researches ($slug=null,$category=null,$date=null,$tag=null){
         $pageName = 'Researches';
-        return view ('researches', compact('pageName'));
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        return view ('researches', compact('pageName','user','slug','date'));
+       
     }
 
-    public function tools (){
+    public function tools ($slug=null,$category=null,$date=null,$tag=null){
         $pageName = 'Tools';
-        return view ('tools', compact('pageName'));
+
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        return view ('tools', compact('pageName','user','slug','date'));
+   
     }
 
     public function login (){
@@ -97,7 +116,7 @@ class PageController extends Controller
         $user=null;
 
         $publicFolder= $this->publicFolder;
-        $loggedIn= $this->acount_records['accountName'];
+        $loggedIn= $this->account_records['accountName'];
 
          if($loggedIn){
             return redirect($publicFolder.'/account');
@@ -109,21 +128,31 @@ class PageController extends Controller
     public function create_account (){
         $pageName = 'Create Account';
 
+        $user=null;
+
         $publicFolder= $this->publicFolder;
-        $loggedIn= $this->acount_records['accountName'];
+        $loggedIn= $this->account_records['accountName'];
 
          if($loggedIn){
             return redirect($publicFolder.'/account');
         }
 
-
-
-        return view ('create-account', compact('pageName'));
+        return view ('create-account', compact('pageName','user'));
     }
 
-     public function get_passsword_reset_link (){
+     public function get_password_reset_link (){
         $pageName = 'Get Password Reset Link';
-        return view ('get-password-reset-link', compact('pageName'));
+
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $loggedIn= $this->account_records['accountName'];
+
+         if($loggedIn){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('get-password-reset-link', compact('pageName','user'));
     }
 
     public function reset_password (){
@@ -137,7 +166,7 @@ class PageController extends Controller
         $user=null;
 
         $publicFolder= $this->publicFolder;
-         $loggedIn= $this->acount_records['accountName'];
+         $loggedIn= $this->account_records['accountName'];
 
          if(!$loggedIn){
             return redirect($publicFolder.'/login');
@@ -148,27 +177,86 @@ class PageController extends Controller
 
     public function workspace_writer (){
         $pageName = 'Workspace - Writer';
-        return view ('workspace.writer', compact('pageName'));
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $writerRegistration = $this->account_records['writerRegistration'];
+
+        if (!$writerRegistration){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('workspace.writer', compact('pageName','user'));
     }
 
      public function workspace_editor (){
         $pageName = 'Workspace - Editor';
-        return view ('workspace.editor', compact('pageName'));
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $editorRegistration = $this->account_records['editorRegistration'];
+
+        if (!$editorRegistration){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('workspace.editor', compact('pageName','user'));
     }
 
      public function workspace_teacher (){
         $pageName = 'Workspace - Teacher';
-        return view ('workspace.teacher', compact('pageName'));
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $teacherRegistration = $this->account_records['teacherRegistration'];
+
+        if (!$teacherRegistration){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('workspace.teacher', compact('pageName','user'));
     }
 
      public function workspace_developer (){
         $pageName = 'Workspace - Developer';
-        return view ('workspace.developer', compact('pageName'));
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $developerRegistration = $this->account_records['developerRegistration'];
+
+        if (!$developerRegistration){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('workspace.developer', compact('pageName','user'));
     }
 
      public function workspace_researches (){
         $pageName = 'School Workspace - Researches';
-        return view ('workspace.researches', compact('pageName'));
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $researchesRegistration = $this->account_records['reserachesRegistration'];
+
+        if (!$researchesRegistration){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('workspace.researches', compact('pageName','user'));
+    }
+
+    public function workspace_website_manager (){
+        $pageName = 'Workspace - Webiste Manager';
+        $user=null;
+
+        $publicFolder= $this->publicFolder;
+        $websiteManagerRegistration = $this->account_records['websiteManagerRegistration'];
+
+        if (!$websiteManagerRegistration){
+            return redirect($publicFolder.'/account');
+        }
+
+        return view ('workspace.website-manager', compact('pageName','user'));
     }
 
 
@@ -180,12 +268,21 @@ class PageController extends Controller
          $pageName = 'Messages';
 
          $publicFolder= $this->publicFolder;
-         $loggedIn= $this->acount_records['accountName'];
+         $loggedIn= $this->account_records['loggedIn'];
 
          if(!$loggedIn){
             return redirect($publicFolder.'/login');
         }
 
         return view ('workspace.researches', compact('pageName'));
+    }
+
+
+    public function search(){
+        $pageName = 'Search';
+
+        $user=null;
+        return view ('search', compact('pageName','user'));
+
     }
 }

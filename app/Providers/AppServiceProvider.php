@@ -72,6 +72,10 @@ class AppServiceProvider extends ServiceProvider
 
         }
 
+        if (!str_contains($publicFolder,'localhost')){
+            $publicFolder = str_replace('http://','https://',$publicFolder);
+        }
+
         
         config(['app.publicFolder'=>$publicFolder]);
         config(['app.privateFolder'=>$privateFolder]);
