@@ -1490,7 +1490,7 @@ tr {
 .content-notice {
     padding-top: 100px;
 }
-.footer-page-links-container {
+#footer-page-links-container {
     display: flex;
     gap: 50px;
     justify-content: center;

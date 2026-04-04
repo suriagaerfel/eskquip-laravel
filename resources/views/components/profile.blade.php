@@ -66,30 +66,30 @@
                             <p class="profile-details-view" id="profile-school-category-view">{{$basicRegistration}}</p>      
                         <?php } ?>
 
-                        <p class="profile-details-view" id="profile-username-view"></p>
-                        <p class="profile-details-view" id="profile-email-address-view"></p>
-                        <p class="profile-details-view" id="profile-mobile-number-view"></p>
+                        <p class="profile-details-view" id="profile-username-view">Username: {{$username}}</p>
+                        <p class="profile-details-view" id="profile-email-address-view">Email Address: {{$emailAddress}}</p>
+                        <p class="profile-details-view" id="profile-mobile-number-view">Mobile Number {{$mobileNumber}}</p>
                 </div>
 
                 <?php if ($type=='Personal') { ?>
                 <div class="profile-details-group" > 
-                        <p class="profile-details-view" id="profile-birthdate-view"></p>  
-                        <p class="profile-details-view" id="profile-gender-view"></p>                           
-                        <p class="profile-details-view" id="profile-civil-status-view"></p>
-                        <p class="profile-details-view" id="profile-educational-attainment-view"></p>
-                        <p class="profile-details-view" id="profile-school-view"></p>
-                        <p class="profile-details-view" id="profile-occupation-view"></p>
+                        <p class="profile-details-view" id="profile-birthdate-view">Birthdate: {{$birthdate}}</p>  
+                        <p class="profile-details-view" id="profile-gender-view">Gender: {{$gender}}</p>                           
+                        <p class="profile-details-view" id="profile-civil-status-view">Civil Status: {{$civilStatus}}</p>
+                        <p class="profile-details-view" id="profile-educational-attainment-view">Eductional Attainment: {{$education}}</p>
+                        <p class="profile-details-view" id="profile-school-view">School: {{$school}}</p>
+                        <p class="profile-details-view" id="profile-occupation-view">Occupation: {{$occupation}}</p>
                 </div>
 
                 <?php } ?>
  
                 <div class="profile-details-group">
                         
-                    <p class="profile-details-view" id="profile-region-view"></p> 
-                    <p class="profile-details-view" id="profile-province-state-view"></p>
-                    <p class="profile-details-view" id="profile-city-municipality-view"></p>
-                    <p class="profile-details-view" id="profile-barangay-view"></p>
-                    <p class="profile-details-view" id="profile-street-subd-village-view"></p>  
+                    <p class="profile-details-view" id="profile-region-view">Region: {{$region}}</p> 
+                    <p class="profile-details-view" id="profile-province-state-view">Province/State: {{$province_state}}</p>
+                    <p class="profile-details-view" id="profile-city-municipality-view">City/Municipality: {{$city_municipality}}</p>
+                    <p class="profile-details-view" id="profile-barangay-view">Barangay: {{$barangay}}</p>
+                    <p class="profile-details-view" id="profile-street-subd-village-view">Street/Subd./Village: {{$street_subd_village}}</p>  
                 </div>
                 
             </div>

@@ -39,7 +39,7 @@
         
         <?php if ($pageName !='Search'){ ?> 
         
-        <div id="header-search-container" class="search-container" style="width: fit-content;">
+        <div id="header-search-container" class="search-container" style="width: fit-content;margin-left:10px;">
             <a href="<?php echo $publicFolder.'/search'?>">
                 <img src="{{ asset('images/header-search.svg')}}"  title="Search" style="width: 25px; cursor:pointer;">
             </a>
@@ -77,7 +77,7 @@
 
         <?php if ($pageName != 'Create Account' && $pageName != 'Login' && $pageName != 'Get Password Link') {?>
          <?php if (!$loggedIn) {?>
-         <div style="display: flex; gap:10px;  width:fit-content;">
+         <div style="display: flex; gap:5px;  width:fit-content;">
 
            
             <a href="<?php echo $publicFolder.'/login';?>" class="header-link">Login</a>
