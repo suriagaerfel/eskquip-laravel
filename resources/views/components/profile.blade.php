@@ -1,18 +1,19 @@
 <div id="profile">
-        <div id="profile-top">
+        <div id="profile-top" style="margin-top: 20px;">
                 
-                <div id="cover-photo-container">
-                    <img id="cover-photo" src="{{asset($coverPhotoLink)}}">
+                <div id="cover-photo-container" style="height:fit-content; min-height:100px;">
+                    <img id="cover-photo" src="<?php if (!$user){echo asset($coverPhotoLink);}?>">
+                     <?php if ($registrantCode){?>
+                    <div id="cover-photo-camera-container">
+                        <img src="<?php echo asset('/images/camera.svg');?>" id="cover-photo-camera-icon" class="icon profile-details-icon">
+                    </div>
+                    <?php } ?>
                 </div>
-                 <?php if ($registrantCode){?>
-                <div id="cover-photo-camera-container">
-                    <img src="<?php echo asset('/images/camera.svg');?>" id="cover-photo-camera-icon" class="icon profile-details-icon">
-                </div>
-                <?php } ?>
+                
               
                 <div id="profile-picture-summary">
                     <div id="profile-picture-container">
-                        <img id="profile-picture" src="{{asset($profilePictureLink)}}">   
+                        <img id="profile-picture" src="<?php if (!$user){echo asset($profilePictureLink);}?>">   
                         <?php if ($registrantCode){?>
                             <div id="profile-picture-camera-container">
                                 <img src="<?php echo asset('images/camera.svg');?>" 
@@ -21,29 +22,29 @@
                         <?php } ?>
                     </div>
                     <div id="profile-summary">
-                        <h4 id="profile-account-name-view"></h4>
-                        <p id="profile-registrations-view"></p>
+                        <h4 id="profile-account-name-view">{{$accountName}}</h4>
+                        <p id="profile-registrations-view">{{$registrations}}</p>
                     </div>
                 </div>
         </div>
 
         <div style="margin-top: 80px;">
-             <em class="profile-details-view" id="profile-description-view-searched"></em>
+             <em class="profile-details-view" id="profile-description-view-searched">{{$registrantDescription}}</em>
         </div>
        
-           
         <?php if ($registrantCode){?>
+        <?php if (!$user){?>
         <div id="profile-details">    
             <div id="profile-details-top">
                 <h5 id="details">My Details</h5>
                 <?php if ($registrantCode){?>
                 <div id="edit-profile-details-button">
-                    <img src="<?php echo asset('/assets/images/edit.svg');?>">
+                    <img src="<?php echo asset('/images/edit.svg');?>">
                 </div> 
                 <?php } ?>
             </div>
 
-            <em class="profile-details-view" id="profile-description-view"></em>
+            <em class="profile-details-view" id="profile-description-view">{{$registrantDescription}}</em>
         
             <hr>
 
@@ -52,17 +53,17 @@
                        
                         <?php if ($type=='Personal') { ?>
                             
-                            <p class="profile-details-view" id="profile-first-name-view"></p>
+                            <p class="profile-details-view" id="profile-first-name-view">First Name:  {{$firstName}}</p>
                         
-                            <p class="profile-details-view" id="profile-middle-name-view"></p>
+                            <p class="profile-details-view" id="profile-middle-name-view">Middle Name:  {{$middleName}}</p>
                             
-                            <p class="profile-details-view" id="profile-last-name-view"></p>
+                            <p class="profile-details-view" id="profile-last-name-view">Last Name: {{$lastName}}</p>
                         
                         <?php } ?>
 
                         <?php if($type=='School') {?>
-                            <p class="profile-details-view" id="profile-school-name-view"></p>
-                            <p class="profile-details-view" id="profile-school-category-view"></p>      
+                            <p class="profile-details-view" id="profile-school-name-view">Name: {{$accountName}}</p>
+                            <p class="profile-details-view" id="profile-school-category-view">{{$basicRegistration}}</p>      
                         <?php } ?>
 
                         <p class="profile-details-view" id="profile-username-view"></p>
@@ -95,6 +96,7 @@
 
     </div>        
     <?php } ?>     
+    <?php } ?>
 </div>
 
 

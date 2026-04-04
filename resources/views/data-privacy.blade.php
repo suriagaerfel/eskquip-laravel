@@ -1,8 +1,3 @@
-
-@php
-    $pageName = 'Data Privacy';
-@endphp
-
 <x-main>
     @include('components/head')
     @include('components/header')

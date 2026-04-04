@@ -1,8 +1,3 @@
-
-@php
-    $pageName = 'About Us';
-@endphp
-
 <x-main>
     @include('components/head')
     @include('components/header')

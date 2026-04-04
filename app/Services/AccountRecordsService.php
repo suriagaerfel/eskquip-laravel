@@ -8,10 +8,10 @@ use Carbon\Carbon;
 
 
 
-class MyInitialRecordsService
+class AccountRecordsService
 {
   
-       public function initialize_my_records ($registrantCode)
+       public function get_profile_records ($registrantCode)
     {
 
         $currentTime = now();;
@@ -44,6 +44,8 @@ class MyInitialRecordsService
         $school = '';
         $occupation = '';
 
+        $registrations='';
+        
         $street_subd_village = '';
         $barangay = '';
         $city_municipality = '';
@@ -439,7 +441,8 @@ class MyInitialRecordsService
         } 
 
 
-     $initial_records= [
+     $account_records= [
+
         'registrantCode' => $registrantCode,
         'loggedIn'=>$loggedIn,
         'registrantId' => $registrantId,
@@ -460,6 +463,7 @@ class MyInitialRecordsService
          'education'=>$education,
          'school'=>$school,
          'occupation'=>$occupation,
+         'registrations'=>$registrations,
          'street_subd_village'=>$street_subd_village,
          'barangay'=>$barangay,
          'city_municipality'=>$city_municipality,
@@ -503,7 +507,7 @@ class MyInitialRecordsService
          'filledOutSellingDetails'=>$filledOutSellingDetails
     ];
 
- return $initial_records;
+    return $account_records;
    
 
 

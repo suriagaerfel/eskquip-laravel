@@ -1,8 +1,3 @@
-
-@php
-    $pageName = 'Workspace - Teacher';
-@endphp
-
 <x-main>
     @include('components/head')
     @include('components/header')

@@ -2,206 +2,76 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PageController;
+use App\Http\Middleware\AccountRecordsMiddleware;
 
 
-Route::get('/', function () {
-    
-    return view('home');
-});
 
-Route::get('/articles', function () {
-    return view('articles');
-});
 
-Route::get('/teacher-files', function () {
-    return view('teacher-files');
-});
 
-Route::get('/researches', function () {
-    return view('researches');
-});
 
-Route::get('/tools', function () {
-    return view('tools');
-});
+Route::get('/', [PageController::class, 'home']);
+Route::get('/articles', [PageController::class, 'articles']);
+Route::get('/teacher-files', [PageController::class, 'articles']);
+Route::get('/resesarches', [PageController::class, 'researches']);
+Route::get('/tools', [PageController::class, 'tools']);
+Route::get('/login', [PageController::class, 'login']);
+Route::get('/create-account', [PageController::class, 'create_account']);
+Route::get('/account', [PageController::class, 'account']);
+Route::get('/get-password-reset-link', [PageController::class, 'get_password_reset_link']);
+Route::get('/reset-password', [PageController::class, 'reset_password']);
+Route::get('/search', [PageController::class, 'search']);
+Route::get('/messages', [PageController::class, 'messages']);
+Route::get('/about-us', [PageController::class, 'about_us']);
+Route::get('/terms-of-use', [PageController::class, 'terms_of_use']);
+Route::get('/data-privacy', [PageController::class, 'data_privacy']);
+Route::get('/workspace/writer', [PageController::class, 'workspace_writer']);
+Route::get('/workspace/editor', [PageController::class, 'workspace_editor']);
+Route::get('/workspace/teacher', [PageController::class, 'workspace_teacher']);
+Route::get('/workspace/developer', [PageController::class, 'workspace_developer']);
+Route::get('/workspace/researches', [PageController::class, 'workspace_researches']);
+Route::get('/workspace/website-manager', [PageController::class, 'workspace_website_manager']);
 
+Route::get('/articles/read/{slug}', [PageController::class, 'articles']);
+Route::get('/articles/category/{category}', [PageController::class, 'articles']);
+Route::get('/articles/tag/{tag}', [PageController::class, 'articles']);
+Route::get('/articles/writer/{owner}', [PageController::class, 'articles']);
+Route::get('/articles/date/{date}', [PageController::class, 'articles']);
 
-Route::get('/login', function () {
-    return view('login');
-});
 
-Route::get('/create-account', function () {
-    return view('create-account');
-});
+Route::get('/teacher-files/view/{slug}', [PageController::class, 'teacher_files']);
+Route::get('/teacher-files/category/{category}', [PageController::class, 'teacher_files']);
+Route::get('/teacher-files/tag/{tag}', [PageController::class, 'teacher_files']);
+Route::get('/teacher-files/teacher/{owner}',[PageController::class, 'teacher_files']);
+Route::get('/teacher-files/date/{date}', [PageController::class, 'teacher_files']);
 
-Route::get('/account', function () {
-    return view('account');
-});
 
 
-Route::get('/get-password-reset-link', function () {
-    return view('get-password-reset-link');
-});
 
-Route::get('/reset-password', function () {
-    return view('reset-password');
-});
 
-Route::get('/search', function () {
-    return view('search');
-});
 
+Route::get('/researches/view/{slug}', [PageController::class, 'researches']);
+Route::get('/researches/category/{category}',[PageController::class, 'researches']);
+Route::get('/researches/tag/{tag}', [PageController::class, 'researches']);
+Route::get('/researches/school/{owner}', [PageController::class, 'researches']);
+Route::get('/researches/date/{date}',[PageController::class, 'researches']);
 
-Route::get('/messages', function () {
-    return view('messages');
-});
 
-Route::get('/about-us', function () {
-    return view('about-us');
-});
 
-Route::get('/terms-of-use', function () {
-    return view('terms-of-use');
-});
 
-Route::get('/data-privacy', function () {
-    return view('data-privacy');
-});
 
+Route::get('/tools/category/{category}', [PageController::class, 'tools']);
+Route::get('/tools/tag/{tag}', [PageController::class, 'tools']);
+Route::get('/tools/developer/{owner}', [PageController::class, 'tools']);
+Route::get('/tools/date/{date}', [PageController::class, 'tools']);
 
 
 
-Route::get('/workspace/writer', function () {
-    return view('workspace-writer');
-});
 
-Route::get('/workspace/editor', function () {
-    return view('workspace-editor');
-});
 
-Route::get('/workspace/teacher', function () {
-    return view('workspace-teacher');
-});
 
-Route::get('/workspace/researches', function () {
-    return view('workspace-researches');
-});
 
-Route::get('/workspace/developer', function () {
-    return view('workspace-developer');
-});
-
-Route::get('/workspace/website-manager', function () {
-    return view('workspace-website-manager');
-});
-
-
-
-
-
-
-
-
-
-Route::get('/articles/read/{slug}', function ($slug) {
-    return view('articles', ['slug' => $slug]);
-});
-
-Route::get('/articles/category/{category}', function ($category) {
-    return view('articles', ['category' => $category]);
-});
-
-Route::get('/articles/tag/{tag}', function ($tag) {
-    return view('articles', ['tag' => $tag]);
-});
-
-Route::get('/articles/writer/{owner}', function ($owner) {
-    return view('articles', ['owner' => $owner]);
-});
-
-Route::get('/articles/date/{date}', function ($date) {
-    return view('articles', ['date' => $date]);
-});
-
-
-
-Route::get('/teacher-files/view/{slug}', function ($slug) {
-    return view('teacher-files', ['slug' => $slug]);
-});
-
-
-Route::get('/teacher-files/category/{category}', function ($category) {
-    return view('teacher-files', ['category' => $category]);
-});
-
-Route::get('/teacher-files/tag/{tag}', function ($tag) {
-    return view('teacher-files', ['tag' => $tag]);
-});
-
-Route::get('/teacher-files/teacher/{owner}', function ($owner) {
-    return view('teacher-files', ['owner' => $owner]);
-});
-
-Route::get('/teacher-files/date/{date}', function ($date) {
-    return view('teacher-files', ['date' => $date]);
-});
-
-
-
-
-
-
-Route::get('/researches/view/{slug}', function ($slug) {
-    return view('researches', ['slug' => $slug]);
-});
-
-Route::get('/researches/category/{category}', function ($category) {
-    return view('researches', ['category' => $category]);
-});
-
-Route::get('/researches/tag/{tag}', function ($tag) {
-    return view('researches', ['tag' => $tag]);
-});
-
-Route::get('/researches/school/{owner}', function ($owner) {
-    return view('researches', ['owner' => $owner]);
-});
-
-Route::get('/researches/date/{date}', function ($date) {
-    return view('researches', ['date' => $date]);
-});
-
-
-
-
-
-Route::get('/tools/category/{category}', function ($category) {
-    return view('tools', ['category' => $category]);
-});
-
-Route::get('/tools/tag/{tag}', function ($tag) {
-    return view('tools', ['tag' => $tag]);
-});
-
-Route::get('/tools/developer/{owner}', function ($owner) {
-    return view('tools', ['owner' => $owner]);
-});
-
-Route::get('/tools/date/{date}', function ($date) {
-    return view('tools', ['date' => $date]);
-});
-
-
-
-
-
-
-
-Route::get('/{user}', function ($user) {
-    return view('home', ['user' => $user]);
-});
-
-
+Route::get('/{user}', [PageController::class, 'user']);
 Route::post('/get-profile', [AccountController::class, 'get_profile']);
 Route::post('/login', [AccountController::class, 'login']);
 Route::post('/create-account', [AccountController::class, 'create_account']);

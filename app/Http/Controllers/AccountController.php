@@ -6,11 +6,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Registration;
+use App\Services\AccountRecordsService;
 use Illuminate\Support\Facades\Route;
 
 use App\Services\MailService;
 use App\Services\FunctionsService;
-use App\Services\MyInitialRecordsService;
+
 
 
 
@@ -473,9 +474,9 @@ class AccountController extends Controller
 
 
 
-     public function logout_ajax (){
+     public function logout_ajax (Request $request){
             $conn = config('app.conn');
-            $registrantId= config('app.registrantId');
+            $registrantId= $request->input('registrant_id');
             $activityContent='Logged out';
 
             $sql = "INSERT INTO registrant_activities (registrant_activityUserId,registrant_activityContent) VALUES (?,?)";
@@ -592,7 +593,7 @@ class AccountController extends Controller
 
 
 
-    public function get_profile (MyInitialRecordsService $service, Request $request){
+    public function get_profile (AccountRecordsService $service, Request $request){
 
         if ($request->input('get_profile_submit')){
       
@@ -606,107 +607,105 @@ class AccountController extends Controller
         $responses = [];
 
 
-        if ($homeSearchedUser){
+         if ($homeSearchedUser){
 
-            $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantUsername = ?");
-            $stmt->execute([$homeSearchedUser]);
-            $homeSearchedUserInfo = $stmt->fetch();
+        $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantUsername = ?");
+        $stmt->execute([$homeSearchedUser]);
+        $homeSearchedUserInfo = $stmt->fetch();
 
-            if($homeSearchedUserInfo) {
-                $homeSearchedUserId=$homeSearchedUserInfo ['registrantId'];
-                $homeSearchedUserAccountName = $homeSearchedUserInfo ['registrantAccountName'];
-                $homeSearchedUserDescription = $homeSearchedUserInfo ['registrantDescription'];
-
-
-                $homeSearchedUserType = $homeSearchedUserInfo['registrantAccountType'];
-                
-                $homeSearchedUserProfilePictureLink = $homeSearchedUserInfo['registrantProfilePictureLink'] ? asset($homeSearchedUserInfo['registrantProfilePictureLink']) : asset("/images/user.svg");
-                $homeSearchedUserCoverPhotoLink = $homeSearchedUserInfo['registrantCoverPhotoLink'] ? asset($homeSearchedUserInfo['registrantCoverPhotoLink']) : asset("/images/cover-photo.jpeg");
-
-                $homeSearchedUserBasicRegistration = $homeSearchedUserInfo['registrantBasicAccount'];
-                $homeSearchedUserTeacherRegistration = $homeSearchedUserInfo['registrantTeacherAccount'];
-                $homeSearchedUserWriterRegistration = $homeSearchedUserInfo['registrantWriterAccount'];
-                $homeSearchedUserEditorRegistration = $homeSearchedUserInfo['registrantEditorAccount'];
-                $homeSearchedUserWebsiteManagerRegistration = '';
-                $homeSearchedUserDeveloperRegistration = $homeSearchedUserInfo['registrantDeveloperAccount'];
+        if($homeSearchedUserInfo) {
+            $homeSearchedUserId=$homeSearchedUserInfo ['registrantId'];
+            $homeSearchedUserAccountName = $homeSearchedUserInfo ['registrantAccountName'];
+            $homeSearchedUserDescription = $homeSearchedUserInfo ['registrantDescription'];
 
 
-
-                $stmt = $conn->prepare("SELECT * FROM website_manager_accounts WHERE website_manager_accountRegistrant = ?");
-                $stmt->execute([$homeSearchedUserId]);
-                $homeSearchedUserWebsiteManagerRegistrations = $stmt->fetch();
-
-                    if ($homeSearchedUserWebsiteManagerRegistrations){
-                            $homeSearchedUserWebsiteManagerSuperManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountSuperManager'];
-
-                            $homeSearchedUserWebsiteManagerSubscriptionManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountSubscriptionManager'];
-
-                            $homeSearchedUserWebsiteManagerRegistrationManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountRegistrationManager'];
-
-                            $homeSearchedUserWebsiteManagerPromotionManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountPromotionManager'];
-
-                            $homeSearchedUserWebsiteManagerMessageManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountMessageManager'];
-                    
-                            if ($homeSearchedUserWebsiteManagerSuperManagerRegistration ||            $homeSearchedUserWebsiteManagerSubscriptionManagerRegistration || $homeSearchedUserWebsiteManagerRegistrationManagerRegistration || $homeSearchedUserWebsiteManagerPromotionManagerRegistration || $homeSearchedUserWebsiteManagerMessageManagerRegistration){
-                            $homeSearchedUserWebsiteManagerRegistration = 'Website Manager';
-                        }
-                    }
-
-
-
-                $homeSearchedUserRegistrations = [];
-                
-                if ($homeSearchedUserBasicRegistration) {
-                    array_push($homeSearchedUserRegistrations,$homeSearchedUserBasicRegistration);
-                }
-
-                if ($homeSearchedUserTeacherRegistration) {
-                    array_push($homeSearchedUserRegistrations,$homeSearchedUserTeacherRegistration);
-                }
-
-                if ($homeSearchedUserWriterRegistration) {
-                    array_push($homeSearchedUserRegistrations,$homeSearchedUserWriterRegistration);
-                }
-                if ($homeSearchedUserEditorRegistration) {
-                    array_push($homeSearchedUserRegistrations,$homeSearchedUserEditorRegistration);
-                }
-
-                if ($homeSearchedUserDeveloperRegistration) {
-                    array_push($homeSearchedUserRegistrations,$homeSearchedUserDeveloperRegistration);
-                }
-
-                if ($homeSearchedUserWebsiteManagerRegistration) {
-                    array_push($homeSearchedUserRegistrations,$homeSearchedUserWebsiteManagerRegistration);
-                }
-
-                if ($homeSearchedUserRegistrations){
-                    $homeSearchedUserRegistrations =implode(' | ',$homeSearchedUserRegistrations);
-                }
-
-                if ($homeSearchedUserId==$registrantId) {
-                    $responses ['current-account'] = true;
-                } 
-
-                $_SESSION ['home-searched-user-id'] = $homeSearchedUserId;
-                $responses ['id'] = $homeSearchedUserId;
-                $responses ['type'] = $homeSearchedUserType;
-                $responses ['account-name'] = $homeSearchedUserAccountName;
-                $responses ['registrations'] = $homeSearchedUserRegistrations;
-                $responses ['profile-picture-link'] = $homeSearchedUserProfilePictureLink;
-                $responses ['cover-photo-link'] = $homeSearchedUserCoverPhotoLink;
-                $responses ['description'] = $homeSearchedUserDescription;
-
+            $homeSearchedUserType = $homeSearchedUserInfo['registrantAccountType'];
             
-            } else {
-                $responses ['no-account'] = true;
+             $homeSearchedUserProfilePictureLink = $homeSearchedUserInfo['registrantProfilePictureLink'] ? asset($homeSearchedUserInfo['registrantProfilePictureLink']) :asset("/images/user.svg");
+            $homeSearchedUserCoverPhotoLink = $homeSearchedUserInfo['registrantCoverPhotoLink'] ? asset($homeSearchedUserInfo['registrantCoverPhotoLink']) : asset("/images/cover-photo.jpeg");
+
+            $homeSearchedUserBasicRegistration = $homeSearchedUserInfo['registrantBasicAccount'];
+            $homeSearchedUserTeacherRegistration = $homeSearchedUserInfo['registrantTeacherAccount'];
+            $homeSearchedUserWriterRegistration = $homeSearchedUserInfo['registrantWriterAccount'];
+            $homeSearchedUserEditorRegistration = $homeSearchedUserInfo['registrantEditorAccount'];
+            $homeSearchedUserWebsiteManagerRegistration = '';
+            $homeSearchedUserDeveloperRegistration = $homeSearchedUserInfo['registrantDeveloperAccount'];
+
+
+
+             $stmt = $conn->prepare("SELECT * FROM website_manager_accounts WHERE website_manager_accountRegistrant = ?");
+            $stmt->execute([$homeSearchedUserId]);
+            $homeSearchedUserWebsiteManagerRegistrations = $stmt->fetch();
+
+
+                if ($homeSearchedUserWebsiteManagerRegistrations){
+                        $homeSearchedUserWebsiteManagerSuperManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountSuperManager'];
+
+                        $homeSearchedUserWebsiteManagerSubscriptionManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountSubscriptionManager'];
+
+                        $homeSearchedUserWebsiteManagerRegistrationManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountRegistrationManager'];
+
+                        $homeSearchedUserWebsiteManagerPromotionManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountPromotionManager'];
+
+                        $homeSearchedUserWebsiteManagerMessageManagerRegistration = $homeSearchedUserWebsiteManagerRegistrations ['website_manager_accountMessageManager'];
+                
+                        if ($homeSearchedUserWebsiteManagerSuperManagerRegistration ||            $homeSearchedUserWebsiteManagerSubscriptionManagerRegistration || $homeSearchedUserWebsiteManagerRegistrationManagerRegistration || $homeSearchedUserWebsiteManagerPromotionManagerRegistration || $homeSearchedUserWebsiteManagerMessageManagerRegistration){
+                        $homeSearchedUserWebsiteManagerRegistration = 'Website Manager';
+                    }
+                }
+
+
+
+            $homeSearchedUserRegistrations = [];
+            
+            if ($homeSearchedUserBasicRegistration) {
+                array_push($homeSearchedUserRegistrations,$homeSearchedUserBasicRegistration);
             }
 
-        
+            if ($homeSearchedUserTeacherRegistration) {
+                array_push($homeSearchedUserRegistrations,$homeSearchedUserTeacherRegistration);
+            }
+
+            if ($homeSearchedUserWriterRegistration) {
+                array_push($homeSearchedUserRegistrations,$homeSearchedUserWriterRegistration);
+            }
+            if ($homeSearchedUserEditorRegistration) {
+                array_push($homeSearchedUserRegistrations,$homeSearchedUserEditorRegistration);
+            }
+
+            if ($homeSearchedUserDeveloperRegistration) {
+                array_push($homeSearchedUserRegistrations,$homeSearchedUserDeveloperRegistration);
+            }
+
+            if ($homeSearchedUserWebsiteManagerRegistration) {
+                array_push($homeSearchedUserRegistrations,$homeSearchedUserWebsiteManagerRegistration);
+            }
+
+            if ($homeSearchedUserRegistrations){
+                $homeSearchedUserRegistrations =implode(' | ',$homeSearchedUserRegistrations);
+            }
+
+            if ($homeSearchedUserId==$registrantId) {
+                $responses ['current-account'] = true;
+            } 
+
+            $_SESSION ['home-searched-user-id'] = $homeSearchedUserId;
+            $responses ['id'] = $homeSearchedUserId;
+            $responses ['type'] = $homeSearchedUserType;
+            $responses ['account-name'] = $homeSearchedUserAccountName;
+            $responses ['registrations'] = $homeSearchedUserRegistrations;
+            $responses ['profile-picture-link'] = $homeSearchedUserProfilePictureLink;
+            $responses ['cover-photo-link'] = $homeSearchedUserCoverPhotoLink;
+            $responses ['description'] = $homeSearchedUserDescription;
+
+           
+        } else {
+            $responses ['no-account'] = true;
         }
 
+     
+    }
 
-
-        
 
         if ($responses) {
             header('Content-Type: application/json');
@@ -715,6 +714,10 @@ class AccountController extends Controller
         } 
     }
     }
+
+
+
+
     
 
         

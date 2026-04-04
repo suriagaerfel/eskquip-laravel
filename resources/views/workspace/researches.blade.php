@@ -1,7 +1,3 @@
-@php
-    $pageName = 'Workspace - Developer';
-@endphp
-
 <x-main>
     @include('components/head')
     @include('components/header')

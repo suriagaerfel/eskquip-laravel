@@ -2,14 +2,21 @@
     <input type="text" id="website-name-hidden" value="<?php echo $publicFolder;?>" hidden >
     <input type="text" id="page-name" value="<?php echo $pageName;?>" hidden >
     <input type="text" id="registrant-id" value="<?php echo $registrantId;?>" hidden >
-    <?php if ($registrantCode) {?>
+
+    
     <input type="text" id="registrant-code" value="<?php echo $registrantCode; ?>" hidden>
-    <?php  } ?>
+  
+
     <input type="text" id="account-name" value="<?php echo $accountName;?>"  hidden>
     <input type="text" id="private-folder" value="<?php echo $privateFolder;?>" hidden>
     <input type="text" id="public-folder" value="<?php echo $publicFolder;?>" hidden>
+
+    
     <input type="text" id="home-searched-user" value="<?php echo $user;?>"hidden>
+
+    <?php if (str_contains($currentURL, '/articles') || str_contains($currentURL,'/teacher-files') || str_contains($currentURL,'/researches') || str_contains($currentURL,'/tools')){ ?>
     <input type="text" id="content-slug" value="<?php echo $slug; ?>" hidden>
+    <?php } ?>
     
     <?php if ($pageName != 'Create Account' && $pageName != 'Login' && $pageName != 'Get Password Link') {?>
     <div class="header">

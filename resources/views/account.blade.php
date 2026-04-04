@@ -1,12 +1,3 @@
-
-
-
-@php
-    $pageName = 'My Account';
-@endphp
-
-
-
 <x-main>
     @include('components/head')
     @include('components/header')

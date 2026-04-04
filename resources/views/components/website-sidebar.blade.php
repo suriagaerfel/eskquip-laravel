@@ -23,13 +23,13 @@
 
     <?php if ($registrantCode) {?>
         <?php if ($websiteManagerSuperManagerRegistration) {?>
-            <?php if (!$slug) {?>
-                <?php if ($pageName != 'Home') {?>
+            <?php if (str_contains($currentURL, '/articles') || str_contains($currentURL,'/teacher-files') || str_contains($currentURL,'/researches') || str_contains($currentURL,'/tools')) {?>
+            
                     <div style="display: flex; gap:10px; margin-top:-20px;">
                         <input type="text" id="new-category" placeholder="Type and press ENTER to add category...">
                         <small class="link-tag-button" id="show-all-categories">SHOW ALL CATEGORIES</small>
                     </div>
-                <?php } ?>
+            
             <?php } ?>
         <?php } ?>
     <?php } ?>

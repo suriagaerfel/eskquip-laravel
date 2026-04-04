@@ -2,9 +2,9 @@
 
 
 if ($pageName=="My Account") { 
-    if(!$loggedIn){
-    header('Location:'.$publicFolder.'/login');
-    }
+    // if(!$loggedIn){
+    // header('Location:'.$publicFolder.'/login');
+    // }
 }
 
 if ($pageName=="File Purchase") { 
@@ -15,35 +15,35 @@ if ($pageName=="File Purchase") {
 
 
 
-if ($pageName=="Messages") { 
-    if(!$loggedIn){
-    header('Location:'.$publicFolder.'/login');
-    } 
-}
+// if ($pageName=="Messages") { 
+//     if(!$loggedIn){
+//     header('Location:'.$publicFolder.'/login');
+//     } 
+// }
 
-if ($pageName=="Notifications") { 
-    if(!$loggedIn){
-    header('Location:'.$publicFolder.'/login');
-    } else {
-        if(!$developerRegistration){
-    header('Location:'.$publicFolder.'/account');
-    }
-    } 
-}
+// if ($pageName=="Notifications") { 
+//     if(!$loggedIn){
+//     header('Location:'.$publicFolder.'/login');
+//     } else {
+//         if(!$developerRegistration){
+//     header('Location:'.$publicFolder.'/account');
+//     }
+//     } 
+// }
 
 
 
-if ($pageName=="Login") { 
-    if ($loggedIn) {
-    header('Location:'.$publicFolder.'/account');
-    }
-}
+// if ($pageName=="Login") { 
+//     if ($loggedIn) {
+//     header('Location:'.$publicFolder.'/account');
+//     }
+// }
 
-if ($pageName=="Create Account") { 
-     if ($loggedIn) {
-    header('Location:'.$publicFolder.'/account');
-    }
-}
+// if ($pageName=="Create Account") { 
+//      if ($loggedIn) {
+//     header('Location:'.$publicFolder.'/account');
+//     }
+// }
 
 if ($pageName=="Get Password Reset Link") { 
      if ($loggedIn) {
