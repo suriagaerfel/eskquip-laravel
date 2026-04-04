@@ -19,7 +19,7 @@ Route::get('/login', [PageController::class, 'login'])->name('login');
 Route::get('/create-account', [PageController::class, 'create_account'])->name('create-account');
 Route::get('/account', [PageController::class, 'account']);
 Route::get('/get-password-reset-link', [PageController::class, 'get_password_reset_link'])->name('get-password-reset-link');
-Route::get('/reset-password', [PageController::class, 'reset_password']);
+Route::get('/reset-password/{userCode}/{token}', [PageController::class, 'reset_password']);
 Route::get('/search', [PageController::class, 'search']);
 Route::get('/messages', [PageController::class, 'messages']);
 Route::get('/about-us', [PageController::class, 'about_us']);
@@ -72,6 +72,7 @@ Route::get('/tools/date/{date}', [PageController::class, 'tools']);
 
 
 Route::get('/{user}', [PageController::class, 'user']);
+Route::post('/get-password-reset-link', [AccountController::class, 'get_password_reset_link']);Route::post('/reset-password', [AccountController::class, 'reset_password']);
 Route::post('/get-profile', [AccountController::class, 'get_profile']);
 Route::post('/login', [AccountController::class, 'login']);
 Route::post('/create-account', [AccountController::class, 'create_account']);

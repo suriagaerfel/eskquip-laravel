@@ -614,9 +614,10 @@ class AccountController extends Controller
                 array_push($responses ['error'], $error);
 
             } else {
-                $sql = "SELECT * FROM registrations WHERE registrantEmailAddress = '$credential' or registrantUsername = '$credential'";
-                $result = mysqli_query($conn, $sql);
-                $registrant = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+                $stmt = $conn->prepare("SELECT * FROM registrations WHERE registrantEmailAddress = ? or registrantUsername = ?");
+                $stmt->execute([$credential,$credential]);
+                $registrant = $stmt->fetch();
 
                 if (!$registrant) {
                     $error = "We could not find the record.";
@@ -627,7 +628,7 @@ class AccountController extends Controller
             if (!$responses ['error']){
 
                 $receivingEmail = $registrant ['registrantEmailAddress'];
-                $userID = $registrant ['registrantId'];
+                $userCode = $registrant ['registrantCode'];
 
                 $token = bin2hex(random_bytes(16));
 
@@ -635,25 +636,21 @@ class AccountController extends Controller
 
                 $tokenHashExpiration = date("Y-m-d H:i:s",time()+ 60 * 30);
 
-                $sql = "UPDATE registrations 
+                $stmt = $conn->prepare("UPDATE registrations 
                         SET resetTokenHash = ?,
                             resetTokenHashExpiration = ?
-                            WHERE registrantUsername=? or registrantEmailAddress = ?";
+                            WHERE registrantUsername=? or registrantEmailAddress = ?");
+
+                $stmt->execute([$tokenHash,$tokenHashExpiration,$credential,$credential]);
 
 
-                $stmt =$conn->prepare($sql);
-
-                $stmt ->bind_param("ssss",$tokenHash,$tokenHashExpiration,$credential,$credential);
-
-                $stmt-> execute();
-
-
-
-                 $mailerSubject = 'Password Reset Link';
+                $mailerSubject = 'Password Reset Link';
 
                 $mailerBody = <<<END
                 
-                <p>Click <a href='$publicFolder/reset-password/$userID/$tokenHash'> here </a> to reset your password.\nThe link will expire after 30 minutes.</p>
+                <p>Click <a href='$publicFolder/reset-password/$userCode/$tokenHash'> here </a> to reset your password.</p>
+                
+                <p>The link will expire after 30 minutes.</p>
            
             END;
 
@@ -676,6 +673,70 @@ class AccountController extends Controller
 
         }
     }
+
+    //Reset password
+    public function reset_password (Request $request){
+
+        $conn=config('app.conn');
+        
+        if($request->input('reset_password_submit')) {
+        
+            $userCode = htmlspecialchars($_POST['user_code']);
+            $newPassword = htmlspecialchars($_POST['new_password']);
+            $newPasswordRetype = htmlspecialchars($_POST['new_password_retype']);
+
+            $responses = [];
+            $responses ['error'] = [];
+
+
+
+            if (!$newPassword){
+                $error = 'Please provide your new password.';
+                array_push($responses ['error'], $error);
+            } else {
+                if (!$newPasswordRetype){
+                $error = 'Please retype your new password.';
+                array_push($responses ['error'], $error);
+                } else {
+                    if ($newPassword!==$newPasswordRetype) {
+                    $error = 'Passwords do not match.';
+                    array_push($responses ['error'], $error); 
+                    }
+                }
+            }
+
+
+                if (!$responses ['error']) {
+                    $pwdHash = password_hash($newPassword, PASSWORD_DEFAULT);   
+                   
+                    $stmt = $conn->prepare("UPDATE registrations 
+                                    SET registrantPassword = ?
+                                        WHERE registrantCode = ?");
+                    $stmt->execute([$pwdHash,$userCode]);
+
+                    $responses ['status'] = 'Successful';
+                    $responses ['success-message'] = 'Password has been reset successfully. You will be redirected to the login page shortly...';
+                } 
+                    
+                else {
+                    $responses ['status'] = 'Unsuccessful';
+                }
+
+
+                if ($responses) {
+                header('Content-Type: application/json');
+                $jsonResponses = json_encode($responses,JSON_PRETTY_PRINT);
+                echo  $jsonResponses;
+                } 
+        
+
+        }
+   
+    }
+
+
+
+
 
     public function get_profile (AccountRecordsService $service, Request $request){
 

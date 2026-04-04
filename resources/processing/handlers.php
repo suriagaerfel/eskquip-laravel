@@ -1,17 +1,17 @@
 <?php 
 
 
-if ($pageName=="My Account") { 
-    // if(!$loggedIn){
-    // header('Location:'.$publicFolder.'/login');
-    // }
-}
+// if ($pageName=="My Account") { 
+//     // if(!$loggedIn){
+//     // header('Location:'.$publicFolder.'/login');
+//     // }
+// }
 
-if ($pageName=="File Purchase") { 
-    if($loggedIn){
-    header('Location:'.$publicFolder.'/login');
-    }
-}
+// if ($pageName=="File Purchase") { 
+//     if($loggedIn){
+//     header('Location:'.$publicFolder.'/login');
+//     }
+// }
 
 
 
@@ -108,41 +108,41 @@ if ($pageName=="File Purchase") {
 
 
 
-if ($pageName =="Reset Password") {
-    $userIdReset = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : "" ;
-    $tokenReset = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : "" ;
+// if ($pageName =="Reset Password") {
+//     $userIdReset = isset($_GET['userid']) ? htmlspecialchars($_GET['userid']) : "" ;
+//     $tokenReset = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : "" ;
     
-    $sqlValidate = "SELECT * FROM registrations WHERE registrantId= '$userIdReset'";
-    $sqlValidateResult = mysqli_query($conn,$sqlValidate);
-    $validated = $sqlValidateResult->fetch_assoc();
+//     $sqlValidate = "SELECT * FROM registrations WHERE registrantId= '$userIdReset'";
+//     $sqlValidateResult = mysqli_query($conn,$sqlValidate);
+//     $validated = $sqlValidateResult->fetch_assoc();
 
-    if ($validated) {
-        $expiration = strtotime($validated['resetTokenHashExpiration']);
-        $tokenHash = $validated['resetTokenHash'];
+//     if ($validated) {
+//         $expiration = strtotime($validated['resetTokenHashExpiration']);
+//         $tokenHash = $validated['resetTokenHash'];
 
-        if ($tokenReset==$tokenHash) {
+//         if ($tokenReset==$tokenHash) {
                          
-            if ($expiration-time()>0) {
-                $_SESSION ['reset-now'] = "yes";
+//             if ($expiration-time()>0) {
+//                 $_SESSION ['reset-now'] = "yes";
 
-            } else {
-                $_SESSION ['link-expired'] = "yes";
-                header('Location:'.$publicFolder.'/get-password-reset-link');
+//             } else {
+//                 $_SESSION ['link-expired'] = "yes";
+//                 header('Location:'.$publicFolder.'/get-password-reset-link');
 
-            }
+//             }
             
-        } else {
-            $_SESSION['its-not-you'] = "yes";
-            header('Location:'.$publicFolder.'/get-password-reset-link');     
-        }
+//         } else {
+//             $_SESSION['its-not-you'] = "yes";
+//             header('Location:'.$publicFolder.'/get-password-reset-link');     
+//         }
 
-    } else {
-        $_SESSION['account-not-found'] = "yes";
-        header('Location:'.$publicFolder.'/create-account');
+//     } else {
+//         $_SESSION['account-not-found'] = "yes";
+//         header('Location:'.$publicFolder.'/create-account');
         
-    }
+//     }
 
-}
+// }
 
 
 

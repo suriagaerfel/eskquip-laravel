@@ -950,7 +950,7 @@ function getPasswordResetLink() {
     resetAlerts();
     var credential = $("#get-reset-password-link-credential").val();
     $.ajax({
-        url: public_folder + "/get-password-reset-link/" + credential,
+        url: public_folder + "/get-password-reset-link",
         dataType: "json",
         type: "POST",
         async: true,
@@ -976,24 +976,29 @@ function getPasswordResetLink() {
 //reset password
 function resetPassword() {
     resetAlerts();
-    var userid = $("#reset-userid").val();
+    var user_code = $("#reset-user-code").val();
     var new_password = $("#reset-new-password").val();
     var new_password_retype = $("#reset-new-password-retype").val();
 
+    console.log(user_code);
+    console.log(new_password);
+    console.log(new_password_retype);
+
     $.ajax({
         url: public_folder + "/reset-password",
+        dataType: "json",
         type: "POST",
         async: true,
         data: {
-            userid: userid,
+            user_code: user_code,
             new_password: new_password,
             new_password_retype: new_password_retype,
             reset_password_submit: true,
         },
         success: function (responses) {
+            console.log(responses);
             if (responses["status"] == "Unsuccessful") {
                 const errors = responses["error"];
-
                 showInputsErrorMessage(errors);
             }
 
@@ -1002,7 +1007,7 @@ function resetPassword() {
                 showInputsSuccessMessage(success_message);
 
                 setInterval(function () {
-                    var login_page = public_folder + "/login/";
+                    var login_page = public_folder + "/login";
                     window.location.href = login_page;
                 }, 5000);
             }

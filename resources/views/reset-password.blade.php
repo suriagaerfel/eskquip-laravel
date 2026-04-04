@@ -1,4 +1,4 @@
-
+s
 <?php
 
 $pageName = "Reset Password";
@@ -31,7 +31,7 @@ $userIdReset=isset($_GET['userid']) ? $_GET['userid'] : "";
             <div id="change-password-form">
                 <div id="reset-password-message" class="alert alert-danger" style="display: none;"></div>
                 <h5 class="form-title">Reset Password</h5>
-                <input type="text" id="reset-userid" value="<?php echo $userIdReset;?>" hidden>
+                <input type="text" id="reset-user-code" value="{{$userCode}}">
                 <input type="password" id='reset-new-password' placeholder="New Password">
                 <input type="password" id='reset-new-password-retype' placeholder="Retype New Password">
             

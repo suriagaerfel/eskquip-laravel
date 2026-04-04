@@ -155,9 +155,43 @@ class PageController extends Controller
         return view ('get-password-reset-link', compact('pageName','user'));
     }
 
-    public function reset_password (){
+    public function reset_password ($userCode, $token){
         $pageName = 'Reset Password';
-        return view ('reset-password', compact('pageName'));
+        $publicFolder= config('app.publicFolder');
+        $conn= config('app.conn');
+
+        $user = null;
+
+        $stmt= $conn->prepare("SELECT * FROM registrations WHERE registrantCode= ?");
+        $stmt->execute([$userCode]);
+        $user_record= $stmt->fetch();
+
+    if ($user_record) {
+        $expiration = strtotime($user_record['resetTokenHashExpiration']);
+        $real_token = $user_record['resetTokenHash'];
+
+        if ($token==$real_token ) {
+                        
+            if ($expiration-time()>0) {
+                $_SESSION ['reset-now'] = "yes";
+
+            } else {
+                $_SESSION ['link-expired'] = "yes";
+                return redirect($publicFolder.'/get-password-reset-link');
+            }
+            
+        } else {
+            $_SESSION['its-not-you'] = "yes";
+            return redirect($publicFolder.'/create-account');
+        }
+
+    } else {
+        $_SESSION['account-not-found'] = "yes";
+         return redirect($publicFolder.'/create-account');
+        
+    }
+
+        return view ('reset-password', compact('pageName','user','userCode'));
     }
 
 
