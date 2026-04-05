@@ -12,28 +12,28 @@ return new class extends Migration
     public function up(): void
     {
             Schema::create('developer_tools', function (Blueprint $table) {
-            $table->increments('developer_toolId'); // INTEGER PRIMARY KEY AUTO_INCREMENT
+            $table->increments('id'); // INTEGER PRIMARY KEY AUTO_INCREMENT
 
-            $table->longText('developer_toolTitle');
-            $table->string('developer_toolCategory', 64);
-            $table->longText('developer_toolTags');
-            $table->longText('developer_toolDescription');
-            $table->longText('developer_toolImage');
-            $table->string('developer_toolDeveloper', 64);
+            $table->longText('title');
+            $table->string('category', 64);
+            $table->longText('tags');
+            $table->longText('description');
+            $table->longText('image');
+            $table->string('developer', 64);
 
-            $table->timestamp('developer_toolCreatedDate')->useCurrent(); // DEFAULT CURRENT_TIMESTAMP
-            $table->dateTime('developer_toolPubDate');
-            $table->timestamp('developer_toolUpdateDate')
+            $table->timestamp('createdDate')->useCurrent(); // DEFAULT CURRENT_TIMESTAMP
+            $table->dateTime('pubDate');
+            $table->timestamp('ppdateDate')
                 ->useCurrent()
                 ->useCurrentOnUpdate(); // DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
-            $table->integer('developer_toolContentVersion')->default(1);
-            $table->string('developer_toolStatus', 64)->default('Draft');
-            $table->string('developer_toolAccessType', 100)->default('Free Access');
-            $table->integer('developer_toolAmount')->default(0);
-            $table->longText('developer_toolSharedWith');
-            $table->longText('developer_toolSlug');
-            $table->longText('developer_toolContent');
+            $table->integer('contentVersion')->default(1);
+            $table->string('status', 64)->default('Draft');
+            $table->string('accessType', 100)->default('Free Access');
+            $table->integer('amount')->default(0);
+            $table->longText('sharedWith');
+            $table->longText('slug');
+            $table->longText('content');
         });
     }
 

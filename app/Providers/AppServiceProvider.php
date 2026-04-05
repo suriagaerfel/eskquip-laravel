@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use App\Extensions\SessionHandler;
 use Illuminate\Http\Request;
 use App\Helpers\Helpers;
 use PSpell\Config;
@@ -42,6 +44,15 @@ class AppServiceProvider extends ServiceProvider
     {
 
         require_once app_path('Helpers/helpers.php');
+
+
+        Session::extend('eskquip_laravel', function ($app) {
+        $conn= DB::connection();
+        $table = 'sessions';
+        $lifetime = $app['config']['session.lifetime'];
+
+        return new SessionHandler($conn, $table, $lifetime, $app);
+    });
 
         View::composer('*', function ($view) {
             if (!$view->offsetExists('title')) {

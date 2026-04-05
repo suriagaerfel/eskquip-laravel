@@ -162,19 +162,19 @@ class AccountRecordsService
                        
 
                          $websiteManagerRegistrations = DB::table('website_manager_accounts')
-                        ->where('website_manager_accountRegistrant',$registrantId)
+                        ->where('wma_registrantId',$registrantId)
                         ->first();
 
                             if ($websiteManagerRegistrations){
-                                    $websiteManagerSuperManagerRegistration = $websiteManagerRegistrations->website_manager_accountSuperManager;
+                                    $websiteManagerSuperManagerRegistration = $websiteManagerRegistrations->wma_superManager;
 
-                                    $websiteManagerSubscriptionManagerRegistration = $websiteManagerRegistrations->website_manager_accountSubscriptionManager;
+                                    $websiteManagerSubscriptionManagerRegistration = $websiteManagerRegistrations->wma_subscriptionManager;
 
-                                    $websiteManagerRegistrationManagerRegistration = $websiteManagerRegistrations->website_manager_accountRegistrationManager;
+                                    $websiteManagerRegistrationManagerRegistration = $websiteManagerRegistrations->wma_registrationManager;
 
-                                    $websiteManagerPromotionManagerRegistration = $websiteManagerRegistrations->website_manager_accountPromotionManager;
+                                    $websiteManagerPromotionManagerRegistration = $websiteManagerRegistrations->wma_promotionManager;
 
-                                    $websiteManagerMessageManagerRegistration = $websiteManagerRegistrations->website_manager_accountMessageManager;
+                                    $websiteManagerMessageManagerRegistration = $websiteManagerRegistrations->wma_messageManager;
                                 
                                     if ($websiteManagerSuperManagerRegistration ||            $websiteManagerSubscriptionManagerRegistration || $websiteManagerRegistrationManagerRegistration || $websiteManagerPromotionManagerRegistration || $websiteManagerMessageManagerRegistration){
                                         $websiteManagerRegistration = 'Website Manager';
@@ -261,14 +261,14 @@ class AccountRecordsService
 
                         //Check tool subscription                       
                         $inSubscriptionToolList = DB::table('registrant_subscriptions')
-                        ->where('registrant_subscriptionUserId',$registrantId)
-                        ->where('registrant_subscriptionType','Tools')
-                        ->orderBy('registrant_subscriptionId','desc')
+                        ->where('rs_userId',$registrantId)
+                        ->where('rs_type','Tools')
+                        ->orderBy('rs_id','desc')
                         ->first();
 
                         if ($inSubscriptionToolList) {
-                            $subscriptionStatusTool = $inSubscriptionToolList->registrant_subscriptionStatus;
-                            $subscriptionExpiryTool = dcomplete_format($inSubscriptionToolList->registrant_subscriptionExpiry);
+                            $subscriptionStatusTool = $inSubscriptionToolList->rs_status;
+                            $subscriptionExpiryTool = dcomplete_format($inSubscriptionToolList->rs_expiry);
 
 
                             $subscriptionRemainingDaysTool = Carbon::parse($subscriptionExpiryTool)
@@ -297,15 +297,15 @@ class AccountRecordsService
 
                         //Check file subscription
                         $inSubscriptionFileList = DB::table('registrant_subscriptions')
-                        ->where('registrant_subscriptionUserId',$registrantId)
-                        ->where('registrant_subscriptionType','Files')
-                        ->orderBy('registrant_subscriptionId','desc')
+                        ->where('rs_userId',$registrantId)
+                        ->where('rs_type','Files')
+                        ->orderBy('rs_id','desc')
                         ->first();
 
 
                         if ($inSubscriptionFileList) {
-                            $subscriptionStatusFile = $inSubscriptionFileList->registrant_subscriptionStatus;
-                            $subscriptionExpiryFile = dcomplete_format($inSubscriptionFileList->registrant_subscriptionExpiry);
+                            $subscriptionStatusFile = $inSubscriptionFileList->rs_status;
+                            $subscriptionExpiryFile = dcomplete_format($inSubscriptionFileList->rs_expiry);
 
                             $subscriptionRemainingDaysFile = Carbon::parse($subscriptionExpiryFile)
                             ->diffInDays($currentTime, false);
@@ -332,15 +332,15 @@ class AccountRecordsService
 
                         //Check seller subscription
                         $inSubscriptionSellerList = DB::table('registrant_subscriptions')
-                        ->where('registrant_subscriptionUserId',$registrantId)
-                        ->where('registrant_subscriptionType','Seller')
-                        ->orderBy('registrant_subscriptionId','desc')
+                        ->where('rs_userId',$registrantId)
+                        ->where('rs_type','Seller')
+                        ->orderBy('rs_id','desc')
                         ->first();
 
 
                         if ($inSubscriptionSellerList) {
-                            $subscriptionStatusSeller = $inSubscriptionSellerList->registrant_subscriptionStatus;
-                            $subscriptionExpirySeller = dcomplete_format($inSubscriptionSellerList->registrant_subscriptionExpiry);
+                            $subscriptionStatusSeller = $inSubscriptionSellerList->rs_status;
+                            $subscriptionExpirySeller = dcomplete_format($inSubscriptionSellerList->rs_expiry);
 
                             $subscriptionRemainingDaysSeller = Carbon::parse($subscriptionExpirySeller)
                             ->diffInDays($currentTime, false);
@@ -364,16 +364,16 @@ class AccountRecordsService
 
                         //Check shelf subscription
                       $inSubscriptionShelfList = DB::table('registrant_subscriptions')
-                        ->where('registrant_subscriptionUserId',$registrantId)
-                        ->where('registrant_subscriptionType','Shelf')
-                        ->orderBy('registrant_subscriptionId','desc')
+                        ->where('rs_userId',$registrantId)
+                        ->where('rs_type','Shelf')
+                        ->orderBy('rs_id','desc')
                         ->first();
 
 
                         if ($inSubscriptionShelfList) {
-                            $subscriptionStatusShelf = $inSubscriptionShelfList->registrant_subscriptionStatus;
+                            $subscriptionStatusShelf = $inSubscriptionShelfList->rs_tatus;
 
-                            $subscriptionExpiryShelf = dcomplete_format($inSubscriptionShelfList->registrant_subscriptionExpiry);
+                            $subscriptionExpiryShelf = dcomplete_format($inSubscriptionShelfList->rs_expiry);
 
                             $subscriptionRemainingDaysShelf = Carbon::parse($subscriptionExpiryShelf)
                             ->diffInDays($currentTime, false);

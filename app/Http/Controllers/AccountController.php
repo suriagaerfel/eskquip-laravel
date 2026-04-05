@@ -49,7 +49,7 @@ class AccountController extends Controller
                 $firstName = "na";
                 $lastName = "na";
                 $accountName = htmlspecialchars($_POST ['create_school_name']);
-                $birthdate ='0000-00-00';
+                $birthdate =null;
                 $gender = "na";
                 $basicAccount = htmlspecialchars($_POST["create_school_basic_account"]);
             }
@@ -344,6 +344,8 @@ class AccountController extends Controller
 
 
     public function login (Request $request){
+
+        session_start();
        
         //Login
          $conn = config('app.conn');
@@ -422,8 +424,14 @@ class AccountController extends Controller
 
                                                 
                                                     // $request->session()->put('registrant-code', $registrantCode);
+                                                    $session_id= session('id');
 
-                                                    session(['registrant-code' => $registrantCode]);
+                                                    $sql= "UPDATE sessions SET registrant_code = ? WHERE id =  ?";
+
+                                                    $stmt = $conn->prepare($sql);
+                                                    $stmt->execute([$registrantCode,$session_id]);
+
+                                                    session(['registrant_code' => $registrantCode]);
                                                      
                                                     $responses ['login-status'] = 'Successful';
                                                     $responses ['error'] = 'No error';

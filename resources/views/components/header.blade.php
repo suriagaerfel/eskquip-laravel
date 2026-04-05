@@ -1,4 +1,4 @@
-
+    <?php dd(session()->all()); ?>
     <input type="text" id="website-name-hidden" value="<?php echo $publicFolder;?>" hidden >
     <input type="text" id="page-name" value="<?php echo $pageName;?>" hidden >
     <input type="text" id="registrant-id" value="<?php echo $registrantId;?>" hidden >

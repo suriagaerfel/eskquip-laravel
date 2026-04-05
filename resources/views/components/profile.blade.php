@@ -25,7 +25,7 @@
                       
                         <?php if (!$user) {?>  
                         <?php if ($registrantCode){?>
-                             <img src="{{$profilePictureLink}}"> 
+                             <img id='profile-picture' src="{{$profilePictureLink}}"> 
                             <div id="profile-picture-camera-container">
                                 <img src="<?php echo asset('images/camera.svg');?>" 
                                 id="profile-camera-icon" class="icon profile-details-icon">

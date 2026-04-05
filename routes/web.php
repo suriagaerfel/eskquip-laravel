@@ -12,7 +12,7 @@ use App\Http\Middleware\AccountRecordsMiddleware;
 
 Route::get('/', [PageController::class, 'home']);
 Route::get('/articles', [PageController::class, 'articles']);
-Route::get('/teacher-files', [PageController::class, 'articles']);
+Route::get('/teacher-files', [PageController::class, 'teacher_files']);
 Route::get('/researches', [PageController::class, 'researches']);
 Route::get('/tools', [PageController::class, 'tools']);
 Route::get('/login', [PageController::class, 'login'])->name('login');

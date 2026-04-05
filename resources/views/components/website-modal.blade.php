@@ -816,7 +816,7 @@
 
                 
                 <?php if ($type=='School') {?>
-                <a href="<?php echo $website.'/workspace/researches.php'?>" class="link-tag-button" target='_blank'>Researches</a>
+                <a href="<?php echo $publicFolder.'/workspace/researches'?>" class="link-tag-button" target='_blank'>Researches</a>
                 <?php } ?>
             </div>
         </div>
