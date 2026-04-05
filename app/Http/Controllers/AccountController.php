@@ -421,7 +421,10 @@ class AccountController extends Controller
                                                 ]);
 
                                                 
-                                                     $request->session()->put('registrant-code', $registrantCode);
+                                                    // $request->session()->put('registrant-code', $registrantCode);
+
+                                                    session(['registrant-code' => $registrantCode]);
+                                                     
                                                     $responses ['login-status'] = 'Successful';
                                                     $responses ['error'] = 'No error';
                                 
