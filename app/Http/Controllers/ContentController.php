@@ -19,9 +19,8 @@ use App\Services\FunctionsService;
 
 
 
-class AccountController extends Controller
+class ContentController extends Controller
 {   
-    
      public function create_account(Request $request)
     {
         $currentTime = config('app.currentTime');
@@ -745,114 +744,12 @@ class AccountController extends Controller
       
         $conn = config('app.conn');
         $registrantCode = config('app.registrantCode');
-        $registrantId = config('app.registrantId');
+         $registrantId = config('app.registrantId');
 
 
         $homeSearchedUser = htmlspecialchars($_POST['home_searched_user']);
 
-        
-
-
         $responses = [];
-
-
-        if (!$homeSearchedUser){
-            // $registrantCode = session('registrant-code');
-
-            $registrantCode = '2026000004271998';
-
-            $account_records = $service->get_profile_records($registrantCode);
-
-            return $account_records;
-
-            if ($loggedIn) {
-                $responses ['account-name'] = $accountName;
-                $responses ['type'] = $type;
-                $responses ['registrations'] = $registrations;
-                $responses ['profile-picture-link'] = $profilePictureLink;
-                $responses ['cover-photo-link'] = $coverPhotoLink;
-                $responses ['description'] = $registrantDescription;
-
-            
-                $responses ['first-name'] = $firstName;
-                $responses ['middle-name'] = $middleName;
-                $responses ['last-name'] = $lastName;
-                $responses ['birthdate'] = $birthdate;
-            
-                $responses ['registrant-code'] = $registrantCode;
-            
-                $responses ['registrantId']= $registrantId;
-                $responses ['username']= $username;
-                $responses ['email-address']=$emailAddress;
-                $responses ['mobile-number']=$mobileNumber;
-
-                $responses ['birthdate']=dMDY_format($birthdate);
-                $responses ['birthdate-raw']=$birthdate;
-                $responses ['gender']=$gender;
-                $responses ['civil-status']=$civilStatus;
-
-                $responses ['education']=$education;
-                $responses ['school']=$school;
-                $responses ['occupation']=$occupation;
-
-                $responses ['street-subd-village']=$street_subd_village;
-                $responses ['barangay']=$barangay;
-                $responses ['city-municipality']=$city_municipality;
-                $responses ['province-state']=$province_state;
-                $responses ['region']=$region;
-                $responses ['country']=$country;
-                $responses ['zip-code']=$zipcode;
-
-
-                $responses ['basic-registration'] = $basicRegistration;
-                $responses ['teacher-registration']= $teacherRegistration;
-                $responses ['writer-registration'] = $writerRegistration;
-                $responses ['editor-registration'] = $editorRegistration;
-                $responses ['website-manager-registration'] = $websiteManagerRegistration;
-                $responses ['developer-registration'] = $developerRegistration;
-                $responses ['researches-registration'] = $researchesRegistration;
-            
-
-                $responses ['wm-super-manager-registration'] = $websiteManagerSuperManagerRegistration;
-                $responses ['wm-subscription-manager-registration']= $websiteManagerSubscriptionManagerRegistration;
-                $responses ['wm-registration-manager-registration']= $websiteManagerRegistrationManagerRegistration;
-                $responses ['wm-promotion-manager-registration'] = $websiteManagerPromotionManagerRegistration;
-                $responses ['wm-promotion-manager-registration']= $websiteManagerMessageManagerRegistration;
-
-
-                $responses ['in-subscription-seller-list'] = $inSubscriptionSellerList;
-                $responses ['in-subscription-tool-list'] = $inSubscriptionToolList;
-                $responses ['in-subscription-file-list']=$inSubscriptionFileList;
-                $responses ['in-subscription-shelf-list']= $inSubscriptionShelfList;
-
-                $responses ['tool-subscribed'] = $toolSubscribed; 
-            $responses ['file-subscribed'] = $fileSubscribed; 
-                $responses ['seller-subscribed']= $sellerSubscribed;
-            $responses ['shelf-subscribed']= $shelfSubscribed; 
-
-                $responses ['pending-tool-subscription'] = $pendingToolSubscription;
-                $responses ['pending-file-subscription']= $pendingFileSubscription;
-                $responses ['pending-seller-subscription']= $pendingSellerSubscription;
-                $responses ['pending-shelf-subscription']= $pendingShelfSubscription;
-
-
-
-                $responses ['have-other-registration'] = $haveOtherRegistration;
-                $responses ['have-all-registrations'] = $haveAllRegistrations;
-
-                $responses ['filled-out-selling-details'] = $filledOutSellingDetails;
-
-                $responses ['logged-in']=true;
-                
-            } else {
-                $responses ['logged-in']=false;
-            }
-            
-
-
-
-
-        }
 
 
          if ($homeSearchedUser){

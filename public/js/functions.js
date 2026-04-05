@@ -127,7 +127,6 @@ function pageRefresh() {
                         }
 
                         if (page_name == "Messages") {
-                            getProfile();
                             getUnreadMessages();
                             getUnreadUpdates();
                             getMessageUsers();
@@ -139,7 +138,6 @@ function pageRefresh() {
                     }
 
                     if (page_name.includes("Workspace")) {
-                        getProfile();
                         getContentComments();
 
                         if (page_name == "Workspace - Website Manager") {
@@ -167,331 +165,73 @@ function pageRefresh() {
 
     if (home_searched_user) {
         getGeneralRecords();
-        getProfile();
+
         $("#website-sidebar").hide();
         $("#home-page-account-details").show();
     }
 }
 
-function getProfile() {
-    $.ajax({
-        url: public_folder + "/get-profile",
-        dataType: "json",
-        type: "POST",
-        async: true,
-        data: {
-            home_searched_user: home_searched_user,
-            get_profile_submit: true,
-        },
-        success: function (responses) {
-            console.log(responses);
-            if (responses) {
-                $("#profile-picture").attr(
-                    "src",
-                    responses["profile-picture-link"],
-                );
-                $("#cover-photo").attr("src", responses["cover-photo-link"]);
-                $("#profile-account-name-view").text(responses["account-name"]);
-                $("#profile-registrations-view").text(
-                    responses["type"] + " | " + responses["registrations"],
-                );
+// function getProfile() {
+//     $.ajax({
+//         url: public_folder + "/get-profile",
+//         dataType: "json",
+//         type: "POST",
+//         async: true,
+//         data: {
+//             home_searched_user: home_searched_user,
+//             get_profile_submit: true,
+//         },
+//         success: function (responses) {
+//             console.log(responses);
 
-                if (responses["teacher-registration"]) {
-                    $("#seller-subscription").show();
-                } else {
-                    $("#seller-subscription").hide();
-                }
+//             if (responses) {
+//                 if (home_searched_user) {
+//                     $("#cover-photo").attr(
+//                         "src",
+//                         responses["cover-photo-link"],
+//                     );
+//                     $("#profile-picture").attr(
+//                         "src",
+//                         responses["profile-picture-link"],
+//                     );
+//                     $("#profile-account-name-view").text(
+//                         responses["account-name"],
+//                     );
+//                     $("#profile-registrations-view").text(
+//                         responses["registrations"],
+//                     );
 
-                if (home_searched_user) {
-                    if (responses["no-account"]) {
-                        redirectToSearchPage();
-                    } else {
-                        if (responses["current-account"]) {
-                            $("#account-contents-filter").hide();
-                            redirectToAccountPage();
-                        } else {
-                            $("title").text(responses["account-name"]);
-                            $("#account-contents-filter").show();
+//                     $("#account-contents-filter").show();
 
-                            $("#by-user-indicator").text(
-                                "Contents by " + responses["account-name"],
-                            );
+//                     $("#by-user-indicator").text("Own Contents");
 
-                            $("#by-user-button").text(
-                                "Contents by " + responses["account-name"],
-                            );
+//                     $("#by-user-button").text("Own Contents");
 
-                            $("#show-shared-indicator").text(
-                                "Share with " + responses["account-name"],
-                            );
+//                     $("#show-shared-indicator").text("Shared With Contents");
 
-                            $("#show-shared-button").text(
-                                "Shared with " + responses["account-name"],
-                            );
-                        }
-                    }
+//                     $("#show-shared-button").show();
+//                     $("#show-shared-button").text("Shared With Contents");
 
-                    if (responses["description"]) {
-                        $("#profile-description-view-searched").show();
-                        $("#profile-description-view-searched").text(
-                            "Description: " + responses["description"],
-                        );
-                    }
+//                     if (responses["description"]) {
+//                         $("#profile-description-view-searched").show();
+//                         $("#profile-description-view-searched").text(
+//                             "Description: " + responses["description"],
+//                         );
+//                     }
 
-                    if (!responses["description"]) {
-                        $("#profile-description-view-searched").hide();
-                    }
+//                     if (!responses["description"]) {
+//                         $("#profile-description-view-searched").hide();
+//                     }
 
-                    $("#profile-details").hide();
-                    $("#profile-picture-camera-container").hide();
-                    $("#cover-photo-camera-container").hide();
-                }
+//                     $("#profile-details").hide();
+//                     $("#profile-picture-camera-container").hide();
+//                     $("#cover-photo-camera-container").hide();
+//                 }
 
-                if (!home_searched_user) {
-                    $("#header-account-name").text(responses["account-name"]);
-                    $("#header-profile-picture").attr(
-                        "src",
-                        responses["profile-picture-link"],
-                    );
-
-                    if (page_name == "My Account") {
-                        $("#profile-details").show();
-                        $("#profile-picture-camera-container").show();
-                        $("#cover-photo-camera-container").show();
-
-                        $("#profile-description-view-searched").hide();
-
-                        $("#account-contents-filter").hide();
-
-                        $("#profile-description-view").text(
-                            "Description: " + responses["description"],
-                        );
-
-                        $("#profile-description-edit").val(
-                            responses["description"],
-                        );
-
-                        $("#profile-school-name-view").text(
-                            "Name: " + responses["account-name"],
-                        );
-                        $("#profile-school-name-edit").val(
-                            responses["account-name"],
-                        );
-
-                        $("#profile-school-category-view").text(
-                            "Category: " + responses["registrations"],
-                        );
-
-                        $("#profile-school-category-edit option:selected").val(
-                            responses["registrations"],
-                        );
-
-                        $("#profile-school-category-edit option:selected").text(
-                            responses["registrations"],
-                        );
-
-                        $("#profile-account-name-edit").val(
-                            responses["account-name"],
-                        );
-
-                        $("#profile-first-name-view").text(
-                            "Firstname: " + responses["first-name"],
-                        );
-                        $("#profile-first-name-edit").val(
-                            responses["first-name"],
-                        );
-
-                        $("#profile-middle-name-view").text(
-                            "Middle Name: " + responses["middle-name"],
-                        );
-                        $("#profile-middle-name-edit").val(
-                            responses["middle-name"],
-                        );
-
-                        $("#profile-last-name-view").text(
-                            "Last Name: " + responses["last-name"],
-                        );
-                        $("#profile-last-name-edit").val(
-                            responses["last-name"],
-                        );
-
-                        $("#profile-username-view").text(
-                            "Username: " + responses["username"],
-                        );
-                        $("#profile-username-edit").val(responses["username"]);
-
-                        $("#profile-email-address-view").text(
-                            "Email Address: " + responses["email-address"],
-                        );
-                        $("#profile-email-address-edit").val(
-                            responses["email-address"],
-                        );
-
-                        $("#profile-mobile-number-view").text(
-                            "Mobile Number: " + responses["mobile-number"],
-                        );
-                        $("#profile-mobile-number-edit").val(
-                            responses["mobile-number"],
-                        );
-
-                        $("#profile-birthdate-view").text(
-                            "Birthdate: " + responses["birthdate"],
-                        );
-                        $("#profile-birthdate-edit").val(
-                            responses["birthdate-raw"],
-                        );
-
-                        $("#profile-gender-view").text(
-                            "Gender: " + responses["gender"],
-                        );
-                        if (responses["gender"]) {
-                            $("#profile-gender-edit option:selected").val(
-                                responses["gender"],
-                            );
-                            $("#profile-gender-edit option:selected").text(
-                                responses["gender"],
-                            );
-                        }
-
-                        $("#profile-civil-status-view").text(
-                            "Civil Status: " + responses["civil-status"],
-                        );
-                        if (responses["civil-status"]) {
-                            $("#profile-civil-status-edit option:selected").val(
-                                responses["civil-status"],
-                            );
-                            $(
-                                "#profile-civil-status-edit option:selected",
-                            ).text(responses["civil-status"]);
-                        }
-
-                        $("#profile-educational-attainment-view").text(
-                            "Education: " + responses["education"],
-                        );
-                        if (responses["education"]) {
-                            $(
-                                "#profile-educational-attainment-edit option:selected",
-                            ).val(responses["education"]);
-                            $(
-                                "#profile-educational-attainment-edit option:selected",
-                            ).text(responses["education"]);
-                        }
-
-                        $("#profile-school-view").text(
-                            "School: " + responses["school"],
-                        );
-
-                        $("#profile-school-edit").val(responses["school"]);
-
-                        $("#profile-occupation-view").text(
-                            "Occupation: " + responses["occupation"],
-                        );
-
-                        $("#profile-occupation-edit").val(
-                            responses["occupation"],
-                        );
-
-                        $("#profile-region-view").text(
-                            "Region: " + responses["region"],
-                        );
-
-                        if (responses["region"]) {
-                            $("#profile-region option:selected").val(
-                                responses["region"],
-                            );
-                            $("#profile-region option:selected").text(
-                                responses["region"],
-                            );
-                        }
-
-                        $("#profile-province-state-view").text(
-                            "Province/State: " + responses["province-state"],
-                        );
-
-                        if (responses["province-state"]) {
-                            $("#profile-province-state option:selected").val(
-                                responses["province-state"],
-                            );
-                            $("#profile-province-state option:selected").text(
-                                responses["province-state"],
-                            );
-                        }
-
-                        $("#profile-city-municipality-view").text(
-                            "City/Municipality: " +
-                                responses["city-municipality"],
-                        );
-
-                        if (responses["city-municipality"]) {
-                            $("#profile-city-municipality option:selected").val(
-                                responses["city-municipality"],
-                            );
-                            $(
-                                "#profile-city-municipality option:selected",
-                            ).text(responses["city-municipality"]);
-                        }
-
-                        $("#profile-barangay-view").text(
-                            "Barangay: " + responses["barangay"],
-                        );
-
-                        if (responses["barangay"]) {
-                            $("#profile-barangayoption:selected").val(
-                                responses["barangay"],
-                            );
-                            $("#profile-barangay option:selected").text(
-                                responses["barangay"],
-                            );
-                        }
-
-                        $("#profile-street-subd-village-view").text(
-                            "Street/Subd./Village: " +
-                                responses["street-subd-village"],
-                        );
-                        $("#profile-street-subd-village").val(
-                            responses["street-subd-village"],
-                        );
-                    }
-
-                    if (page_name == "Messages") {
-                        if (!responses["logged-in"]) {
-                            $("#message-page").hide();
-                            redirectToLoginPage();
-                        } else {
-                            $("#message-page").show();
-                            getMessageUsers();
-                            getThreadMessages();
-                        }
-                    }
-                }
-            }
-        },
-    });
-}
-
-function showCommentModal() {
-    $("#modal-comment").show();
-    getContentComments();
-}
-
-function getContentComments() {
-    let content_id = $("#content_id").val();
-
-    $.ajax({
-        url: contents_processing_file,
-        type: "POST",
-        async: true,
-        data: {
-            content_type: content_type,
-            content_id: content_id,
-            role: role,
-            get_content_comments_submit: true,
-        },
-        success: function (responses) {
-            $("#comments-result").html(responses);
-        },
-    });
-}
+//             }
+//         },
+//     });
+// }
 
 function submitComment() {
     let content_id = $("#content_id").val();
@@ -1082,7 +822,6 @@ function updateProfileDetails() {
             if (responses["status"] == "Successful") {
                 const success_message = responses["success-message"];
                 showInputsSuccessMessage(success_message);
-                getProfile();
             } else {
                 const errors = responses["error"];
                 showInputsErrorMessage(errors);
@@ -3661,7 +3400,6 @@ function showConfirmLogoutModal() {
 
 function showSubscriptionModal() {
     $("#modal-subscription").show();
-    getProfile();
 }
 
 function getSubscriptionDetails(subscription_id) {

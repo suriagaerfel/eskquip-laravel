@@ -1,57 +1,36 @@
 <div id="profile">
         <div id="profile-top" style="margin-top: 20px;">
                 
-                <div id="cover-photo-container" style="height:fit-content;">
-                    <?php if ($user) {?>
-                   <img id="cover-photo" src="{{$user_coverPhotoLink}}">
-                   <?php } ?>
-                    
-                    <?php if (!$user) {?>
-                    <?php if ($registrantCode){?>
-                     <img id="cover-photo" src="{{$coverPhotoLink}}">
+                <div id="cover-photo-container" style="height:fit-content; min-height:100px;">
+                    <img id="cover-photo" src="<?php if (!$user){echo asset($coverPhotoLink);}?>">
+                     <?php if ($registrantCode){?>
                     <div id="cover-photo-camera-container">
                         <img src="<?php echo asset('/images/camera.svg');?>" id="cover-photo-camera-icon" class="icon profile-details-icon">
                     </div>
-                    <?php } ?>
                     <?php } ?>
                 </div>
                 
               
                 <div id="profile-picture-summary">
                     <div id="profile-picture-container">
-                         <?php if ($user) {?>
-                        <img id='profile-picture' src="{{$user_profilePictureLink}}"> 
-                        <?php } ?>
-                      
-                        <?php if (!$user) {?>  
+                        <img id="profile-picture" src="<?php if (!$user){echo asset($profilePictureLink);}?>">   
                         <?php if ($registrantCode){?>
-                             <img src="{{$profilePictureLink}}"> 
                             <div id="profile-picture-camera-container">
                                 <img src="<?php echo asset('images/camera.svg');?>" 
                                 id="profile-camera-icon" class="icon profile-details-icon">
                             </div>
-                            <?php } ?>
                         <?php } ?>
                     </div>
                     <div id="profile-summary">
-                        <?php if (!$user) {?>
-                        <h4 >{{$accountName}}</h4>
-                        <p>{{$registrations}}</p>
-                        <?php } ?>
-
-                        <?php if ($user) {?>
-                         <h4 >{{$user_accountName}}</h4>
-                        <p>{{$user_registrations}}</p>
-                        <?php } ?>
+                        <h4 id="profile-account-name-view">{{$accountName}}</h4>
+                        <p id="profile-registrations-view">{{$registrations}}</p>
                     </div>
                 </div>
         </div>
 
-        <?php if ($user){?>
         <div style="margin-top: 80px;">
-             <em class="profile-details-view" id="profile-description-view-searched">{{$user_registrantDescription}}</em>
+             <em class="profile-details-view" id="profile-description-view-searched">{{$registrantDescription}}</em>
         </div>
-        <?php } ?>
        
         <?php if ($registrantCode){?>
         <?php if (!$user){?>

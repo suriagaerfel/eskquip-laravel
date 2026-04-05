@@ -15,11 +15,8 @@ class AccountRecordsService
     {
 
         $currentTime = now();;
-        // $registrantCode= '2026000004272055'; 
         $loggedIn =  false;
 
-
-        // -------------------------------- REGISTRANT RECORDS ----------------------------------//
 
         $registrantId = '';
          

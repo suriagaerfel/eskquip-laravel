@@ -63,20 +63,27 @@ class PageController extends Controller
 
             if ($user_records) {
                  $user_code = $user_records->registrantCode;
-                $accountName = $user_records->registrantAccountName;
+                $user_accountName = $user_records->registrantAccountName;
 
-                $pageName = $accountName;
+                $pageName = $user_accountName;
 
                 $user_records =  $service->get_profile_records($user_code);
+
+                $user_profilePictureLink = $user_records ['profilePictureLink'];
+                $user_coverPhotoLink = $user_records ['coverPhotoLink'];
+                $user_registrations = $user_records ['registrations'];
+                $user_registrantDescription = $user_records ['registrantDescription'];
+
+                
+
             } else {
                 return redirect($publicFolder.'/search');
             }
 
-        }
-        
+             return view ('user', compact('pageName','user','user_accountName','user_registrations','user_profilePictureLink','user_coverPhotoLink','user_registrantDescription'));
 
-        return view ('user', compact('pageName','user'));
-        
+        }
+          
     }
 
 
@@ -358,6 +365,7 @@ class PageController extends Controller
     public function messages (){
          $pageName = 'Messages';
 
+         $user=null;
          $publicFolder= $this->publicFolder;
          $loggedIn= $this->account_records['loggedIn'];
 
@@ -365,7 +373,7 @@ class PageController extends Controller
             return redirect($publicFolder.'/login');
         }
 
-        return view ('workspace.researches', compact('pageName'));
+        return view ('messages', compact('pageName','user'));
     }
 
 

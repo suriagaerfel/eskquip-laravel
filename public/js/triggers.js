@@ -13,10 +13,6 @@ $(document).ready(function () {
         initializeActualWorkspace();
     }
 
-    if (page_name == "My Account") {
-        getProfile();
-    }
-
     if (page_name == "Messages") {
         getMessageUsers();
         getThreadMessages();
@@ -738,10 +734,6 @@ $(document).ready(function () {
 
     //show editable profile details
     $("#edit-profile-details-button").click(function () {
-        // $(".profile-details-edit").show();
-        // $(".profile-details-view").hide();
-        // $(this).hide();
-
         $("#modal-update-profile").show();
         $(".profile-details-edit").show();
     });
@@ -754,7 +746,7 @@ $(document).ready(function () {
     //cancel updating profile details
     $("#update-profile-details-cancel-button").click(function () {
         $("#modal-update-profile").hide();
-        getProfile();
+        // getProfile();
     });
 
     //show the subscription modal
