@@ -20,7 +20,7 @@ class PageController extends Controller
 
         // $registrantCode = session('registrant-code');
 
-        $registrantCode = '2026000004271998';
+        $registrantCode = session('registrant-code');
 
         $this->account_records = $service->get_profile_records($registrantCode);
         $records= $this->account_records;
