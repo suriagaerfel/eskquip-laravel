@@ -666,7 +666,7 @@
             <div class="profile-details-group">
                 <input type="text" value="Philippines" placeholder="Country" hidden id="profile-country">
                 <?php // Path to your JSON file
-                $data = json_decode(file_get_contents(asset('data/philippine_provinces_cities_municipalities_and_barangays_2019v2.json')), true);
+                $data = json_decode(file_get_contents($publicFolder.'/data/philippine_provinces_cities_municipalities_and_barangays_2019v2.json'), true);
 
                 // Prepare regions list for initial dropdown
                 $regions = [];
